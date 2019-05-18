@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Timetabler App</string>
+    <string name="login">login</string>
+    <string name="username_error">Username is required!</string>
+    <string name="password_error">Password is required</string>
+    <string name="register">Register</string>
+    <string name="user_id">User Id, Use your registration number</string>
+    <string name="info">Select a role below.  If you do not select,  the default will be selected for you</string>
+    <string name="in_session">In Session</string>
+    <string name="clear_role">Clear Role</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string-array name="roles">
+        <item>Lecturer</item>
+        <item>Student</item>
+    </string-array>
+</resources>

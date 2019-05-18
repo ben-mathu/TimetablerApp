@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".signup.SignUpActivity">
+
+    <EditText
+        android:id="@+id/edit_user_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/user_id"
+        android:textSize="21sp"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:id="@+id/ll_names"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_below="@+id/edit_user_id"
+        android:weightSum="4"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_first_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="2"
+            android:padding="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="First Name"
+            android:textSize="21sp"
+            android:textAlignment="center"/>
+
+        <EditText
+            android:id="@+id/edit_last_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Last Name"
+            android:textSize="21sp"
+            android:textAlignment="center"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_middle_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_names"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Sur Name"
+        android:textSize="21sp"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:id="@+id/ll_credentials"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:weightSum="4"
+        android:layout_below="@+id/edit_middle_name">
+
+        <EditText
+            android:id="@+id/edit_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            android:background="@drawable/edittext_background"
+            android:hint="@string/username"
+            android:textSize="21sp"/>
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="@string/password"
+            android:padding="10dp"
+            android:background="@drawable/edittext_background"
+            android:inputType="textPassword"
+            android:textSize="21sp"/>
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinner_departments"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/ll_credentials"
+        android:textAlignment="viewStart"/>
+
+    <Spinner
+        android:id="@+id/spinner_programme"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/spinner_departments"
+        android:textAlignment="viewStart"/>
+
+    <Spinner
+        android:id="@+id/spinner_campus"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/spinner_programme"
+        android:textAlignment="viewStart"/>
+
+    <Spinner
+        android:id="@+id/spinner_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@+id/spinner_campus"
+        android:textAlignment="viewStart"/>
+
+    <LinearLayout
+        android:id="@+id/ll_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:weightSum="4"
+        android:layout_below="@+id/spinner_faculty"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_date_picker"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="2.5"
+            android:background="@drawable/button_background_two"
+            android:text="Admission Date"
+            android:textColor="#FFFFFF"/>
+
+        <Switch
+            android:id="@+id/switch_in_session"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:padding="10dp"
+            android:text="@string/in_session" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/register"
+        android:background="@drawable/button_background"/>
+</RelativeLayout>
