@@ -223,7 +223,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     }
 
     @Override
-    public void startTimeTableActivity() {
+    public void startLoginActiity() {
 
     }
 }

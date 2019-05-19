@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.lecturer.source;
 
+import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerRequest;
@@ -18,22 +19,22 @@ public class LecturerRemoteDS implements LecturerDS {
         LecturerRequest lecturerRequest = new LecturerRequest();
         lecturerRequest.setLecturer(lecturer);
 
-        Call<String> call = RetrofitClient.getRetrofit()
+        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
                 .create(LecturerApi.class)
                 .signUpLec("application/json", lecturerRequest);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<SuccessfulReport>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
                 if (response.isSuccessful()) {
-                    callBack.userIsAuthSuccessfull(response.body());
+                    callBack.userIsAuthSuccessfull(response.body().getMessage());
                 } else {
                     callBack.authNotSuccessful(response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
                 callBack.authNotSuccessful(t.getMessage());
             }
         });

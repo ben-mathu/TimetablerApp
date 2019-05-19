@@ -27,6 +27,7 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.timetable.TimetableActivity;
 
 import java.util.ArrayList;
@@ -199,7 +200,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void startTimeTableActivity() {
-        startActivity(new Intent(getActivity(), TimetableActivity.class));
+    public void startLoginActiity() {
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 }

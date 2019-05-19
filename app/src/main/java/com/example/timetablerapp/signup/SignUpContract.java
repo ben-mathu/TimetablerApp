@@ -24,7 +24,7 @@ public interface SignUpContract {
 
         void showProgrammes(List<Programme> programmes);
 
-        void startTimeTableActivity();
+        void startLoginActiity();
     }
 
     interface Presenter {

@@ -128,7 +128,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             @Override
             public void userIsAuthSuccessfull(String message) {
                 view.showMessages(message);
-                view.startTimeTableActivity();
+                view.startLoginActiity();
             }
 
             @Override
