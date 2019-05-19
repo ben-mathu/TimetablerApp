@@ -62,9 +62,8 @@ public class MainActivity extends AppCompatActivity implements MainView{
         btnGotoLogin.setOnClickListener(v -> {
             role = spinnerUserRole.getSelectedItem().toString();
             presenter.sendUserRole(role);
-            startActivity(new Intent(MainActivity.this, SignUpActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            );
+            startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+            finish();
         });
     }
 

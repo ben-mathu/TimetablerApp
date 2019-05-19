@@ -156,7 +156,12 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                facultyName = parent.getSelectedItem().toString();
+                for (Faculty faculty : faculties) {
+                    if (facultyName.equals(faculty.getFacultyName())) {
+                        presenter.getDepartments(faculty.getFacultyId());
+                    }
+                }
             }
         });
     }

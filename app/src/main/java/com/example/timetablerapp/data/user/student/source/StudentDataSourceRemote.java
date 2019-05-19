@@ -44,7 +44,6 @@ public class StudentDataSourceRemote implements StudentDataSource {
                 t.printStackTrace();
             }
         });
-        String out = "";
     }
 
     @Override

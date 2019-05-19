@@ -52,11 +52,12 @@ public class LecturerLocalDS implements LecturerDS {
         values.put(TimetablerContract.Lecturer.LECTURER_ID, item.getId());
         values.put(TimetablerContract.Lecturer.DEPARTMENT_ID, item.getDepartmentId());
         values.put(TimetablerContract.Lecturer.FACULTY_ID, item.getFacultyId());
+        values.put(TimetablerContract.Lecturer.IN_SESSION, item.isInSesson());
 
         long countRow = database.insert(TimetablerContract.Lecturer.TABLE_NAME, null, values);
 
         if (countRow > 0) {
-            Log.d(TAG, "save: Successfully recorded..." + countRow);
+            Log.d(TAG, "save: Successfully recorded..." + countRow + "record(s)");
         }
     }
 }

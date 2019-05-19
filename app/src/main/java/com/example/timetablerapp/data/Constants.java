@@ -4,7 +4,7 @@ package com.example.timetablerapp.data;
  * 07/05/19 -bernard
  */
 public class Constants {
-    public static final String BASE_URL = "http://192.168.0.29:8080/Timetabler-v2.0/";
+    public static final String BASE_URL = "http://192.168.43.146:8080/Timetabler-v2.0/";
     public static final String DATABASE_NAME = "timetabler.db";
     public static final String SALT = "salt";
     public static final String ROLE = "role";
