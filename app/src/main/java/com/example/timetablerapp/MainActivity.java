@@ -39,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements MainView{
         role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 
         if (role != null && !role.isEmpty()) {
-            startActivity(new Intent(this, SignUpActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
     }
 
@@ -62,7 +63,9 @@ public class MainActivity extends AppCompatActivity implements MainView{
         btnGotoLogin.setOnClickListener(v -> {
             role = spinnerUserRole.getSelectedItem().toString();
             presenter.sendUserRole(role);
-            startActivity(new Intent(MainActivity.this, SignUpActivity.class));
+            startActivity(new Intent(MainActivity.this, SignUpActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            );
             finish();
         });
     }
