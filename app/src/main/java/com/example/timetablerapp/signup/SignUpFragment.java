@@ -59,7 +59,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
                 MainApplication.getProgRepo(),
                 MainApplication.getCampusRepo(),
                 MainApplication.getFacultyRepo(),
-                MainApplication.getUserRepository(),
+                MainApplication.getStudentRepository(),
                 MainApplication.getLecturerRepo());
         role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
     }

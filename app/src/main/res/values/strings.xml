@@ -10,6 +10,7 @@
     <string name="clear_role">Clear Role</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="auth_error">Username or password is wrong.</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

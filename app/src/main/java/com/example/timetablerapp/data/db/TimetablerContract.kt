@@ -34,8 +34,8 @@ object TimetablerContract {
                     "${TimetablerContract.Student.FIRST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Student.LAST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Student.MIDDLE_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Student.USERNAME} VARCHAR(15)," +
-                    "${TimetablerContract.Student.PASSWORD} VARCHAR(32)," +
+                    "${TimetablerContract.Student.USERNAME} VARCHAR(15) UNIQUE," +
+                    "${TimetablerContract.Student.PASSWORD} VARCHAR(32) UNIQUE," +
                     "${TimetablerContract.Student.YEAR_OF_STUDY} INTEGER," +
                     "${TimetablerContract.Student.PROGRAMME_ID} VARCHAR(10)," +
                     "${TimetablerContract.Student.DEPARTMENT_ID} VARCHAR(10)," +
@@ -67,8 +67,8 @@ object TimetablerContract {
                     "${TimetablerContract.Lecturer.FIRST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Lecturer.LAST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Lecturer.MIDDLE_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Lecturer.USERNAME} VARCHAR(15)," +
-                    "${TimetablerContract.Lecturer.PASSWORD} VARCHAR(32)," +
+                    "${TimetablerContract.Lecturer.USERNAME} VARCHAR(15) UNIQUE," +
+                    "${TimetablerContract.Lecturer.PASSWORD} VARCHAR(32) UNIQUE," +
                     "${TimetablerContract.Lecturer.IN_SESSION} BOOLEAN," +
                     "${TimetablerContract.Lecturer.DEPARTMENT_ID} VARCHAR(10)," +
                     "${TimetablerContract.Lecturer.FACULTY_ID} VARCHAR(10))"

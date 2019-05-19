@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
         checkIfRoleAlreadySelected();
 
-        presenter = new MainPresenter(MainApplication.getUserRepository(), this);
+        presenter = new MainPresenter(MainApplication.getStudentRepository(), this);
 
         spinnerUserRole = findViewById(R.id.spinner_role);
         ArrayAdapter<CharSequence> arrayAdapter =  ArrayAdapter.createFromResource(this,

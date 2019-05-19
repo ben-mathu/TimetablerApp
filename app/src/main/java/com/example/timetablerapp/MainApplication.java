@@ -86,7 +86,7 @@ public class MainApplication extends Application {
         return departmentRepo;
     }
 
-    public static StudentRepository getUserRepository() {
+    public static StudentRepository getStudentRepository() {
         return studentRepo;
     }
 

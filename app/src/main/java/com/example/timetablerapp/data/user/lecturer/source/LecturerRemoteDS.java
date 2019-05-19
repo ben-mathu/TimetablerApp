@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.lecturer.source;
 
 import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerRequest;
@@ -13,9 +14,9 @@ import retrofit2.Response;
 /**
  * 08/05/19 -bernard
  */
-public class LecturerRemoteDS implements LecturerDS {
+public class LecturerRemoteDS implements UserDataSource<Lecturer> {
     @Override
-    public void userSignUp(LecturerIsAuthCallBack callBack, Lecturer lecturer) {
+    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
         LecturerRequest lecturerRequest = new LecturerRequest();
         lecturerRequest.setLecturer(lecturer);
 
@@ -41,7 +42,17 @@ public class LecturerRemoteDS implements LecturerDS {
     }
 
     @Override
-    public void authUser(LecturerIsAuthCallBack callBack, Lecturer lecturer) {
+    public void authUser(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
+
+    }
+
+    @Override
+    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+
+    }
+
+    @Override
+    public void sendUserRole(GetSaltCallBack callBack, String role) {
 
     }
 

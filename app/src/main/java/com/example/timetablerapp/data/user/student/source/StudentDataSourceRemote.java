@@ -3,6 +3,8 @@ package com.example.timetablerapp.data.user.student.source;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.user.UserApi;
+import com.example.timetablerapp.data.user.UserDataSource;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.StudentDataSource;
 import com.example.timetablerapp.data.user.security_utils.SaltReponse;
 import com.example.timetablerapp.data.user.student.model.Student;
@@ -15,10 +17,20 @@ import retrofit2.Response;
 /**
  * 06/05/19 -bernard
  */
-public class StudentDataSourceRemote implements StudentDataSource {
+public class StudentDataSourceRemote implements UserDataSource<Student> {
 
     @Override
-    public void validateUser(String username, String password) {
+    public void userSignUp(UserAuthCallback callBack, Student obj) {
+
+    }
+
+    @Override
+    public void authUser(UserAuthCallback callBack, Student obj) {
+
+    }
+
+    @Override
+    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
     }
 
     @Override

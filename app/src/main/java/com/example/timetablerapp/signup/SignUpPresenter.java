@@ -16,6 +16,7 @@ import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.model.Programme;
+import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
@@ -24,6 +25,8 @@ import com.example.timetablerapp.data.user.student.StudentRepository;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import static com.example.timetablerapp.data.encryption.Hashing.createHash;
 
 /**
  * 08/05/19 -bernard
@@ -124,7 +127,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             Log.e(TAG, "registerUser: ", e);
             e.printStackTrace();
         }
-        lecturerRepo.userSignUp(new LecturerDS.LecturerIsAuthCallBack() {
+        lecturerRepo.userSignUp(new UserDataSource.UserAuthCallback() {
             @Override
             public void userIsAuthSuccessfull(String message) {
                 view.showMessages(message);
@@ -136,31 +139,6 @@ public class SignUpPresenter implements SignUpContract.Presenter {
                 view.showMessages(message);
             }
         }, lec);
-    }
-
-    private String createHash(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        digest.reset();
-
-        byte[] salt = MainApplication.getSharedPreferences().getString(Constants.SALT, "").getBytes();
-
-        digest.update(salt);
-
-        byte[] hash = digest.digest(password.getBytes());
-        return byteToStringHex(hash);
-    }
-
-    private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    public String byteToStringHex(byte[] hash) {
-        char[] hexChar = new char[hash.length * 2];
-        for (int i = 0; i < hash.length; i++) {
-            int v = hash[i] & 0xFF;
-            hexChar[i * 2] = hexArray[v >>> 4];
-            hexChar[i * 2 + 1] = hexArray[v & 0x0F];
-        }
-
-        return new String(hexChar);
     }
 
     @Override

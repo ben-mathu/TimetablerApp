@@ -1,5 +1,8 @@
 package com.example.timetablerapp.data.user.lecturer;
 
+import android.database.Cursor;
+
+import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerLocalDS;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerRemoteDS;
@@ -7,7 +10,7 @@ import com.example.timetablerapp.data.user.lecturer.source.LecturerRemoteDS;
 /**
  * 08/05/19 -bernard
  */
-public class LecturerRepo implements LecturerDS {
+public class LecturerRepo implements UserDataSource<Lecturer> {
     private static LecturerRepo INSTANCE = null;
 
     private LecturerLocalDS lecturerLocalDS;
@@ -26,9 +29,9 @@ public class LecturerRepo implements LecturerDS {
     }
 
     @Override
-    public void userSignUp(LecturerIsAuthCallBack callBack, Lecturer lecturer) {
+    public void userSignUp(UserAuthCallback callBack, Lecturer lecturer) {
         save(lecturer);
-        lecturerRemoteDS.userSignUp(new LecturerIsAuthCallBack() {
+        lecturerRemoteDS.userSignUp(new UserAuthCallback() {
             @Override
             public void userIsAuthSuccessfull(String message) {
                 callBack.userIsAuthSuccessfull(message);
@@ -42,8 +45,8 @@ public class LecturerRepo implements LecturerDS {
     }
 
     @Override
-    public void authUser(LecturerIsAuthCallBack callBack, Lecturer lecturer) {
-        lecturerRemoteDS.userSignUp(new LecturerIsAuthCallBack() {
+    public void authUser(UserAuthCallback callBack, Lecturer lecturer) {
+        lecturerRemoteDS.userSignUp(new UserAuthCallback(){
             @Override
             public void userIsAuthSuccessfull(String message) {
                 callBack.userIsAuthSuccessfull(message);
@@ -54,6 +57,26 @@ public class LecturerRepo implements LecturerDS {
                 callBack.authNotSuccessful(message);
             }
         }, lecturer);
+    }
+
+    @Override
+    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+        lecturerLocalDS.validateUser(role, username, password, new UserAuthCallback() {
+            @Override
+            public void userIsAuthSuccessfull(String message) {
+                callback.userIsAuthSuccessfull(message);
+            }
+
+            @Override
+            public void authNotSuccessful(String message) {
+                callback.authNotSuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void sendUserRole(GetSaltCallBack callBack, String role) {
+
     }
 
     @Override

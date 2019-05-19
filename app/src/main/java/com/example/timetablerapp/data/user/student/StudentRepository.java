@@ -1,6 +1,8 @@
 package com.example.timetablerapp.data.user.student;
 
 
+import com.example.timetablerapp.data.user.UserDataSource;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.source.StudentDataSourceLocal;
 import com.example.timetablerapp.data.user.student.source.StudentDataSourceRemote;
@@ -8,7 +10,7 @@ import com.example.timetablerapp.data.user.student.source.StudentDataSourceRemot
 /**
  * 06/05/19 -bernard
  */
-public class StudentRepository implements StudentDataSource {
+public class StudentRepository implements UserDataSource<Student> {
     private static StudentRepository INSTANCE = null;
     private StudentDataSourceRemote userDataSourceRemote;
     private StudentDataSourceLocal userDataSourceLocal;
@@ -27,8 +29,28 @@ public class StudentRepository implements StudentDataSource {
     }
 
     @Override
-    public void validateUser(String username, String password) {
-        userDataSourceRemote.validateUser(username, password);
+    public void userSignUp(UserAuthCallback callBack, Student obj) {
+
+    }
+
+    @Override
+    public void authUser(UserAuthCallback callBack, Student obj) {
+
+    }
+
+    @Override
+    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+        userDataSourceRemote.validateUser(role, username, password, new UserAuthCallback() {
+            @Override
+            public void userIsAuthSuccessfull(String message) {
+                callback.userIsAuthSuccessfull(message);
+            }
+
+            @Override
+            public void authNotSuccessful(String message) {
+                callback.authNotSuccessful(message);
+            }
+        });
     }
 
     @Override

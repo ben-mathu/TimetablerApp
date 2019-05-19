@@ -18,4 +18,8 @@ public interface LoginView {
     void startMainActivity();
 
     String getUserRole();
+
+    void showMessage(String message);
+
+    void startTimetableActivity();
 }

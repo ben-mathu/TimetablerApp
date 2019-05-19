@@ -10,11 +10,13 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.timetablerapp.MainActivity;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.signup.SignUpActivity;
+import com.example.timetablerapp.timetable.TimetableActivity;
 
 /**
  * 06/05/19 -bernard
@@ -34,7 +36,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         setContentView(R.layout.activity_login);
 
         // Initialize LoginPresenter
-        loginPresenter = new LoginPresenter(MainApplication.getUserRepository(), this);
+        loginPresenter = new LoginPresenter(MainApplication.getStudentRepository(), MainApplication.getLecturerRepo(), this);
 
         edtUsername = findViewById(R.id.edit_username);
         edtPassword = findViewById(R.id.edit_password);
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showUsernameError(int s) {
-        edtUsername.setError(getString(R.string.username_error));
+        edtUsername.setError(getString(s));
     }
 
     @Override
@@ -71,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showPasswordError(int s) {
-        edtPassword.setError(getString(R.string.password_error));
+        edtPassword.setError(getString(s));
     }
 
     @Override
@@ -82,5 +84,15 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public String getUserRole() {
         return null;
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startTimetableActivity() {
+        startActivity(new Intent(this, TimetableActivity.class));
     }
 }
