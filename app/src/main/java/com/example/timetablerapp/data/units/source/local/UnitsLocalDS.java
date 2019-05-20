@@ -26,4 +26,9 @@ public class UnitsLocalDS implements UnitDataSource {
     public void getUnitsByLecturerId(String id, UnitsLoadedCallback callback) {
 
     }
+
+    @Override
+    public void getUnitsByStudentId(String strId, UnitsLoadedCallback callback) {
+
+    }
 }

@@ -2,6 +2,7 @@ package com.example.timetablerapp.data.campuses;
 
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.campuses.model.Campus;
+import com.example.timetablerapp.data.campuses.model.CampusesReponse;
 
 import java.util.List;
 
@@ -13,5 +14,5 @@ import retrofit2.http.GET;
  */
 public interface CampusApi {
     @GET("campuses")
-    Call<List<Campus>> getAll();
+    Call<CampusesReponse> getAll();
 }

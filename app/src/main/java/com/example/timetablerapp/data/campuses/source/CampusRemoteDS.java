@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.campuses.source;
 import com.example.timetablerapp.data.campuses.CampusApi;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.model.Campus;
+import com.example.timetablerapp.data.campuses.model.CampusesReponse;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
@@ -18,15 +19,15 @@ import retrofit2.Response;
 public class CampusRemoteDS implements CampusesDS {
     @Override
     public void getAllFromRemote(LoadCampusesCallBack callBack) {
-        Call<List<Campus>> call = RetrofitClient.getRetrofit()
+        Call<CampusesReponse> call = RetrofitClient.getRetrofit()
                 .create(CampusApi.class)
                 .getAll();
 
-        call.enqueue(new Callback<List<Campus>>() {
+        call.enqueue(new Callback<CampusesReponse>() {
             @Override
-            public void onResponse(Call<List<Campus>> call, Response<List<Campus>> response) {
+            public void onResponse(Call<CampusesReponse> call, Response<CampusesReponse> response) {
                 if (response.isSuccessful()) {
-                    List<Campus> campuses = response.body();
+                    List<Campus> campuses = response.body().getCampuses();
                     callBack.loadCampusesSuccessful(campuses);
                 } else {
                     callBack.dataNotAvailable(response.message());
@@ -34,7 +35,7 @@ public class CampusRemoteDS implements CampusesDS {
             }
 
             @Override
-            public void onFailure(Call<List<Campus>> call, Throwable t) {
+            public void onFailure(Call<CampusesReponse> call, Throwable t) {
                 callBack.dataNotAvailable(t.getMessage());
             }
         });

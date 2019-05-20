@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.timetablerapp.data.faculties.FacultyApi;
 import com.example.timetablerapp.data.faculties.FacultyDS;
+import com.example.timetablerapp.data.faculties.model.FacultiesResponse;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.faculties.model.FacultyResponse;
 import com.example.timetablerapp.data.utils.RetrofitClient;
@@ -23,15 +24,15 @@ public class FacultyRemoteDS implements FacultyDS {
 
     @Override
     public void getAllFromRemote(LoadFacultiesCallBack callBack, String name) {
-        Call<List<Faculty>> call = RetrofitClient.getRetrofit()
+        Call<FacultiesResponse> call = RetrofitClient.getRetrofit()
                 .create(FacultyApi.class)
                 .getAll(name);
 
-        call.enqueue(new Callback<List<Faculty>>() {
+        call.enqueue(new Callback<FacultiesResponse>() {
             @Override
-            public void onResponse(Call<List<Faculty>> call, Response<List<Faculty>> response) {
+            public void onResponse(Call<FacultiesResponse> call, Response<FacultiesResponse> response) {
                 if (response.isSuccessful()) {
-                    List<Faculty> faculties = response.body();
+                    List<Faculty> faculties = response.body().getFaculties();
                     callBack.gettinFacultiesSuccessful(faculties);
                 } else {
                     callBack.dataNotAvailable(response.message());
@@ -39,7 +40,7 @@ public class FacultyRemoteDS implements FacultyDS {
             }
 
             @Override
-            public void onFailure(Call<List<Faculty>> call, Throwable t) {
+            public void onFailure(Call<FacultiesResponse> call, Throwable t) {
                 callBack.dataNotAvailable(t.getMessage());
             }
         });
