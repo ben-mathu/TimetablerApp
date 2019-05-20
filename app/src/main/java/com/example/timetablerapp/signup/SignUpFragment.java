@@ -84,7 +84,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 campusName = parent.getItemAtPosition(position).toString();
-                presenter.getFaculties(campusName);
+                presenter.getFaculties(campuses.get(position).getCampusId());
             }
 
             @Override
@@ -183,6 +183,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     @Override
     public void showCampuses(List<Campus> campuses) {
+        this.campuses = campuses;
         List<String> campusNames = new ArrayList<>();
         for (Campus campus : campuses) {
             campusNames.add(campus.getCampusName());

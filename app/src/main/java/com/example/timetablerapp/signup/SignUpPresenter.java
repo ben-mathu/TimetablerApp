@@ -104,7 +104,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void getFaculties(String campusName) {
+    public void getFaculties(String campusId) {
         facultiesRepository.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
             public void gettinFacultiesSuccessful(List<Faculty> faculties) {
@@ -115,7 +115,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void dataNotAvailable(String message) {
                 view.showMessages(message);
             }
-        }, campusName);
+        }, campusId);
     }
 
     @Override

@@ -23,10 +23,10 @@ public class FacultyRemoteDS implements FacultyDS {
     private static final String TAG = FacultyRemoteDS.class.getSimpleName();
 
     @Override
-    public void getAllFromRemote(LoadFacultiesCallBack callBack, String name) {
+    public void getAllFromRemote(LoadFacultiesCallBack callBack, String campusId) {
         Call<FacultiesResponse> call = RetrofitClient.getRetrofit()
                 .create(FacultyApi.class)
-                .getAll(name);
+                .getAll(campusId);
 
         call.enqueue(new Callback<FacultiesResponse>() {
             @Override

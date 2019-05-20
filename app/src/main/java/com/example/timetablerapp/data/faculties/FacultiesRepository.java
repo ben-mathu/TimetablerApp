@@ -28,7 +28,7 @@ public class FacultiesRepository implements FacultyDS {
     }
 
     @Override
-    public void getAllFromRemote(LoadFacultiesCallBack callBack, String name) {
+    public void getAllFromRemote(LoadFacultiesCallBack callBack, String campusId) {
         facultyRemoteDS.getAllFromRemote(new LoadFacultiesCallBack() {
             @Override
             public void gettinFacultiesSuccessful(List<Faculty> faculties) {
@@ -39,7 +39,7 @@ public class FacultiesRepository implements FacultyDS {
             public void dataNotAvailable(String message) {
                 callBack.dataNotAvailable(message);
             }
-        }, name);
+        }, campusId);
     }
 
     @Override
