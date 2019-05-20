@@ -59,4 +59,30 @@ public class UnitsRemoteDS implements UnitDataSource {
             }
         });
     }
+
+    @Override
+    public void getUnitsByStudentId(String strId, UnitsLoadedCallback callback) {
+        Call<UnitResponse> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .getUnitsByStudentId(strId);
+
+        call.enqueue(new Callback<UnitResponse>() {
+            @Override
+            public void onResponse(Call<UnitResponse> call, Response<UnitResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Unit> unitList = response.body().getUnitList();
+                    if (unitList != null) {
+                        callback.successful(unitList);
+                    }
+                } else {
+                    callback.unsuccessful("Units are not available, please contact admin");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnitResponse> call, Throwable t) {
+                callback.unsuccessful("An error occurred, please contact admin.");
+            }
+        });
+    }
 }

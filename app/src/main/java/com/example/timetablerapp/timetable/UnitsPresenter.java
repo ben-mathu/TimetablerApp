@@ -33,7 +33,17 @@ public class UnitsPresenter {
         });
     }
 
-    public void getUnitsByStudentId(String string) {
+    public void getUnitsByStudentId(String strId) {
+        unitsRepo.getUnitsByStudentId(strId, new UnitDataSource.UnitsLoadedCallback() {
+            @Override
+            public void successful(List<Unit> units) {
+                view.setUnits(units);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
     }
 }

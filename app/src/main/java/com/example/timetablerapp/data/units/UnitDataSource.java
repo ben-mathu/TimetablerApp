@@ -12,6 +12,8 @@ public interface UnitDataSource extends DataSource<UnitDataSource.UnitsLoadedCal
 
     void getUnitsByLecturerId(String id, UnitsLoadedCallback callback);
 
+    void getUnitsByStudentId(String strId, UnitsLoadedCallback callback);
+
     interface UnitsLoadedCallback {
         void successful(List<Unit> units);
         void unsuccessful(String message);
