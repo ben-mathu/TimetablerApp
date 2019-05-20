@@ -89,7 +89,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                campusName = parent.getSelectedItem().toString();
+                presenter.getFaculties(campuses.get(parent.getSelectedItemPosition()).getCampusId());
             }
         });
 
@@ -99,12 +100,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 facultyName = parent.getItemAtPosition(position).toString();
-                presenter.getDepartments(facultyName);
+                presenter.getDepartments(faculties.get(position).getFacultyId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                facultyName = parent.getSelectedItem().toString();
+                presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
             }
         });
 
@@ -171,6 +173,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     @Override
     public void showFaculties(List<Faculty> faculties) {
+        this.faculties = faculties;
         List<String> facultyNames = new ArrayList<>();
         for (Faculty faculty : faculties) {
             facultyNames.add(faculty.getFacultyName());
