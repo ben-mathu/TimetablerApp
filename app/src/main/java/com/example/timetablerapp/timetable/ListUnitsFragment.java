@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * List units associated with the lecturer
  */
-public class ListLecturerUnitsFragment extends Fragment implements UnitView {
+public class ListUnitsFragment extends Fragment implements UnitView {
 
     private UnitsAdapter adapter;
     private UnitsPresenter presenter;
@@ -33,13 +34,13 @@ public class ListLecturerUnitsFragment extends Fragment implements UnitView {
 
     private String role = "";
 
-    public ListLecturerUnitsFragment() {
+    public ListUnitsFragment() {
     }
 
     public static Fragment newInstance() {
         Bundle args = new Bundle();
 
-        Fragment fragment = new ListLecturerUnitsFragment();
+        Fragment fragment = new ListUnitsFragment();
         fragment.setArguments(args);
 
         return fragment;
@@ -58,11 +59,15 @@ public class ListLecturerUnitsFragment extends Fragment implements UnitView {
                     MainApplication.getSharedPreferences()
                         .getString(Constants.LECTURER_ID, "")
             );
+
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Lecture Units");
         } else if (role.equalsIgnoreCase("student")) {
             presenter.getUnitsByStudentId(
                     MainApplication.getSharedPreferences()
                     .getString(Constants.STUDENT_ID, "")
             );
+
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Student Units");
         }
     }
 

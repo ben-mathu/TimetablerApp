@@ -20,7 +20,7 @@ public class TimetableActivity extends AppCompatActivity {
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.timetable_fragment_container);
 
         if (fragment == null) {
-            fragment = ListLecturerUnitsFragment.newInstance();
+            fragment = ListUnitsFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.timetable_fragment_container, fragment)
                     .commit();
