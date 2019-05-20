@@ -111,13 +111,33 @@
             </LinearLayout>
 
             <Spinner
-                android:id="@+id/spinner_departments"
+                android:id="@+id/spinner_campus"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_below="@+id/ll_credentials"
+                android:textAlignment="viewStart"/>
+
+            <Spinner
+                android:id="@+id/spinner_faculty"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_below="@+id/spinner_campus"
+                android:textAlignment="viewStart"/>
+
+            <Spinner
+                android:id="@+id/spinner_departments"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_below="@+id/spinner_faculty"
                 android:textAlignment="viewStart"/>
 
             <Spinner
@@ -130,27 +150,6 @@
                 android:layout_below="@+id/spinner_departments"
                 android:textAlignment="viewStart"/>
 
-            <Spinner
-                android:id="@+id/spinner_campus"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:layout_below="@+id/spinner_programme"
-                android:textAlignment="viewStart"/>
-
-            <Spinner
-                android:id="@+id/spinner_faculty"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginEnd="30dp"
-                android:layout_below="@+id/spinner_campus"
-
-                android:textAlignment="viewStart"/>
-
             <LinearLayout
                 android:id="@+id/ll_items"
                 android:layout_width="match_parent"
@@ -159,7 +158,7 @@
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:weightSum="4"
-                android:layout_below="@+id/spinner_faculty"
+                android:layout_below="@+id/spinner_programme"
                 android:orientation="horizontal">
 
                 <Button

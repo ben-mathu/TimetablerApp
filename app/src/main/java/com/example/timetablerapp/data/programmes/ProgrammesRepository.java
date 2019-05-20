@@ -28,7 +28,7 @@ public class ProgrammesRepository implements ProgrammeDS {
     }
 
     @Override
-    public void getAllFromRemote(LoadProgrammesCallBack callBack, String name) {
+    public void getAllFromRemote(LoadProgrammesCallBack callBack, String departmentId) {
         progRemoteDS.getAllFromRemote(new LoadProgrammesCallBack() {
             @Override
             public void loadProgrammesSuccessfully(List<Programme> programmes) {
@@ -39,7 +39,7 @@ public class ProgrammesRepository implements ProgrammeDS {
             public void dataNotAvailable(String message) {
                 callBack.dataNotAvailable(message);
             }
-        }, name);
+        }, departmentId);
     }
 
     @Override

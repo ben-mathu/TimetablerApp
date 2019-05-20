@@ -74,7 +74,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void getProgrammes(String departmentName) {
+    public void getProgrammes(String departmentId) {
         programmesRepository.getAllFromRemote(new ProgrammeDS.LoadProgrammesCallBack() {
             @Override
             public void loadProgrammesSuccessfully(List<Programme> programmes) {
@@ -85,7 +85,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void dataNotAvailable(String message) {
                 view.showMessages(message);
             }
-        }, departmentName);
+        }, departmentId);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.programmes.source;
 import com.example.timetablerapp.data.programmes.ProgrammeApi;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.model.Programme;
+import com.example.timetablerapp.data.programmes.model.ProgrammesResponse;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import java.util.List;
@@ -16,23 +17,23 @@ import retrofit2.Response;
  */
 public class ProgRemoteDS implements ProgrammeDS {
     @Override
-    public void getAllFromRemote(LoadProgrammesCallBack callBack, String name) {
-        Call<List<Programme>> call = RetrofitClient.getRetrofit()
+    public void getAllFromRemote(LoadProgrammesCallBack callBack, String departmentId) {
+        Call<ProgrammesResponse> call = RetrofitClient.getRetrofit()
                 .create(ProgrammeApi.class)
-                .getAll(name);
+                .getAll(departmentId);
 
-        call.enqueue(new Callback<List<Programme>>() {
+        call.enqueue(new Callback<ProgrammesResponse>() {
             @Override
-            public void onResponse(Call<List<Programme>> call, Response<List<Programme>> response) {
+            public void onResponse(Call<ProgrammesResponse> call, Response<ProgrammesResponse> response) {
                 if (response.isSuccessful()) {
-                    callBack.loadProgrammesSuccessfully(response.body());
+                    callBack.loadProgrammesSuccessfully(response.body().getProgrammes());
                 } else {
                     callBack.dataNotAvailable(response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Programme>> call, Throwable t) {
+            public void onFailure(Call<ProgrammesResponse> call, Throwable t) {
                 callBack.dataNotAvailable(t.getMessage());
             }
         });

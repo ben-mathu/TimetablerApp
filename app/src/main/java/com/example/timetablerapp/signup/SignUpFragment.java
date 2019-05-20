@@ -115,12 +115,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 depName = parent.getItemAtPosition(position).toString();
-                presenter.getProgrammes(parent.getItemAtPosition(position).toString());
+                presenter.getProgrammes(departmentList.get(position).getDepartmentId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                depName = parent.getSelectedItem().toString();
+                presenter.getProgrammes(departmentList.get(parent.getSelectedItemPosition()).getDepartmentId());
             }
         });
 
@@ -129,7 +130,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progName = parent.getItemAtPosition(position).toString();
-                presenter.getProgrammes(parent.getItemAtPosition(position).toString());
             }
 
             @Override
@@ -204,6 +204,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     @Override
     public void showDepartments(List<Department> departments) {
+        departmentList = departments;
         List<String> departmentNames = new ArrayList<>();
         for (Department department : departments) {
             departmentNames.add(department.getDepartmentName());
