@@ -63,10 +63,6 @@ public class MainActivity extends AppCompatActivity implements MainView{
         btnGotoLogin.setOnClickListener(v -> {
             role = spinnerUserRole.getSelectedItem().toString();
             presenter.sendUserRole(role);
-            startActivity(new Intent(MainActivity.this, SignUpActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            );
-            finish();
         });
     }
 
@@ -78,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements MainView{
         MainApplication.getSharedPreferences().edit()
                 .putString(Constants.SALT, salt)
                 .apply();
+
+        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+        finish();
     }
 
     @Override

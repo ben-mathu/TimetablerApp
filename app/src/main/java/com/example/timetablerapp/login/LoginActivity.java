@@ -58,7 +58,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showUsernameError(int s) {
-        edtUsername.setError(getString(s));
+        edtUsername.setError(getString(R.string.username_error));
+    }
+
+    @Override
+    public void showPasswordError(int s) {
+        edtPassword.setError(getString(R.string.password_error));
     }
 
     @Override
@@ -69,11 +74,6 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public String getPassword() {
         return edtPassword.getText().toString();
-    }
-
-    @Override
-    public void showPasswordError(int s) {
-        edtPassword.setError(getString(s));
     }
 
     @Override

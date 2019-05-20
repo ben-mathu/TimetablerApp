@@ -143,7 +143,6 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
                 android.R.layout.simple_spinner_dropdown_item, facultyNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFaculties.setAdapter(arrayAdapter);
-        spnFaculties.setSelection(0, false);
         spnFaculties.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

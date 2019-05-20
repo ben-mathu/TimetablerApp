@@ -1,6 +1,8 @@
 package com.example.timetablerapp.login;
 
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.data.user.UserDataSource;
+import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.student.StudentRepository;
 
 import org.junit.Before;
@@ -9,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,11 +24,15 @@ public class LoginPresenterTest {
     private LoginView view;
     @Mock
     private StudentRepository userRepository;
+    @Mock
+    private LecturerRepo lecturerRepo;
+    @Mock
+    private UserDataSource.UserAuthCallback callback;
     private LoginPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
-        presenter = new LoginPresenter(userRepository, view);
+        presenter = new LoginPresenter(userRepository, lecturerRepo, view);
     }
 
     @Test
@@ -49,9 +56,9 @@ public class LoginPresenterTest {
     public void login_UsernameAndPasswordAreCorrect_StartMainActivity() {
         when(view.getUsername()).thenReturn("Jones");
         when(view.getPassword()).thenReturn("password");
-        when(userRepository.validateUser("Jones", "password")).thenReturn(true);
+        userRepository.validateUser("lecturer", "Jones", "password", callback);
         presenter.login();
 
-        verify(view).startMainActivity();
+        verify(callback, times(1)).authNotSuccessful("");
     }
 }

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
@@ -42,21 +43,26 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
     }
 
     public String getPassWd(String role, String username) {
-        String tableName = "";
+        String tableName = "", colId = "";
         if (role.equalsIgnoreCase("lecturer")) {
             tableName = Constants.TABLE_LECTURERS;
+            colId = Constants.LECTURER_ID;
         } else if (role.equalsIgnoreCase("student")) {
             tableName = Constants.TABLE_STUDENTS;
+            colId = Constants.STUDENT_ID;
         }
 
         String passWd = "";
 
 //        Cursor cursor = database.rawQuery("select password from " + tableName + " where username='" + username + "'", null);
-        Cursor cursor = database.query(tableName, new String[]{Constants.PASSWORD},
+        Cursor cursor = database.query(tableName, new String[]{colId, Constants.PASSWORD},
                 Constants.USERNAME + "=?", new String[]{username}, null, null, null);
 
         if (cursor.moveToFirst())  {
             passWd = cursor.getString(cursor.getColumnIndex(Constants.PASSWORD));
+            MainApplication.getSharedPreferences().edit()
+                    .putString(colId,
+                            cursor.getString(cursor.getColumnIndex(colId))).apply();
         }
 
         return passWd;
