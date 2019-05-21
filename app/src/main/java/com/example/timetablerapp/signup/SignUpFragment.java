@@ -1,6 +1,8 @@
 package com.example.timetablerapp.signup;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +17,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
@@ -25,6 +29,8 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.user.student.StudentRepository;
+import com.example.timetablerapp.data.user.student.model.Student;
+import com.example.timetablerapp.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,6 +55,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     private String role;
     private String depName = "", progName = "", campusName = "", facultyName = "";
+    private Switch switchInSess;
+    private EditText edtYearOfStudy;
+    private String date = "";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -142,24 +151,26 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         btnDatePicker.setOnClickListener(v -> {
             calendar = Calendar.getInstance();
 
-            DatePickerDialog dialog = new DatePickerDialog(getActivity(), (DatePicker datepicker, int year, int month, int day) -> {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, day);
-                }, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH));
-            dialog.show();
+            DatePickerDialog.OnDateSetListener datePickerDialog = new DatePickerDialog.OnDateSetListener() {
 
-            String time = DateFormat.format(Constants.DATE_FORMAT, calendar.getTimeInMillis()).toString();
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                    calendar.set(Calendar.YEAR, year);
+                    calendar.set(Calendar.MONTH, month);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            // Another way to format dates.
-//            SimpleDateFormat simpleDateFormat;
-//            simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
-//            String dateTime = simpleDateFormat.format(calendar);
-            btnDatePicker.setText(time);
+                    btnDatePicker.setText(DateFormat.format("yyyy-MM-dd", calendar.getTimeInMillis()));
+                }
+            };
+            DatePickerDialog d = new DatePickerDialog(getActivity(), datePickerDialog,
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+            d.show();
         });
 
+        edtYearOfStudy = view.findViewById(R.id.edit_year_of_study);
+        switchInSess = view.findViewById(R.id.switch_in_session);
 
         btnRegister = view.findViewById(R.id.button_register);
         btnRegister.setOnClickListener(this);
@@ -168,7 +179,23 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     @Override
     public void onClick(View v) {
+        Student student = new Student();
+        student.setStudentId(edtUserId.getText().toString());
+        student.setFname(edtFName.getText().toString());
+        student.setLname(edtLName.getText().toString());
+        student.setMname(edtMName.getText().toString());
+        student.setUsername(edtUsername.getText().toString());
+        student.setPassword(edtPassword.getText().toString());
+        student.setYearOfStudy(edtYearOfStudy.getText().toString());
+        student.setAdmissionDate(btnDatePicker.getText().toString());
+        student.setCampusId(campuses.get(spnCampuses.getSelectedItemPosition()).getCampusId());
+        student.setFacultyId(faculties.get(spnFaculties.getSelectedItemPosition()).getFacultyId());
+        student.setDepartmentId(departmentList.get(spnDepartments.getSelectedItemPosition()).getDepartmentId());
+        student.setProgrammeId(programmes.get(spnProgrammes.getSelectedItemPosition()).getProgrammeId());
+        boolean inSess = switchInSess.isChecked();
+        student.setInSession(inSess);
 
+        presenter.registerUser(student);
     }
 
     @Override
@@ -217,6 +244,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     @Override
     public void showProgrammes(List<Programme> programmes) {
+        this.programmes = programmes;
         List<String> programmesNames = new ArrayList<>();
         for (Programme programme : programmes) {
             programmesNames.add(programme.getProgrammeName());
@@ -229,6 +257,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     @Override
     public void startLoginActiity() {
-
+        startActivity(new Intent(getActivity(), LoginActivity.class));
     }
 }

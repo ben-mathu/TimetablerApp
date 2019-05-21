@@ -103,8 +103,8 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         lec.setMiddleName(edtMName.getText().toString());
         lec.setUsername(edtUsername.getText().toString());
         lec.setPassword(edtPassword.getText().toString());
-        lec.setFacultyId(getFacultyId(spnFaculties.getSelectedItem().toString()));
-        lec.setDepartmentId(getDepartmentId(spnDepartments.getSelectedItem().toString()));
+        lec.setFacultyId(faculties.get(spnFaculties.getSelectedItemPosition()).getFacultyId());
+        lec.setDepartmentId(departments.get(spnDepartments.getSelectedItemPosition()).getDepartmentId());
         boolean inSess = switchInSess.isChecked();
         lec.setInSesson(inSess);
 

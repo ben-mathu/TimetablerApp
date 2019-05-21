@@ -5,6 +5,7 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.data.user.student.model.Student;
 
 import java.util.List;
 
@@ -34,6 +35,8 @@ public interface SignUpContract {
         void getFaculties(String campusName);
 
         void registerUser(Lecturer lec);
+
+        void registerUser(Student student);
 
         void getFaculties();
     }

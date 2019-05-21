@@ -30,6 +30,18 @@ public class StudentRepository implements UserDataSource<Student> {
 
     @Override
     public void userSignUp(UserAuthCallback callBack, Student obj) {
+        save(obj);
+        userDataSourceRemote.userSignUp(new UserAuthCallback() {
+            @Override
+            public void userIsAuthSuccessfull(String message) {
+                callBack.userIsAuthSuccessfull(message);
+            }
+
+            @Override
+            public void authNotSuccessful(String message) {
+                callBack.authNotSuccessful(message);
+            }
+        }, obj);
 
     }
 
@@ -80,6 +92,6 @@ public class StudentRepository implements UserDataSource<Student> {
 
     @Override
     public void save(Student item) {
-
+        userDataSourceLocal.save(item);
     }
 }

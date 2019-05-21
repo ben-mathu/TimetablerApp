@@ -2,12 +2,15 @@ package com.example.timetablerapp.data.user.student.source;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.user.UserApi;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
+import com.example.timetablerapp.data.user.student.StudentApi;
 import com.example.timetablerapp.data.user.student.StudentDataSource;
 import com.example.timetablerapp.data.user.security_utils.SaltReponse;
 import com.example.timetablerapp.data.user.student.model.Student;
+import com.example.timetablerapp.data.user.student.model.StudentRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import retrofit2.Call;
@@ -21,7 +24,28 @@ public class StudentDataSourceRemote implements UserDataSource<Student> {
 
     @Override
     public void userSignUp(UserAuthCallback callBack, Student obj) {
+        StudentRequest request = new StudentRequest();
+        request.setStudent(obj);
 
+        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                .create(StudentApi.class)
+                .signUpStudent("application/json", request);
+
+        call.enqueue(new Callback<SuccessfulReport>() {
+            @Override
+            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                if (response.isSuccessful()) {
+                    callBack.userIsAuthSuccessfull("Successfully registered.");
+                } else {
+                    callBack.authNotSuccessful("An Error occurred, please try again.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                callBack.authNotSuccessful("Error: " + t.getLocalizedMessage());
+            }
+        });
     }
 
     @Override

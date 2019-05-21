@@ -21,6 +21,7 @@ import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.student.StudentRepository;
+import com.example.timetablerapp.data.user.student.model.Student;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -139,6 +140,29 @@ public class SignUpPresenter implements SignUpContract.Presenter {
                 view.showMessages(message);
             }
         }, lec);
+    }
+
+    @Override
+    public void registerUser(Student student) {
+        try {
+            String hash = createHash(student.getPassword());
+            student.setPassword(hash);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "registerUser: ", e);
+            e.printStackTrace();
+        }
+        studentRepo.userSignUp(new UserDataSource.UserAuthCallback() {
+            @Override
+            public void userIsAuthSuccessfull(String message) {
+                view.showMessages(message);
+                view.startLoginActiity();
+            }
+
+            @Override
+            public void authNotSuccessful(String message) {
+                view.showMessages(message);
+            }
+        }, student);
     }
 
     @Override

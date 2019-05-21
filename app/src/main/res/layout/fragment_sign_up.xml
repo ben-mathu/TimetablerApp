@@ -157,7 +157,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:weightSum="4"
+                android:weightSum="6"
                 android:layout_below="@+id/spinner_programme"
                 android:orientation="horizontal">
 
@@ -165,17 +165,29 @@
                     android:id="@+id/button_date_picker"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:layout_weight="2.5"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="2"
                     android:background="@drawable/button_background_two"
                     android:text="Admission Date"
                     android:textColor="#FFFFFF"/>
+
+                <EditText
+                    android:id="@+id/edit_year_of_study"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="2"
+                    android:padding="10dp"
+                    android:background="@drawable/edittext_background"
+                    android:hint="year of study"
+                    android:inputType="number"/>
 
                 <Switch
                     android:id="@+id/switch_in_session"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
+                    android:layout_weight="2"
                     android:padding="10dp"
                     android:text="@string/in_session" />
             </LinearLayout>
