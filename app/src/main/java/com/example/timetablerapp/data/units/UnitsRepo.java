@@ -59,7 +59,7 @@ public class UnitsRepo implements UnitDataSource {
 
     @Override
     public void getUnitsByStudentId(String strId, UnitsLoadedCallback callback) {
-        unitsRemoteDS.getUnitsByLecturerId(strId, new UnitsLoadedCallback() {
+        unitsRemoteDS.getUnitsByStudentId(strId, new UnitsLoadedCallback() {
             @Override
             public void successful(List<Unit> units) {
                 callback.successful(units);
