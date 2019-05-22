@@ -23,7 +23,7 @@ import retrofit2.Response;
 public class StudentDataSourceRemote implements UserDataSource<Student> {
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Student obj) {
+    public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
         StudentRequest request = new StudentRequest();
         request.setStudent(obj);
 

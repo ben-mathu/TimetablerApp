@@ -1,5 +1,9 @@
 package com.example.timetablerapp.data;
 
+import com.example.timetablerapp.data.user.admin.model.Admin;
+
+import org.jetbrains.annotations.NotNull;
+
 /**
  * 07/05/19 -bernard
  */
@@ -80,4 +84,8 @@ public class Constants {
     public static final String MESSAGE = "message";
 
     public static final String SALTROLE = "salt_role";
+
+    // Admin
+    public static final String TABLE_ADMIN = "admins";
+    public static final String ADMIN_ID = "admin_id";
 }

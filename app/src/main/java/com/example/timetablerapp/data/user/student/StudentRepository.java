@@ -29,7 +29,7 @@ public class StudentRepository implements UserDataSource<Student> {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Student obj) {
+    public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
         save(obj);
         userDataSourceRemote.userSignUp(new UserAuthCallback() {
             @Override
@@ -41,7 +41,7 @@ public class StudentRepository implements UserDataSource<Student> {
             public void authNotSuccessful(String message) {
                 callBack.authNotSuccessful(message);
             }
-        }, obj);
+        }, obj, "");
 
     }
 

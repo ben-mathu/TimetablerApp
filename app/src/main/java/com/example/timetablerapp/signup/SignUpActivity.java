@@ -3,9 +3,8 @@ package com.example.timetablerapp.signup;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -20,7 +19,7 @@ import com.example.timetablerapp.data.Constants;
 public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = SignUpActivity.class.getSimpleName();
 
-    private ActionBar actionBar;
+    private Toolbar toolbar;
 
     private String role = "";
 
@@ -28,12 +27,17 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        actionBar = getSupportActionBar();
+
+        toolbar = findViewById(R.id.toolbar_view_details);
+        toolbar.setTitle(role + "Sign-Up");
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+
+        setSupportActionBar(toolbar);
 
         role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 
         Fragment fragment = getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_container_lecturer);
+                .findFragmentById(R.id.fragment_container_user);
 
         handleFragments(fragment);
     }
@@ -58,22 +62,22 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void handleFragments(Fragment fragment) {
         if (role.equalsIgnoreCase("student")) {
-            if (actionBar != null) {
-                actionBar.setTitle(role + " Sign-up");
+            if (toolbar != null) {
+                toolbar.setTitle(role + " Sign-up");
             }
 
             if (fragment == null) {
                 fragment = new SignUpFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .add(R.id.fragment_container_student, fragment)
+                        .add(R.id.fragment_container_user, fragment)
                         .commit();
             }
         }
 
         if (role.equalsIgnoreCase("lecturer")) {
-            if (actionBar != null) {
-                actionBar.setTitle(role + " Sign-up");
+            if (toolbar != null) {
+                toolbar.setTitle(role + " Sign-up");
             }
 
 
@@ -81,10 +85,24 @@ public class SignUpActivity extends AppCompatActivity {
                 fragment = new SignUpLecturerFragment();
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .add(R.id.fragment_container_lecturer, fragment)
+                        .add(R.id.fragment_container_user, fragment)
                         .commit();
             }
 
+        }
+
+        if (role.equalsIgnoreCase("admin")) {
+            if (toolbar != null) {
+                toolbar.setTitle(role + " Sign-up");
+            }
+
+            if (fragment == null) {
+                fragment = new SignUpAdminFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container_user, fragment)
+                        .commit();
+            }
         }
     }
 }

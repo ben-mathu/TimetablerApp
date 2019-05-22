@@ -16,7 +16,7 @@ import retrofit2.Response;
  */
 public class LecturerRemoteDS implements UserDataSource<Lecturer> {
     @Override
-    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
+    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer, String pass) {
         LecturerRequest lecturerRequest = new LecturerRequest();
         lecturerRequest.setLecturer(lecturer);
 

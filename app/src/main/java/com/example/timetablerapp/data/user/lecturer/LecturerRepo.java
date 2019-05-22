@@ -29,7 +29,7 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Lecturer lecturer) {
+    public void userSignUp(UserAuthCallback callBack, Lecturer lecturer, String pass) {
         save(lecturer);
         lecturerRemoteDS.userSignUp(new UserAuthCallback() {
             @Override
@@ -41,7 +41,7 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
             public void authNotSuccessful(String message) {
                 callBack.authNotSuccessful(message);
             }
-        }, lecturer);
+        }, lecturer, "");
     }
 
     @Override
@@ -56,7 +56,7 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
             public void authNotSuccessful(String message) {
                 callBack.authNotSuccessful(message);
             }
-        }, lecturer);
+        }, lecturer, "");
     }
 
     @Override

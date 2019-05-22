@@ -11,9 +11,19 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="auth_error">Username or password is wrong.</string>
+    <string name="programmes">Choose a Programme</string>
+    <string name="departments">Choose Department</string>
+    <string name="faculties">Choose Faculty</string>
+    <string name="campuses">Choose Campus</string>
+    <string name="first_name">First Name</string>
+    <string name="middle_name">Middle Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="admin_id">Admin Id</string>
+    <string name="logout">Logout</string>
 
     <string-array name="roles">
         <item>Lecturer</item>
         <item>Student</item>
+        <item>Admin</item>
     </string-array>
 </resources>

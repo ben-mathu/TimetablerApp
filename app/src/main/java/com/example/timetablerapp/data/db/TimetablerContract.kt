@@ -74,4 +74,27 @@ object TimetablerContract {
                     "${TimetablerContract.Lecturer.FACULTY_ID} VARCHAR(10))"
 
     const val SQL_DELETE_LECTURER = "DROP TABLE IF EXISTS ${TimetablerContract.Lecturer.TABLE_NAME}"
+
+    // define admin fields
+    object Admin : BaseColumns {
+        const val TABLE_NAME = Constants.TABLE_ADMIN
+        const val LECTURER_ID = Constants.ADMIN_ID
+        const val FIRST_NAME = Constants.F_NAME
+        const val LAST_NAME = Constants.L_NAME
+        const val MIDDLE_NAME = Constants.M_NAME
+        const val USERNAME = Constants.USERNAME
+        const val PASSWORD = Constants.PASSWORD
+    }
+
+    const val SQL_CREATE_ADMIN_TABLE =
+            "CREATE TABLE ${TimetablerContract.Admin.TABLE_NAME} (" +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
+                    "${TimetablerContract.Admin.LECTURER_ID} VARCHAR(10)," +
+                    "${TimetablerContract.Admin.FIRST_NAME} VARCHAR(15)," +
+                    "${TimetablerContract.Admin.LAST_NAME} VARCHAR(15)," +
+                    "${TimetablerContract.Admin.MIDDLE_NAME} VARCHAR(15)," +
+                    "${TimetablerContract.Admin.USERNAME} VARCHAR(15) UNIQUE," +
+                    "${TimetablerContract.Admin.PASSWORD} VARCHAR(32) UNIQUE)"
+
+    const val SQL_DELETE_ADMIN = "DROP TABLE IF EXISTS ${TimetablerContract.Lecturer.TABLE_NAME}"
 }

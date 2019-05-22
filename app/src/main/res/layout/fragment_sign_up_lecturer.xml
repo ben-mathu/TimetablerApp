@@ -13,7 +13,7 @@
         android:layout_alignParentEnd="true"
         android:text="Login"
         android:textSize="21sp"
-        android:textColor="@color/sterleto_blue"/>
+        android:textColor="@color/colorAccent"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -29,7 +29,8 @@
             android:layout_marginEnd="20dp"
             android:padding="10dp"
             android:hint="@string/user_id"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:background="@drawable/edittext_background"/>
 
         <LinearLayout
             android:id="@+id/ll_names"
@@ -50,7 +51,8 @@
                 android:padding="10dp"
                 android:layout_weight="2"
                 android:hint="First Name"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:background="@drawable/edittext_background"/>
 
             <EditText
                 android:id="@+id/edit_last_name"
@@ -59,7 +61,8 @@
                 android:padding="10dp"
                 android:layout_weight="2"
                 android:hint="Last Name"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:background="@drawable/edittext_background"/>
 
         </LinearLayout>
 
@@ -74,7 +77,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:hint="Sur Name"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:background="@drawable/edittext_background"/>
 
         <LinearLayout
             android:id="@+id/ll_credentials"
@@ -95,7 +99,8 @@
                 android:padding="10dp"
                 android:layout_weight="2"
                 android:hint="@string/username"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:background="@drawable/edittext_background"/>
 
             <EditText
                 android:id="@+id/edit_password"
@@ -105,8 +110,20 @@
                 android:layout_weight="2"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:background="@drawable/edittext_background"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/faculties"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/ll_credentials"
+            android:textColor="#fff"
+            android:text="@string/faculties"/>
 
         <Spinner
             android:id="@+id/spinner_faculties"
@@ -115,8 +132,19 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@+id/ll_credentials"
-            android:textAlignment="viewStart"/>
+            android:layout_below="@+id/faculties"
+            android:textAlignment="viewStart"
+            android:backgroundTint="@color/colorAccent"/>
+
+        <TextView
+            android:id="@+id/departments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginBottom="5dp"
+            android:layout_below="@+id/spinner_faculties"
+            android:textColor="#fff"
+            android:text="@string/departments"/>
 
         <Spinner
             android:id="@+id/spinner_departments"
@@ -125,8 +153,9 @@
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_below="@+id/spinner_faculties"
-            android:textAlignment="viewStart"/>
+            android:layout_below="@+id/departments"
+            android:textAlignment="viewStart"
+            android:backgroundTint="@color/colorAccent"/>
 
         <Switch
             android:id="@+id/switch_in_session"
@@ -136,7 +165,9 @@
             android:layout_below="@+id/spinner_departments"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="40dp"
-            android:text="@string/in_session" />
+            android:text="@string/in_session"
+            android:textColor="#fff"
+            android:backgroundTint="@color/colorAccent"/>
 
         <Button
             android:id="@+id/button_register"
@@ -147,6 +178,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:text="@string/register"
+            android:textColor="#fff"
             android:background="@drawable/button_background"/>
     </RelativeLayout>
 </RelativeLayout>

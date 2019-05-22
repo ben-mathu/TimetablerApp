@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#043E54</color>
+    <color name="colorPrimaryDark">#01222F</color>
+    <color name="colorAccent">#BF360C</color>
     <color name="colorPrimary2">#2F5F93</color>
     <color name="my_kind_of_grey">#8F8F8F</color>
     <color name="sterleto_blue">#0B3388</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="colorHint">#9BADB3</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.timetablerapp.signup;
 
+import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
@@ -37,6 +38,8 @@ public interface SignUpContract {
         void registerUser(Lecturer lec);
 
         void registerUser(Student student);
+
+        void registerUser(Admin admin, String password);
 
         void getFaculties();
     }

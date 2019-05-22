@@ -21,6 +21,9 @@ import com.example.timetablerapp.data.programmes.source.ProgRemoteDS;
 import com.example.timetablerapp.data.units.UnitsRepo;
 import com.example.timetablerapp.data.units.source.local.UnitsLocalDS;
 import com.example.timetablerapp.data.units.source.remote.UnitsRemoteDS;
+import com.example.timetablerapp.data.user.admin.AdminRepo;
+import com.example.timetablerapp.data.user.admin.source.AdminLocalDS;
+import com.example.timetablerapp.data.user.admin.source.AdminRemoteDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerLocalDS;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerRemoteDS;
@@ -44,6 +47,7 @@ public class MainApplication extends Application {
     private static FacultiesRepository facultyRepo;
     private static CampusesRepository campusRepo;
     private static UnitsRepo unitRepo;
+    private static AdminRepo adminRepo;
 
     public static ProgrammesRepository getProgRepo() {
         return programmesRepo;
@@ -63,6 +67,10 @@ public class MainApplication extends Application {
 
     public static UnitsRepo getUnitRepo() {
         return unitRepo;
+    }
+
+    public static AdminRepo getAdminRepo() {
+        return adminRepo;
     }
 
     @Override
@@ -86,6 +94,8 @@ public class MainApplication extends Application {
         facultyRepo = FacultiesRepository.newInstance(new FacultyLocalDS(), new FacultyRemoteDS());
 
         unitRepo = UnitsRepo.newInstance(new UnitsLocalDS(), new UnitsRemoteDS());
+
+        adminRepo = AdminRepo.newInstance(new AdminLocalDS(), new AdminRemoteDS());
     }
 
     public static SharedPreferences getSharedPreferences() {

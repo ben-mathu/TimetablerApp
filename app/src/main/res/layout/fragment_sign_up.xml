@@ -4,6 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_alignParentEnd="true"
+        android:text="Login"
+        android:textSize="21sp"
+        android:textColor="@color/colorAccent"/>
+
     <ScrollView
         android:id="@+id/scrollView_register"
         android:layout_width="match_parent"
@@ -19,14 +30,13 @@
                 android:id="@+id/edit_user_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:padding="10dp"
                 android:background="@drawable/edittext_background"
                 android:hint="@string/user_id"
-                android:textSize="21sp"
-                android:textAlignment="center"/>
+                android:textSize="21sp"/>
 
             <LinearLayout
                 android:id="@+id/ll_names"
@@ -48,8 +58,7 @@
                     android:padding="10dp"
                     android:background="@drawable/edittext_background"
                     android:hint="First Name"
-                    android:textSize="21sp"
-                    android:textAlignment="center"/>
+                    android:textSize="21sp"/>
 
                 <EditText
                     android:id="@+id/edit_last_name"
@@ -59,8 +68,7 @@
                     android:padding="10dp"
                     android:background="@drawable/edittext_background"
                     android:hint="Last Name"
-                    android:textSize="21sp"
-                    android:textAlignment="center"/>
+                    android:textSize="21sp"/>
             </LinearLayout>
 
             <EditText
@@ -74,8 +82,7 @@
                 android:padding="10dp"
                 android:background="@drawable/edittext_background"
                 android:hint="Sur Name"
-                android:textSize="21sp"
-                android:textAlignment="center"/>
+                android:textSize="21sp"/>
 
             <LinearLayout
                 android:id="@+id/ll_credentials"
@@ -84,6 +91,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
                 android:weightSum="4"
                 android:layout_below="@+id/edit_middle_name">
 
@@ -110,6 +118,16 @@
                     android:textSize="21sp"/>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/campuses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/ll_credentials"
+                android:textColor="#fff"
+                android:text="@string/campuses"/>
+
             <Spinner
                 android:id="@+id/spinner_campus"
                 android:layout_width="match_parent"
@@ -117,8 +135,19 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:layout_below="@+id/ll_credentials"
+                android:layout_below="@+id/campuses"
+                android:backgroundTint="@color/colorAccent"
                 android:textAlignment="viewStart"/>
+
+            <TextView
+                android:id="@+id/faculties"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/spinner_campus"
+                android:textColor="#fff"
+                android:text="@string/faculties"/>
 
             <Spinner
                 android:id="@+id/spinner_faculty"
@@ -127,8 +156,19 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:layout_below="@+id/spinner_campus"
+                android:layout_below="@+id/faculties"
+                android:backgroundTint="@color/colorAccent"
                 android:textAlignment="viewStart"/>
+
+            <TextView
+                android:id="@+id/departments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@+id/spinner_faculty"
+                android:textColor="#fff"
+                android:text="@string/departments"/>
 
             <Spinner
                 android:id="@+id/spinner_departments"
@@ -137,9 +177,19 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:layout_below="@+id/spinner_faculty"
+                android:layout_below="@+id/departments"
+                android:backgroundTint="@color/colorAccent"
                 android:textAlignment="viewStart"/>
 
+            <TextView
+                android:id="@+id/programme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/spinner_departments"
+                android:layout_marginStart="40dp"
+                android:layout_marginBottom="5dp"
+                android:textColor="#fff"
+                android:text="@string/programmes"/>
             <Spinner
                 android:id="@+id/spinner_programme"
                 android:layout_width="match_parent"
@@ -147,8 +197,9 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
-                android:layout_below="@+id/spinner_departments"
-                android:textAlignment="viewStart"/>
+                android:layout_below="@+id/programme"
+                android:backgroundTint="@color/colorAccent"
+                android:textAlignment="viewStart" />
 
             <LinearLayout
                 android:id="@+id/ll_items"
@@ -203,5 +254,6 @@
         android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"
         android:text="@string/register"
+        android:textColor="#fff"
         android:background="@drawable/button_background"/>
 </RelativeLayout>

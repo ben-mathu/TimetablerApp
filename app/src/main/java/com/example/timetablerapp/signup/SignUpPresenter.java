@@ -2,8 +2,8 @@ package com.example.timetablerapp.signup;
 
 import android.util.Log;
 
-import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.user.admin.AdminRepo;
+import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
 import com.example.timetablerapp.data.campuses.model.Campus;
@@ -17,13 +17,11 @@ import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.user.UserDataSource;
-import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.student.StudentRepository;
 import com.example.timetablerapp.data.user.student.model.Student;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -42,6 +40,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     private FacultiesRepository facultiesRepository;
     private StudentRepository studentRepo;
     private LecturerRepo lecturerRepo;
+    private AdminRepo adminRepo;
 
     public SignUpPresenter(SignUpContract.View view,
                            DepartmentRepository departmentRepository,
@@ -49,7 +48,8 @@ public class SignUpPresenter implements SignUpContract.Presenter {
                            CampusesRepository campusesRepository,
                            FacultiesRepository facultiesRepository,
                            StudentRepository studentRepo,
-                           LecturerRepo lecturerRepo) {
+                           LecturerRepo lecturerRepo,
+                           AdminRepo adminRepo) {
         this.departmentRepository = departmentRepository;
         this.programmesRepository = programmesRepository;
         this.campusesRepository = campusesRepository;
@@ -57,6 +57,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         this.studentRepo = studentRepo;
         this.lecturerRepo = lecturerRepo;
         this.view = view;
+        this.adminRepo = adminRepo;
     }
 
     @Override
@@ -121,6 +122,19 @@ public class SignUpPresenter implements SignUpContract.Presenter {
 
     @Override
     public void registerUser(Lecturer lec) {
+        if (lec.getPassword().isEmpty() &&
+                lec.getFacultyId().isEmpty() &&
+                lec.getDepartmentId().isEmpty() &&
+                lec.getFirstName().isEmpty() &&
+                lec.getId().isEmpty() &&
+                lec.getLastName().isEmpty() &&
+                lec.getMiddleName().isEmpty() &&
+                lec.getUsername().isEmpty()
+        ) {
+            view.showMessages("Please fill out the form all field are required");
+            return;
+        }
+
         try {
             String hash = createHash(lec.getPassword());
             lec.setPassword(hash);
@@ -139,11 +153,27 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void authNotSuccessful(String message) {
                 view.showMessages(message);
             }
-        }, lec);
+        }, lec, "");
     }
 
     @Override
     public void registerUser(Student student) {
+        if (student.getPassword().isEmpty() &&
+                student.getFacultyId().isEmpty() &&
+                student.getDepartmentId().isEmpty() &&
+                student.getFname().isEmpty() &&
+                student.getStudentId().isEmpty() &&
+                student.getLname().isEmpty() &&
+                student.getMname().isEmpty() &&
+                student.getUsername().isEmpty() &&
+                student.getAdmissionDate().isEmpty() &&
+                student.getProgrammeId().isEmpty() &&
+                student.getYearOfStudy().isEmpty()
+        ) {
+            view.showMessages("Please fill out the form all field are required");
+            return;
+        }
+
         try {
             String hash = createHash(student.getPassword());
             student.setPassword(hash);
@@ -162,7 +192,42 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void authNotSuccessful(String message) {
                 view.showMessages(message);
             }
-        }, student);
+        }, student, "");
+    }
+
+    @Override
+    public void registerUser(Admin admin, String pass) {
+        if (admin.getPassword().isEmpty() &&
+                admin.getfName().isEmpty() &&
+                admin.getAdminId().isEmpty() &&
+                admin.getlName().isEmpty() &&
+                admin.getmName().isEmpty() &&
+                admin.getUsername().isEmpty()
+        ) {
+            view.showMessages("Please fill out the form all field are required");
+            return;
+        }
+
+        try {
+            String hash = createHash(admin.getPassword());
+            admin.setPassword(hash);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "registerUser: ", e);
+            e.printStackTrace();
+        }
+        adminRepo.userSignUp(new UserDataSource.UserAuthCallback() {
+
+            @Override
+            public void userIsAuthSuccessfull(String message) {
+                view.showMessages(message);
+                view.startLoginActiity();
+            }
+
+            @Override
+            public void authNotSuccessful(String message) {
+                view.showMessages(message);
+            }
+        }, admin, pass);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
     }
 
     @Override
-    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
+    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer, String pass) {
 
     }
 
@@ -50,6 +50,9 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
         } else if (role.equalsIgnoreCase("student")) {
             tableName = Constants.TABLE_STUDENTS;
             colId = Constants.STUDENT_ID;
+        } else if (role.equalsIgnoreCase("admin")) {
+            tableName = Constants.TABLE_ADMIN;
+            colId = Constants.ADMIN_ID;
         }
 
         String passWd = "";

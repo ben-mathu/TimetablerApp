@@ -16,11 +16,13 @@ class TimetablerDatabaseHelper(context: Context) :
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(TimetablerContract.SQL_CREATE_STUDENT_TABLE)
         db?.execSQL(TimetablerContract.SQL_CREATE_LECTURER_TABLE)
+        db?.execSQL(TimetablerContract.SQL_CREATE_ADMIN_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL(TimetablerContract.SQL_DELETE_STUDENT)
         db?.execSQL(TimetablerContract.SQL_DELETE_LECTURER)
+        db?.execSQL(TimetablerContract.SQL_DELETE_ADMIN)
 
         onCreate(db)
     }
@@ -31,6 +33,6 @@ class TimetablerDatabaseHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME = Constants.DATABASE_NAME
-        const val DATABASE_VERSION = 2
+        const val DATABASE_VERSION = 3
     }
 }

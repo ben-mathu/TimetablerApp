@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".register_units.RegisterUnitsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_user_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="20dp"
+            android:src="@color/sterleto_blue" />
+    </android.support.v7.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/edit_unit_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_user_details"
+        android:layout_margin="20dp"
+        android:hint="Unit Id"/>
+
+    <EditText
+        android:id="@+id/edit_unit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_unit_id"/>
+
+    <EditText
+        android:id="@+id/edit_programme_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_unit_name"/>
+
+    <EditText
+        android:id="@+id/edit_faculty_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_programme_name"/>
+
+    <Switch
+        android:id="@+id/switch_practical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_faculty_name"/>
+</RelativeLayout>

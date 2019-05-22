@@ -23,7 +23,7 @@ public class StudentDataSourceLocal implements UserDataSource<Student> {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Student obj) {
+    public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
 
     }
 
