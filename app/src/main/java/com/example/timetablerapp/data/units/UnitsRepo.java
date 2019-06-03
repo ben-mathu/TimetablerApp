@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.units;
 
 import com.example.timetablerapp.data.DataSource;
+import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.data.units.source.local.UnitsLocalDS;
 import com.example.timetablerapp.data.units.source.remote.UnitsRemoteDS;
@@ -70,5 +71,30 @@ public class UnitsRepo implements UnitDataSource {
                 callback.unsuccessful(message);
             }
         });
+    }
+
+    @Override
+    public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
+        unitsRemoteDS.getTimetableByStudentId(studentId, new TimetableLoadedCallback() {
+            @Override
+            public void successful(List<Timetable> timetableList) {
+                callback.successful(timetableList);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void getTimetableByLecturerId(String lecturerId, TimetableLoadedCallback callback) {
+
+    }
+
+    @Override
+    public void getTimetable(TimetableLoadedCallback callback) {
+
     }
 }

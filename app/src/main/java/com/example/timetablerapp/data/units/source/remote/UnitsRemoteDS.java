@@ -1,5 +1,9 @@
 package com.example.timetablerapp.data.units.source.remote;
 
+import android.util.Log;
+
+import com.example.timetablerapp.data.timetable.TimetableApi;
+import com.example.timetablerapp.data.timetable.model.TimetableResponse;
 import com.example.timetablerapp.data.units.UnitApi;
 import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.model.Unit;
@@ -17,6 +21,7 @@ import retrofit2.Response;
  * 19/05/19 -bernard
  */
 public class UnitsRemoteDS implements UnitDataSource {
+    private static final String TAG = UnitsRemoteDS.class.getSimpleName();
     @Override
     public void update(Unit item) {
 
@@ -55,6 +60,7 @@ public class UnitsRemoteDS implements UnitDataSource {
 
             @Override
             public void onFailure(Call<UnitResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
                 callback.unsuccessful("An error occurred, please contact admin.");
             }
         });
@@ -81,8 +87,43 @@ public class UnitsRemoteDS implements UnitDataSource {
 
             @Override
             public void onFailure(Call<UnitResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
                 callback.unsuccessful("An error occurred, please contact admin.");
             }
         });
+    }
+
+    @Override
+    public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
+        Call<TimetableResponse> call = RetrofitClient.getRetrofit()
+                .create(TimetableApi.class)
+                .getTimetableByStudentId(studentId);
+
+        call.enqueue(new Callback<TimetableResponse>() {
+            @Override
+            public void onResponse(Call<TimetableResponse> call, Response<TimetableResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.successful(response.body().getTimetableList());
+                } else {
+                    callback.unsuccessful("An error occurred, please contact the administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TimetableResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                callback.unsuccessful("An error occurred, please contact the administrator.");
+            }
+        });
+    }
+
+    @Override
+    public void getTimetableByLecturerId(String lecturerId, TimetableLoadedCallback callback) {
+
+    }
+
+    @Override
+    public void getTimetable(TimetableLoadedCallback callback) {
+
     }
 }

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.timetable.adapter_utils.UnitsAdapter;
 
@@ -95,5 +96,10 @@ public class ListUnitsFragment extends Fragment implements UnitView {
     public void setUnits(List<Unit> units) {
         adapter = new UnitsAdapter(units);
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void showTimetable(List<Timetable> timetablelist) {
+
     }
 }

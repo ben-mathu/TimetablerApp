@@ -1,6 +1,7 @@
 package com.example.timetablerapp.timetable;
 
 import com.example.timetablerapp.MainView;
+import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
 
 import java.util.List;
@@ -10,4 +11,6 @@ import java.util.List;
  */
 public interface UnitView  extends MainView {
     void setUnits(List<Unit> units);
+
+    void showTimetable(List<Timetable> timetablelist);
 }

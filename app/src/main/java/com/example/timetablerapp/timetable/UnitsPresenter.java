@@ -1,6 +1,7 @@
 package com.example.timetablerapp.timetable;
 
 import com.example.timetablerapp.BasePresenter;
+import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.UnitsRepo;
 import com.example.timetablerapp.data.units.model.Unit;
@@ -38,6 +39,49 @@ public class UnitsPresenter {
             @Override
             public void successful(List<Unit> units) {
                 view.setUnits(units);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
+
+    public void getTimetableByStudentId(String studentId) {
+        unitsRepo.getTimetableByStudentId(studentId, new UnitDataSource.TimetableLoadedCallback() {
+
+            @Override
+            public void successful(List<Timetable> timetablelist) {
+                view.showTimetable(timetablelist);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
+
+    public void getTimetableByLecturerId(String lecturerId) {
+        unitsRepo.getTimetableByLecturerId(lecturerId, new UnitDataSource.TimetableLoadedCallback() {
+            @Override
+            public void successful(List<Timetable> timetableList) {
+
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+
+            }
+        });
+    }
+
+    public void getTimetable() {
+        unitsRepo.getTimetable(new UnitDataSource.TimetableLoadedCallback() {
+            @Override
+            public void successful(List<Timetable> timetableList) {
+                view.showTimetable(timetableList);
             }
 
             @Override

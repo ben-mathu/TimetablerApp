@@ -31,4 +31,19 @@ public class UnitsLocalDS implements UnitDataSource {
     public void getUnitsByStudentId(String strId, UnitsLoadedCallback callback) {
 
     }
+
+    @Override
+    public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
+
+    }
+
+    @Override
+    public void getTimetableByLecturerId(String lecturerId, TimetableLoadedCallback callback) {
+
+    }
+
+    @Override
+    public void getTimetable(TimetableLoadedCallback callback) {
+
+    }
 }

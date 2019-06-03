@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
  * 07/05/19 -bernard
  */
 public class Constants {
-    public static final String BASE_URL = "http://192.168.43.146:8080/Timetabler-v2.0/";
+    public static final String BASE_URL = "http://192.168.0.140:8080/Timetabler-v2.0/";
     public static final String DATABASE_NAME = "timetabler.db";
     public static final String SALT = "salt";
     public static final String ROLE = "role";
@@ -88,4 +88,6 @@ public class Constants {
     // Admin
     public static final String TABLE_ADMIN = "admins";
     public static final String ADMIN_ID = "admin_id";
+    public static final String TIMESLOT = "timeslot";
+    public static final String UNIT = "unit";
 }
