@@ -16,4 +16,7 @@ public interface TimetableApi {
 
     @GET("students/timetables")
     Call<TimetableResponse> getTimetableByStudentId(@Query(Constants.STUDENT_ID) String studentId);
+
+    @GET("admin/timetables")
+    Call<TimetableResponse> getTimeTable();
 }

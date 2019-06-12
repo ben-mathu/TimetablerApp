@@ -95,7 +95,17 @@ public class UnitsRepo implements UnitDataSource {
 
     @Override
     public void getTimetable(TimetableLoadedCallback callback) {
+        unitsRemoteDS.getTimetable(new TimetableLoadedCallback() {
+            @Override
+            public void successful(List<Timetable> timetableList) {
+                callback.successful(timetableList);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override

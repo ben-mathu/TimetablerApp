@@ -6,6 +6,7 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.timetable.TimetableApi;
+import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.timetable.model.TimetableResponse;
 import com.example.timetablerapp.data.units.UnitApi;
 import com.example.timetablerapp.data.units.UnitDataSource;
@@ -129,7 +130,26 @@ public class UnitsRemoteDS implements UnitDataSource {
 
     @Override
     public void getTimetable(TimetableLoadedCallback callback) {
+        Call<TimetableResponse> call = RetrofitClient.getRetrofit()
+                .create(TimetableApi.class)
+                .getTimeTable();
 
+        call.enqueue(new Callback<TimetableResponse>() {
+            @Override
+            public void onResponse(Call<TimetableResponse> call, Response<TimetableResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.successful(response.body().getTimetableList());
+                } else {
+                    callback.unsuccessful(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TimetableResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                callback.unsuccessful("An error occurred, check logs" + t.getLocalizedMessage());
+            }
+        });
     }
 
     @Override
