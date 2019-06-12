@@ -1,13 +1,16 @@
 package com.example.timetablerapp.data.units;
 
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.units.model.UnitRequest;
 import com.example.timetablerapp.data.units.model.UnitResponse;
+import com.example.timetablerapp.data.units.model.UnitsRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -20,4 +23,12 @@ public interface UnitApi {
 
     @GET("students/units")
     Call<UnitResponse> getUnitsByStudentId(@Query(Constants.STUDENT_ID) String strId);
+
+    @GET("get-units")
+    Call<UnitResponse> getUnitsByDepartmentId(@Query(Constants.DEPARTMENT_ID) String departmentId);
+
+    @PUT("submit-units/{" + Constants.STUDENT_ID + "}")
+    Call<SuccessfulReport> submitRegisteredUnits(@Header("Content-Type") String contentType,
+                                                 @Query(Constants.STUDENT_ID) String userId,
+                                                 @Body UnitsRequest request);
 }

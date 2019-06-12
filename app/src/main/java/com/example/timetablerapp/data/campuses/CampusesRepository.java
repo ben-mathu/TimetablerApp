@@ -55,6 +55,6 @@ public class CampusesRepository implements CampusesDS {
 
     @Override
     public void save(Campus item) {
-
+        campusLocalDS.save(item);
     }
 }

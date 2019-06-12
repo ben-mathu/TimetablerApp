@@ -69,6 +69,6 @@ public class FacultiesRepository implements FacultyDS {
 
     @Override
     public void save(Faculty item) {
-
+        facultyLocalDS.save(item);
     }
 }

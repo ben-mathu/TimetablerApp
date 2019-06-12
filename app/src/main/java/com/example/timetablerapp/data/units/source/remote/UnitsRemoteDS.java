@@ -2,6 +2,9 @@ package com.example.timetablerapp.data.units.source.remote;
 
 import android.util.Log;
 
+import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.timetable.TimetableApi;
 import com.example.timetablerapp.data.timetable.model.TimetableResponse;
 import com.example.timetablerapp.data.units.UnitApi;
@@ -9,6 +12,7 @@ import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.data.units.model.UnitRequest;
 import com.example.timetablerapp.data.units.model.UnitResponse;
+import com.example.timetablerapp.data.units.model.UnitsRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import java.util.List;
@@ -16,6 +20,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * 19/05/19 -bernard
@@ -125,5 +130,55 @@ public class UnitsRemoteDS implements UnitDataSource {
     @Override
     public void getTimetable(TimetableLoadedCallback callback) {
 
+    }
+
+    @Override
+    public void getAllUnitsByDepartmentId(String departmentId, UnitsLoadedCallback callback) {
+        Call<UnitResponse> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .getUnitsByDepartmentId(departmentId);
+
+        call.enqueue(new Callback<UnitResponse>() {
+            @Override
+            public void onResponse(Call<UnitResponse> call, Response<UnitResponse> response) {
+                if (response.isSuccessful()) {
+                    callback.successful(response.body().getUnitList());
+                } else {
+                    callback.unsuccessful(response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnitResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error " + t.getLocalizedMessage(), t);
+                callback.unsuccessful("An error occurred, please try again.");
+            }
+        });
+    }
+
+    @Override
+    public void submitRegisteredUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
+        UnitsRequest request = new UnitsRequest();
+        request.setUnitList(unitList);
+        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .submitRegisteredUnits("application/json", userId, request);
+
+        call.enqueue(new Callback<SuccessfulReport>() {
+            @Override
+            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                if (response.isSuccessful()) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("An error occurred, please try again.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error " + t.getLocalizedMessage() , t);
+                callback.unsuccessful("An error occurred, please contact administrator.");
+            }
+        });
     }
 }

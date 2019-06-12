@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainActivity;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.signup.SignUpActivity;
 import com.example.timetablerapp.timetable.TimetableActivity;
 
@@ -68,7 +69,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public String getUsername() {
-        return edtUsername.getText().toString();
+        String username = edtUsername.getText().toString();
+        MainApplication.getSharedPreferences().edit().putString(Constants.USERNAME, username).apply();
+        return username;
     }
 
     @Override

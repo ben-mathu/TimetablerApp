@@ -97,4 +97,34 @@ public class UnitsRepo implements UnitDataSource {
     public void getTimetable(TimetableLoadedCallback callback) {
 
     }
+
+    @Override
+    public void getAllUnitsByDepartmentId(String departmentId, UnitsLoadedCallback callback) {
+        unitsRemoteDS.getAllUnitsByDepartmentId(departmentId, new UnitsLoadedCallback() {
+            @Override
+            public void successful(List<Unit> units) {
+                callback.successful(units);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void submitRegisteredUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
+        unitsRemoteDS.submitRegisteredUnits(userId, unitList, new UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
 }

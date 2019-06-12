@@ -8,7 +8,7 @@ import com.example.timetablerapp.data.user.student.model.Student;
 /**
  * 19/05/19 -bernard
  */
-public interface UserDataSource<T> extends DataSource<UserDataSource.UserAuthCallback, T> {
+public interface UserDataSource<T> extends DataSource<UserDataSource.UserAuthCallback, T, Void> {
     void userSignUp(UserAuthCallback callBack, T obj, String pass);
     void authUser(UserDataSource.UserAuthCallback callBack, T obj);
 

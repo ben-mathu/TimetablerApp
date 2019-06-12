@@ -51,6 +51,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     private List<Campus> campuses;
     private List<Faculty> faculties;
 
+    private Department department;
+    private Programme programme;
+    private Campus campus;
+    private Faculty faculty;
+
     private EditText edtUserId, edtFName, edtLName, edtMName, edtUsername, edtPassword;
     private Button btnRegister, btnDatePicker;
     private Spinner spnDepartments, spnProgrammes, spnCampuses, spnFaculties;
@@ -96,12 +101,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 campusName = parent.getItemAtPosition(position).toString();
+                campus = campuses.get(position);
                 presenter.getFaculties(campuses.get(position).getCampusId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 campusName = parent.getSelectedItem().toString();
+                campus = campuses.get(parent.getSelectedItemPosition());
                 presenter.getFaculties(campuses.get(parent.getSelectedItemPosition()).getCampusId());
             }
         });
@@ -112,12 +119,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 facultyName = parent.getItemAtPosition(position).toString();
+                faculty = faculties.get(position);
                 presenter.getDepartments(faculties.get(position).getFacultyId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 facultyName = parent.getSelectedItem().toString();
+                faculty = faculties.get(parent.getSelectedItemPosition());
                 presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
             }
         });
@@ -127,12 +136,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 depName = parent.getItemAtPosition(position).toString();
+                department = departmentList.get(position);
                 presenter.getProgrammes(departmentList.get(position).getDepartmentId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 depName = parent.getSelectedItem().toString();
+                department = departmentList.get(parent.getSelectedItemPosition());
                 presenter.getProgrammes(departmentList.get(parent.getSelectedItemPosition()).getDepartmentId());
             }
         });
@@ -142,11 +153,13 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 progName = parent.getItemAtPosition(position).toString();
+                programme = programmes.get(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                progName = parent.getSelectedItem().toString();
+                programme = programmes.get(parent.getSelectedItemPosition());
             }
         });
 
@@ -198,7 +211,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         boolean inSess = switchInSess.isChecked();
         student.setInSession(inSess);
 
-        presenter.registerUser(student);
+        presenter.registerUser(student, department, faculty, campus, programme);
     }
 
     @Override

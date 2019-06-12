@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 08/05/19 -bernard
  */
-public interface CampusesDS extends DataSource<CampusesDS.LoadCampusesCallBack, Campus> {
+public interface CampusesDS extends DataSource<CampusesDS.LoadCampusesCallBack, Campus, Void> {
     void getAllFromRemote(LoadCampusesCallBack callBack);
     interface LoadCampusesCallBack {
         void loadCampusesSuccessful(List<Campus> campuses);

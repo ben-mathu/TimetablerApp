@@ -74,8 +74,10 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
 
     @Override
     public void showTimetable(List<Timetable> timetablelist) {
-        adapter = new TimetableAdapter(timetablelist, getActivity());
-        recyclerView.setAdapter(adapter);
+        if (timetablelist != null) {
+            adapter = new TimetableAdapter(timetablelist, getActivity());
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override

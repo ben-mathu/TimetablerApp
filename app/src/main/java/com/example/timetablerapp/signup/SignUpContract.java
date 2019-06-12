@@ -37,7 +37,7 @@ public interface SignUpContract {
 
         void registerUser(Lecturer lec);
 
-        void registerUser(Student student);
+        void registerUser(Student student, Department department, Faculty faculty, Campus campus, Programme programme);
 
         void registerUser(Admin admin, String password);
 

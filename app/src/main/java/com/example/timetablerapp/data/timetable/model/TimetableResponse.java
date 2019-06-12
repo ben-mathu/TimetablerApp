@@ -8,7 +8,7 @@ import java.util.List;
  * 23/05/19 -bernard
  */
 public class TimetableResponse {
-    @SerializedName("timetable")
+    @SerializedName("timetables")
     private List<Timetable> timetableList;
 
     public List<Timetable> getTimetableList() {

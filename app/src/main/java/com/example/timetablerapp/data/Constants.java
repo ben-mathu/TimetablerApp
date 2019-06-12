@@ -8,18 +8,18 @@ import org.jetbrains.annotations.NotNull;
  * 07/05/19 -bernard
  */
 public class Constants {
-    public static final String BASE_URL = "http://192.168.0.140:8080/Timetabler-v2.0/";
+    public static final String BASE_URL = "http://192.168.43.146:8080/Timetabler-v2.0/";
     public static final String DATABASE_NAME = "timetabler.db";
     public static final String SALT = "salt";
     public static final String ROLE = "role";
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    // Campus
+    // Campus - done
     public static final String TABLE_CAMPUS = "campuses";
     public static final String CAMPUS_ID = "campus_id";
     public static final String CAMPUS_NAME = "campus_name";
 
-    // Faculties
+    // Faculties - done
     public static final String TABLE_FACULTIES = "faculties";
     public static final String FACULTY_ID = "faculty_id";
     public static final String FACULTY_NAME = "faculty_name";
@@ -35,7 +35,7 @@ public class Constants {
     public static final String AVAILABILITY = "availability";
     public static final String VOLUME = "volume";
 
-    // Departments
+    // Departments - done
     public static final String TABLE_DEPARTMENTS = "departments";
     public static final String DEPARTMENT_ID = "department_id";
     public static final String DEPARTMENT_NAME = "department_name";
@@ -44,12 +44,12 @@ public class Constants {
     public static final String TABLE_LECTURERS = "lecturers";
     public static final String LECTURER_ID = "lecturer_id";
 
-    // Programmes
+    // Programmes - done
     public static final String TABLE_PROGRAMMES = "programmes";
     public static final String PROGRAMME_ID = "programme_id";
     public static final String PROGRAMME_NAME = "programme_name";
 
-    // Students
+    // Students - done
     public static final String TABLE_STUDENTS = "students";
     public static final String STUDENT_ID = "student_id";
     public static final String F_NAME = "f_name";
@@ -64,6 +64,10 @@ public class Constants {
     public static final String TABLE_UNITS = "units";
     public static final String UNIT_ID = "unit_id";
     public static final String UNIT_NAME = "unit_name";
+
+    // Admin
+    public static final String TABLE_ADMIN = "admins";
+    public static final String ADMIN_ID = "admin_id";
 
     // Lecturers Programmes
     public static final String TABLE_LECTURER_PROGRAMMES = "lecturer_programmes";
@@ -85,9 +89,6 @@ public class Constants {
 
     public static final String SALTROLE = "salt_role";
 
-    // Admin
-    public static final String TABLE_ADMIN = "admins";
-    public static final String ADMIN_ID = "admin_id";
     public static final String TIMESLOT = "timeslot";
     public static final String UNIT = "unit";
 }

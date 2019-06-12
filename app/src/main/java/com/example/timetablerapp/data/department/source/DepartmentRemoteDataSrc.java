@@ -41,6 +41,11 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
     }
 
     @Override
+    public void getFromLocalDb(LoadDepartmentsCallBack callBack) {
+
+    }
+
+    @Override
     public void update(Department item) {
 
     }

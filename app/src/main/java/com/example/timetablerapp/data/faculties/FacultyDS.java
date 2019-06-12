@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 08/05/19 -bernard
  */
-public interface FacultyDS extends DataSource<FacultyDS.LoadFacultiesCallBack, Faculty> {
+public interface FacultyDS extends DataSource<FacultyDS.LoadFacultiesCallBack, Faculty, Void> {
     void getAllFromRemote(LoadFacultiesCallBack callBack, String name);
     void getAllFromRemote(LoadFacultiesCallBack callBack);
 
