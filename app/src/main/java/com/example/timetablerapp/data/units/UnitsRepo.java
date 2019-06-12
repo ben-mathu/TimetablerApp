@@ -137,4 +137,19 @@ public class UnitsRepo implements UnitDataSource {
             }
         });
     }
+
+    @Override
+    public void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback) {
+        unitsRemoteDS.setRegistrationDeadline(startDate, deadline, new UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
 }

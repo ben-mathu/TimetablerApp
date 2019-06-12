@@ -20,6 +20,11 @@
     <string name="last_name">Last Name</string>
     <string name="admin_id">Admin Id</string>
     <string name="logout">Logout</string>
+    <string name="schedule_registration">Schedule Registration</string>
+    <string name="start_date">Start Date</string>
+    <string name="deadline">Deadline</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">ok</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

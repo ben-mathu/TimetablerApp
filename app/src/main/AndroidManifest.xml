@@ -28,6 +28,10 @@
 
         <activity android:name=".register_units.RegisterUnitsActivity"
             android:theme="@style/AppThemeNoActionBar"/>
+
+        <activity android:name=".timetable.dialog.ScheduleRegistration"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

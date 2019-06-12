@@ -58,4 +58,9 @@ public class UnitsLocalDS implements UnitDataSource {
     public void submitRegisteredUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
 
     }
+
+    @Override
+    public void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback) {
+
+    }
 }

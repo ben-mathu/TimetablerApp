@@ -90,4 +90,18 @@ public class UnitsPresenter {
             }
         });
     }
+
+    public void setDeadline(String startDate, String deadline) {
+        unitsRepo.setRegistrationDeadline(startDate, deadline, new UnitDataSource.UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
 }

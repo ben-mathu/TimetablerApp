@@ -8,4 +8,6 @@
     <color name="sterleto_blue">#0B3388</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorHint">#9BADB3</color>
+    <color name="hyperlinks">#1481BA</color>
+    <color name="text_hint_color">#969595</color>
 </resources>

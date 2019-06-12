@@ -15,6 +15,7 @@ import com.example.timetablerapp.data.units.model.UnitRequest;
 import com.example.timetablerapp.data.units.model.UnitResponse;
 import com.example.timetablerapp.data.units.model.UnitsRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
@@ -200,5 +201,58 @@ public class UnitsRemoteDS implements UnitDataSource {
                 callback.unsuccessful("An error occurred, please contact administrator.");
             }
         });
+    }
+
+    @Override
+    public void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback) {
+        DeadlineRequest request = new DeadlineRequest();
+        request.setStartDate(startDate);
+        request.setDeadline(deadline);
+
+        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .setRegistrationDeadline("application/json", request);
+
+        call.enqueue(new Callback<SuccessfulReport>() {
+            @Override
+            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                if (response.isSuccessful()) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful(response.body().getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t.getLocalizedMessage(), t);
+                t.printStackTrace();
+
+                callback.unsuccessful(t.getMessage());
+            }
+        });
+    }
+
+    public class DeadlineRequest {
+        @SerializedName("start_date")
+        private String startDate;
+        @SerializedName("deadline")
+        private String deadline;
+
+        public String getDeadline() {
+            return deadline;
+        }
+
+        public void setDeadline(String deadline) {
+            this.deadline = deadline;
+        }
+
+        public String getStartDate() {
+            return startDate;
+        }
+
+        public void setStartDate(String startDate) {
+            this.startDate = startDate;
+        }
     }
 }

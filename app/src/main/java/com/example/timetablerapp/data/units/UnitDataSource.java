@@ -25,6 +25,8 @@ public interface UnitDataSource extends DataSource<UnitDataSource.UnitsLoadedCal
 
     void submitRegisteredUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback);
 
+    void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback);
+
     interface UnitsRegisteredCallback {
         void successful(String message);
         void unsuccessful(String message);

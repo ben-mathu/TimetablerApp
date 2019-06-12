@@ -29,7 +29,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_STUDENT_TABLE =
             "CREATE TABLE ${TimetablerContract.Student.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${TimetablerContract.Student.STUDENT_ID} VARCHAR(10)," +
                     "${TimetablerContract.Student.FIRST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Student.LAST_NAME} VARCHAR(15)," +
@@ -62,7 +62,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_LECTURER_TABLE =
             "CREATE TABLE ${TimetablerContract.Lecturer.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${TimetablerContract.Lecturer.LECTURER_ID} VARCHAR(10)," +
                     "${TimetablerContract.Lecturer.FIRST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Lecturer.LAST_NAME} VARCHAR(15)," +
@@ -88,7 +88,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_ADMIN_TABLE =
             "CREATE TABLE ${TimetablerContract.Admin.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${TimetablerContract.Admin.LECTURER_ID} VARCHAR(10)," +
                     "${TimetablerContract.Admin.FIRST_NAME} VARCHAR(15)," +
                     "${TimetablerContract.Admin.LAST_NAME} VARCHAR(15)," +
@@ -107,9 +107,9 @@ object TimetablerContract {
 
     const val SQL_CREATE_CAMPUS_TABLE =
             "CREATE TABLE ${Campus.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY AUTOINCREMENT," +
-                    "${Campus.CAMPUS_ID} TEXT," +
-                    "${Campus.CAMPUS_NAME} TEXT"
+                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${Campus.CAMPUS_ID} VARCHAR(25)," +
+                    "${Campus.CAMPUS_NAME} VARCHAR(255))"
 
     const val  SQL_DELETE_CAMPUS = "DROP TABLE IF EXISTS ${Campus.TABLE_NAME}"
 
@@ -122,10 +122,10 @@ object TimetablerContract {
 
     const val SQL_CREATE_FACULTY_TABLE =
             "CREATE TABLE ${Faculty.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY AUTOINCREMENT," +
-                    "${Faculty.FACULTY_ID} TEXT," +
-                    "${Faculty.FACULTY_NAME} TEXT," +
-                    "${Faculty.CAMPUS_ID} TEXT"
+                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${Faculty.FACULTY_ID} VARCHAR(25)," +
+                    "${Faculty.FACULTY_NAME} VARCHAR(255)," +
+                    "${Faculty.CAMPUS_ID} VARCHAR(25))"
 
     const val  SQL_DELETE_FACULTY = "DROP TABLE IF EXISTS ${Faculty.TABLE_NAME}"
 
@@ -139,10 +139,10 @@ object TimetablerContract {
 
     const val SQL_CREATE_DEPARTMENT_TABLE =
             "CREATE TABLE ${Department.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY AUTOINCREMENT," +
-                    "${Department.DEPARTMENT_ID} TEXT," +
-                    "${Department.DEPARTMENT_NAME} TEXT," +
-                    "${Department.FACULTY_ID} TEXT"
+                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${Department.DEPARTMENT_ID} VARCHAR(25)," +
+                    "${Department.DEPARTMENT_NAME} VARCHAR(25)," +
+                    "${Department.FACULTY_ID} VARCHAR(25))"
 
     const val  SQL_DELETE_DEPARTMENT = "DROP TABLE IF EXISTS ${Department.TABLE_NAME}"
 
@@ -156,11 +156,11 @@ object TimetablerContract {
 
     const val SQL_CREATE_PROGRAMME_TABLE =
             "CREATE TABLE ${Programme.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY AUTOINCREMENT," +
-                    "${Programme.PROGRAMME_ID} TEXT," +
-                    "${Programme.PROGRAMME_NAME} TEXT," +
-                    "${Programme.DEPARTMENT_ID} TEXT," +
-                    "${Programme.FACULTY_ID} TEXT"
+                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${Programme.PROGRAMME_ID} VARCHAR(25)," +
+                    "${Programme.PROGRAMME_NAME} VARCHAR(255)," +
+                    "${Programme.DEPARTMENT_ID} VARCHAR(25)," +
+                    "${Programme.FACULTY_ID} VARCHAR(25))"
 
     const val  SQL_DELETE_PROGRAMMES = "DROP TABLE IF EXISTS ${Programme.TABLE_NAME}"
 
