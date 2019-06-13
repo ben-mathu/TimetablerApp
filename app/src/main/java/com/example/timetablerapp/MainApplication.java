@@ -1,8 +1,11 @@
 package com.example.timetablerapp;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.example.timetablerapp.data.campuses.CampusesRepository;
@@ -35,6 +38,7 @@ import com.example.timetablerapp.data.user.student.source.StudentDataSourceRemot
  * 06/05/19 -bernard
  */
 public class MainApplication extends Application {
+    private static final String CHANNEL_ID = "1";
     private static SharedPreferences sharedPreferences;
 
     private static SQLiteDatabase databaseWritable;
@@ -77,6 +81,8 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        createNotificationChannel();
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         databaseWritable = new TimetablerDatabaseHelper(this).getWritableDatabase();
         databaseReadable = new TimetablerDatabaseHelper(this).getReadableDatabase();
@@ -116,5 +122,21 @@ public class MainApplication extends Application {
 
     public static SQLiteDatabase getReadableDatabase() {
         return databaseReadable;
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

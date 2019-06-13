@@ -25,6 +25,8 @@
     <string name="deadline">Deadline</string>
     <string name="cancel">Cancel</string>
     <string name="ok">ok</string>
+    <string name="channel_name">Unit Registration Notification</string>
+    <string name="channel_description">Notify Students when to register for courses</string>
 
     <string-array name="roles">
         <item>Lecturer</item>
