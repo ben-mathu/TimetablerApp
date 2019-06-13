@@ -52,6 +52,9 @@ public class ScheduleRegistration extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
                 btnStartDate.setText(DateFormat.format("yyyy-MM-dd", calendar.getTimeInMillis()));
             };
@@ -71,6 +74,9 @@ public class ScheduleRegistration extends AppCompatActivity {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                calendar.set(Calendar.HOUR_OF_DAY, 0);
+                calendar.set(Calendar.MINUTE, 0);
+                calendar.set(Calendar.SECOND, 0);
 
                 btnDeadline.setText(DateFormat.format("yyyy-MM-dd", calendar.getTimeInMillis()));
             };

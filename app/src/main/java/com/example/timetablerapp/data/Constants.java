@@ -91,4 +91,7 @@ public class Constants {
 
     public static final String TIMESLOT = "timeslot";
     public static final String UNIT = "unit";
+    public static final String NOTIFICATION_ID = "notification_id";
+    public static final String ACTION_SNOOZE = "Reminder";
+    public static final String NOTIFICATION_CONTENT = "notification_content";
 }

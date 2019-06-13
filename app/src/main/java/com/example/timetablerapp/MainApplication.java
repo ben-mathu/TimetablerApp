@@ -38,7 +38,9 @@ import com.example.timetablerapp.data.user.student.source.StudentDataSourceRemot
  * 06/05/19 -bernard
  */
 public class MainApplication extends Application {
-    private static final String CHANNEL_ID = "1";
+    private static final String TAG = MainApplication.class.getSimpleName();
+
+    public static final String CHANNEL_ID = "1";
     private static SharedPreferences sharedPreferences;
 
     private static SQLiteDatabase databaseWritable;
