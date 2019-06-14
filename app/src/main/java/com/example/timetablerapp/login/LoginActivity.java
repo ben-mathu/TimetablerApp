@@ -1,14 +1,16 @@
 package com.example.timetablerapp.login;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.text.format.DateFormat;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +18,22 @@ import com.example.timetablerapp.MainActivity;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.signup.SignUpActivity;
 import com.example.timetablerapp.timetable.TimetableActivity;
+import com.example.timetablerapp.timetable.dialog.ScheduleTimerActivity;
+import com.example.timetablerapp.timetable.schedule.ScheduleTimerIntentService;
+import com.example.timetablerapp.timetable.schedule.ScheduleTimerReceiver;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
+import static android.app.Notification.EXTRA_NOTIFICATION_ID;
+import static android.app.Notification.VISIBILITY_PRIVATE;
+import static android.app.Notification.VISIBILITY_PUBLIC;
 
 /**
  * 06/05/19 -bernard
@@ -30,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private Button btnLogin;
     private ProgressBar progressBar;
     private TextView txtSignUp;
+
+    private String notificationContent = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,5 +115,76 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @Override
     public void startTimetableActivity() {
         startActivity(new Intent(this, TimetableActivity.class));
+
+        loginPresenter.fetchSettings();
+    }
+
+    @Override
+    public void configureSettings(DeadlineSettings settings) {
+        Calendar calendar = Calendar.getInstance();
+
+        String startDateStr = settings.getStartDate();
+        String deadlineStr = settings.getDeadline();
+
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+
+        try {
+            Date today = calendar.getTime();
+            long todayInMillis = today.getTime();
+
+            Date startDate = sf.parse(startDateStr);
+            long startDateInMillis = startDate.getTime();
+
+            Date deadline = sf.parse(deadlineStr);
+            long deadlineInMillis = deadline.getTime();
+
+            if (deadlineInMillis > todayInMillis) {
+                if (startDateInMillis > todayInMillis) {
+
+                    notificationContent = "Start date: " + startDateStr + "End Date: " + deadlineStr;
+                    showNotification(notificationContent);
+                } else {
+                    notificationContent = DateFormat.format("dd:HH:mm:ss", todayInMillis - deadlineInMillis).toString();
+                    showNotification(notificationContent);
+
+                    // Start intent service to handle timers on the notification.
+                    Intent intertService = new Intent(this, ScheduleTimerIntentService.class);
+                    intertService.putExtra(Constants.NOTIFICATION_CONTENT, notificationContent);
+                    startService(intertService);
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showNotification(String notificationContent) {
+        Intent intent = new Intent(this, ScheduleTimerActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        Intent snoozeIntent = new Intent(this, ScheduleTimerReceiver.class);
+        snoozeIntent.setAction(Constants.ACTION_SNOOZE);
+        snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+
+        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
+
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MainApplication.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_schedule)
+                .setContentTitle("Scheduled Unit Registration")
+                .setContentText(notificationContent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .addAction(R.drawable.ic_snooze, "Remind me", snoozePendingIntent)
+                .setVisibility(VISIBILITY_PRIVATE)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        int notificationId = new Random().nextInt(10) + 20;
+        MainApplication.getSharedPreferences().edit().putInt(Constants.NOTIFICATION_ID, notificationId).apply();
+
+        notificationManager.notify(notificationId, notification.build());
     }
 }

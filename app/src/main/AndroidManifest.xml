@@ -32,6 +32,17 @@
         <activity android:name=".timetable.dialog.ScheduleRegistration"
             android:theme="@style/Theme.AppCompat.Dialog"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".timetable.dialog.ScheduleTimerActivity" />
+
+        <receiver android:name=".timetable.schedule.ScheduleTimerReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".timetable.schedule.ScheduleTimerIntentService" />
     </application>
 
 </manifest>

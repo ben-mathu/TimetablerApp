@@ -4,6 +4,7 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.encryption.Hashing;
+import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.student.StudentRepository;
@@ -59,5 +60,19 @@ public class LoginPresenter {
             }
         });
 
+    }
+
+    public void fetchSettings() {
+        lecturerRepo.fetchSettingsFromRemote(new UserDataSource.FetchSettingsCallback() {
+            @Override
+            public void fetchingSettingsSuccessful(DeadlineSettings settings) {
+                view.configureSettings(settings);
+            }
+
+            @Override
+            public void settingsNotAvailable(String message) {
+
+            }
+        });
     }
 }

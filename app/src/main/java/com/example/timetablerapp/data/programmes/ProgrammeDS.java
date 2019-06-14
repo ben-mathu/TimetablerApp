@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 08/05/19 -bernard
  */
-public interface ProgrammeDS extends DataSource<ProgrammeDS.LoadProgrammesCallBack, Programme, Void> {
+public interface ProgrammeDS extends DataSource<Programme> {
     void getAllFromRemote(LoadProgrammesCallBack callBack, String name);
 
     interface LoadProgrammesCallBack {

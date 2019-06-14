@@ -57,6 +57,11 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
     }
 
     @Override
+    public void fetchSettingsFromRemote(FetchSettingsCallback callback) {
+
+    }
+
+    @Override
     public void update(Lecturer item) {
 
     }

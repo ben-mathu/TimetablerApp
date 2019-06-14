@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 19/05/19 -bernard
  */
-public interface UnitDataSource extends DataSource<UnitDataSource.UnitsLoadedCallback, Unit, UnitDataSource.UnitsRegisteredCallback> {
+public interface UnitDataSource extends DataSource<Unit> {
 
     void getUnitsByLecturerId(String id, UnitsLoadedCallback callback);
 

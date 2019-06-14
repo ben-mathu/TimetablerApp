@@ -83,6 +83,11 @@ public class StudentDataSourceRemote implements UserDataSource<Student> {
     }
 
     @Override
+    public void fetchSettingsFromRemote(FetchSettingsCallback callback) {
+
+    }
+
+    @Override
     public void update(Student item) {
 
     }

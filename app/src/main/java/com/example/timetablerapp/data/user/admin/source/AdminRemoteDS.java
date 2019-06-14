@@ -64,6 +64,11 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
+    public void fetchSettingsFromRemote(FetchSettingsCallback callback) {
+
+    }
+
+    @Override
     public void update(Admin item) {
 
     }
