@@ -9,8 +9,10 @@ import android.support.v7.app.AppCompatActivity;
  * 13/06/19 -bernard
  */
 public class ScheduleTimerReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        Intent intentService = new Intent(context, ReminderIntentService.class);
+        context.startService(intentService);
     }
 }

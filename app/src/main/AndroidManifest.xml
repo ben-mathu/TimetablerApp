@@ -43,6 +43,8 @@
         </receiver>
 
         <service android:name=".timetable.schedule.ScheduleTimerIntentService" />
+
+        <service android:name=".timetable.schedule.ReminderIntentService" />
     </application>
 
 </manifest>
