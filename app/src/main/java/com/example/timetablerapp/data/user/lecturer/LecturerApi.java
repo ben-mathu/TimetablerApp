@@ -1,7 +1,9 @@
-package com.example.timetablerapp.data.user.lecturer.source;
+package com.example.timetablerapp.data.user.lecturer;
 
 import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerRequest;
+import com.example.timetablerapp.data.user.ValidationRequest;
+import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,4 +19,7 @@ public interface LecturerApi {
     Call<SuccessfulReport> signUpLec(@Header("Content-Type") String contentType,
                                      @Body LecturerRequest lecturerRequest);
 
+    @POST("validate-user")
+    Call<LecturerResponse> validateLec(@Header("Content-Type") String contentType,
+                                       @Body ValidationRequest request);
 }

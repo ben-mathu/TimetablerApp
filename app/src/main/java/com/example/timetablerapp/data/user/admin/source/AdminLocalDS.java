@@ -31,7 +31,7 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }
 

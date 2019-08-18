@@ -10,4 +10,5 @@
     <color name="colorHint">#9BADB3</color>
     <color name="hyperlinks">#1481BA</color>
     <color name="text_hint_color">#969595</color>
+    <color name="transparent">#00043E54</color>
 </resources>

@@ -9,7 +9,7 @@
         android:id="@+id/text_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="5dp"
         android:layout_alignParentEnd="true"
         android:text="Login"
         android:textSize="21sp"
@@ -19,6 +19,7 @@
         android:id="@+id/scrollView_register"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/text_login"
         android:layout_above="@+id/button_register"
         tools:context=".signup.SignUpActivity">
 
@@ -34,9 +35,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:padding="10dp"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edit_background"
                 android:hint="@string/user_id"
-                android:textSize="21sp"/>
+                android:textColorHint="@color/colorHint"
+                android:textColor="@color/white"
+                android:textSize="21sp"
+                android:inputType="textPersonName"/>
 
             <LinearLayout
                 android:id="@+id/ll_names"
@@ -56,9 +60,12 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="2"
                     android:padding="10dp"
-                    android:background="@drawable/edittext_background"
-                    android:hint="First Name"
-                    android:textSize="21sp"/>
+                    android:background="@drawable/edit_background"
+                    android:hint="@string/first_name"
+                    android:textColorHint="@color/colorHint"
+                    android:textColor="@color/white"
+                    android:textSize="21sp"
+                    android:inputType="textPersonName"/>
 
                 <EditText
                     android:id="@+id/edit_last_name"
@@ -66,9 +73,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="10dp"
-                    android:background="@drawable/edittext_background"
-                    android:hint="Last Name"
-                    android:textSize="21sp"/>
+                    android:background="@drawable/edit_background"
+                    android:hint="@string/middle_name"
+                    android:textColorHint="@color/colorHint"
+                    android:textColor="@color/white"
+                    android:textSize="21sp"
+                    android:inputType="textPersonName"/>
             </LinearLayout>
 
             <EditText
@@ -80,9 +90,12 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:padding="10dp"
-                android:background="@drawable/edittext_background"
-                android:hint="Sur Name"
-                android:textSize="21sp"/>
+                android:background="@drawable/edit_background"
+                android:hint="@string/surname"
+                android:textColorHint="@color/colorHint"
+                android:textColor="@color/white"
+                android:textSize="21sp"
+                android:inputType="textPersonName"/>
 
             <LinearLayout
                 android:id="@+id/ll_credentials"
@@ -102,9 +115,12 @@
                     android:layout_weight="2"
                     android:layout_marginEnd="10dp"
                     android:padding="10dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/edit_background"
                     android:hint="@string/username"
-                    android:textSize="21sp"/>
+                    android:textColorHint="@color/colorHint"
+                    android:textColor="@color/white"
+                    android:textSize="21sp"
+                    android:inputType="textPersonName"/>
 
                 <EditText
                     android:id="@+id/edit_password"
@@ -112,8 +128,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:hint="@string/password"
+                    android:textColorHint="@color/colorHint"
+                    android:textColor="@color/white"
                     android:padding="10dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/edit_background"
                     android:inputType="textPassword"
                     android:textSize="21sp"/>
             </LinearLayout>
@@ -132,7 +150,6 @@
                 android:id="@+id/spinner_campus"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_below="@+id/campuses"
@@ -153,7 +170,6 @@
                 android:id="@+id/spinner_faculty"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_below="@+id/faculties"
@@ -174,7 +190,6 @@
                 android:id="@+id/spinner_departments"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_below="@+id/departments"
@@ -190,11 +205,11 @@
                 android:layout_marginBottom="5dp"
                 android:textColor="#fff"
                 android:text="@string/programmes"/>
+
             <Spinner
                 android:id="@+id/spinner_programme"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginEnd="30dp"
                 android:layout_below="@+id/programme"
@@ -230,8 +245,10 @@
                     android:layout_marginEnd="10dp"
                     android:layout_weight="2"
                     android:padding="10dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/edit_background"
                     android:hint="year of study"
+                    android:textColorHint="@color/colorHint"
+                    android:textColor="@color/white"
                     android:inputType="number"/>
 
                 <Switch
@@ -240,7 +257,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:padding="10dp"
-                    android:text="@string/in_session" />
+                    android:text="@string/in_session"
+                    android:textColor="@color/white"/>
             </LinearLayout>
         </RelativeLayout>
     </ScrollView>

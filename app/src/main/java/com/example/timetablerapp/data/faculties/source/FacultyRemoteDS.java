@@ -9,7 +9,6 @@ import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.faculties.model.FacultyResponse;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -33,7 +32,7 @@ public class FacultyRemoteDS implements FacultyDS {
             public void onResponse(Call<FacultiesResponse> call, Response<FacultiesResponse> response) {
                 if (response.isSuccessful()) {
                     List<Faculty> faculties = response.body().getFaculties();
-                    callBack.gettinFacultiesSuccessful(faculties);
+                    callBack.loadingFacultiesSuccessful(faculties);
                 } else {
                     callBack.dataNotAvailable(response.message());
                 }
@@ -56,7 +55,7 @@ public class FacultyRemoteDS implements FacultyDS {
             @Override
             public void onResponse(Call<FacultyResponse> call, Response<FacultyResponse> response) {
                 if (response.isSuccessful()) {
-                    callBack.gettinFacultiesSuccessful(response.body().getList());
+                    callBack.loadingFacultiesSuccessful(response.body().getList());
                 } else {
                     callBack.dataNotAvailable(response.message());
                 }

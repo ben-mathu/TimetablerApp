@@ -31,8 +31,8 @@ import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerLocalDS;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerRemoteDS;
 import com.example.timetablerapp.data.user.student.StudentRepository;
-import com.example.timetablerapp.data.user.student.source.StudentDataSourceLocal;
-import com.example.timetablerapp.data.user.student.source.StudentDataSourceRemote;
+import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
+import com.example.timetablerapp.data.user.student.source.StudentRemoteDS;
 
 /**
  * 06/05/19 -bernard
@@ -89,9 +89,9 @@ public class MainApplication extends Application {
         databaseWritable = new TimetablerDatabaseHelper(this).getWritableDatabase();
         databaseReadable = new TimetablerDatabaseHelper(this).getReadableDatabase();
 
-        studentRepo = StudentRepository.newInstance(new StudentDataSourceRemote(),  new StudentDataSourceLocal());
+        studentRepo = StudentRepository.newInstance(new StudentRemoteDS(),  new StudentLocalDS());
 
-        lecturerRepo = LecturerRepo.newInstance(new LecturerLocalDS(databaseWritable), new LecturerRemoteDS());
+        lecturerRepo = LecturerRepo.newInstance(new LecturerLocalDS(), new LecturerRemoteDS());
 
         departmentRepo = DepartmentRepository.newInstance(new DepartmentLocalDataSrc(), new DepartmentRemoteDataSrc());
 

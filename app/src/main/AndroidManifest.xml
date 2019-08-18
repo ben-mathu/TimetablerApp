@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,11 +31,12 @@
         <activity android:name=".register_units.RegisterUnitsActivity"
             android:theme="@style/AppThemeNoActionBar"/>
 
-        <activity android:name=".timetable.dialog.ScheduleRegistration"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:screenOrientation="portrait"/>
-
         <activity android:name=".timetable.dialog.ScheduleTimerActivity" />
+
+        <activity android:name=".timetable.dialog.ReminderDialogActivity"
+            android:theme="@style/Theme.AppCompat.Dialog"/>
+
+        <activity android:name=".timetable.chat.OpenChatActivity" />
 
         <receiver android:name=".timetable.schedule.ScheduleTimerReceiver" >
             <intent-filter>
@@ -45,6 +48,12 @@
         <service android:name=".timetable.schedule.ScheduleTimerIntentService" />
 
         <service android:name=".timetable.schedule.ReminderIntentService" />
+
+        <service android:name=".timetable.schedule.ScheduleTimerJobSchedule"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service android:name=".timetable.schedule.NotificationIntentService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>

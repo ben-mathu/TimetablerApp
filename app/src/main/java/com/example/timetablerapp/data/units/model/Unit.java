@@ -18,12 +18,15 @@ public class Unit {
     @SerializedName(Constants.IS_PRACTICAL)
     private boolean isPractical = false;
 
-    public Unit(String id, String unitName, String programmeId, String facultyId, boolean isPractical) {
+    private boolean isSelected;
+
+    public Unit(String id, String unitName, String programmeId, String facultyId, boolean isPractical, boolean isSelected) {
         this.id = id;
         this.unitName = unitName;
         this.programmeId = programmeId;
         this.facultyId = facultyId;
         this.isPractical = isPractical;
+        this.isSelected = isSelected;
     }
 
     public Unit() {
@@ -67,5 +70,13 @@ public class Unit {
 
     public void setPractical(boolean practical) {
         isPractical = practical;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

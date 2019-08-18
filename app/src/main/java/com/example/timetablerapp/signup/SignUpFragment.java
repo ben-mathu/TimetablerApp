@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     private Campus campus;
     private Faculty faculty;
 
+    private TextView txtLogin;
     private EditText edtUserId, edtFName, edtLName, edtMName, edtUsername, edtPassword;
     private Button btnRegister, btnDatePicker;
     private Spinner spnDepartments, spnProgrammes, spnCampuses, spnFaculties;
@@ -85,6 +87,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+        txtLogin = view.findViewById(R.id.text_login);
+        txtLogin.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        });
 
         // Initialize Widgets
         edtUserId = view.findViewById(R.id.edit_user_id);
@@ -204,10 +212,10 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         student.setPassword(edtPassword.getText().toString());
         student.setYearOfStudy(edtYearOfStudy.getText().toString());
         student.setAdmissionDate(btnDatePicker.getText().toString());
-        student.setCampusId(campuses.get(spnCampuses.getSelectedItemPosition()).getCampusId());
-        student.setFacultyId(faculties.get(spnFaculties.getSelectedItemPosition()).getFacultyId());
-        student.setDepartmentId(departmentList.get(spnDepartments.getSelectedItemPosition()).getDepartmentId());
-        student.setProgrammeId(programmes.get(spnProgrammes.getSelectedItemPosition()).getProgrammeId());
+        student.setCampusId(campuses.get(spnCampuses.getCount() > 0 ? spnCampuses.getSelectedItemPosition() : 0).getCampusId());
+        student.setFacultyId(faculties.get(spnFaculties.getCount() > 0 ? spnFaculties.getSelectedItemPosition() : 0).getFacultyId());
+        student.setDepartmentId(departmentList.get(spnDepartments.getCount() > 0 ? spnDepartments.getSelectedItemPosition() : 0).getDepartmentId());
+        student.setProgrammeId(programmes.get(spnProgrammes.getCount() > 0 ? spnProgrammes.getSelectedItemPosition() : 0).getProgrammeId());
         boolean inSess = switchInSess.isChecked();
         student.setInSession(inSess);
 
@@ -272,7 +280,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
     }
 
     @Override
-    public void startLoginActiity() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
+    public void startLoginActivity() {
+        startActivity(
+                new Intent(getActivity(), LoginActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        );
+        getActivity().finish();
     }
 }

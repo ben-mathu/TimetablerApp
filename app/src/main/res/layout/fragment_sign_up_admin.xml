@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:layout_centerVertical="true">
 
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_alignParentEnd="true"
+        android:text="Login"
+        android:textSize="21sp"
+        android:textColor="@color/colorAccent"/>
+
     <EditText
         android:id="@+id/edit_admin_id"
         android:layout_width="match_parent"
@@ -12,11 +22,13 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"
-        android:layout_below="@+id/toolbar_view_details"
+        android:layout_below="@+id/text_login"
         android:padding="10dp"
         android:hint="@string/admin_id"
         android:textColorHint="@color/colorHint"
-        android:background="@drawable/edittext_background"/>
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/edit_first_name"
@@ -30,7 +42,9 @@
         android:padding="10dp"
         android:hint="@string/first_name"
         android:textColorHint="@color/colorHint"
-        android:background="@drawable/edittext_background"/>
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/edit_middle_name"
@@ -43,8 +57,10 @@
         android:padding="10dp"
         android:hint="@string/middle_name"
         android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
         android:layout_below="@+id/edit_first_name"
-        android:background="@drawable/edittext_background"/>
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/edit_last_name"
@@ -58,7 +74,9 @@
         android:padding="10dp"
         android:hint="@string/last_name"
         android:textColorHint="@color/colorHint"
-        android:background="@drawable/edittext_background" />
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/edit_username"
@@ -71,8 +89,10 @@
         android:padding="10dp"
         android:hint="@string/username"
         android:textColorHint="@color/colorHint"
-        android:background="@drawable/edittext_background"
-        android:layout_below="@+id/edit_last_name"/>
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:layout_below="@+id/edit_last_name"
+        android:inputType="textPersonName"/>
 
     <EditText
         android:id="@+id/edit_password"
@@ -86,7 +106,8 @@
         android:layout_below="@+id/edit_username"
         android:hint="@string/password"
         android:textColorHint="@color/colorHint"
-        android:background="@drawable/edittext_background"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
         android:inputType="textPassword" />
 
     <Button

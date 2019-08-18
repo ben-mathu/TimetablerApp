@@ -34,7 +34,9 @@
         android:layout_marginEnd="30dp"
         android:hint="Username"
         android:textColorHint="@color/text_hint_color"
+        android:textColor="@color/white"
         android:textSize="21sp"
+        android:inputType="textEmailAddress"
         android:padding="14dp"/>
 
     <EditText
@@ -47,6 +49,7 @@
         android:layout_marginEnd="30dp"
         android:hint="Password"
         android:textColorHint="@color/text_hint_color"
+        android:textColor="@color/white"
         android:textSize="21sp"
         android:inputType="textPassword"
         android:padding="14dp"/>
@@ -64,14 +67,32 @@
         android:textSize="18sp"
         android:background="@drawable/button_background_two"/>
 
-    <TextView
-        android:id="@+id/text_register"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
         android:layout_below="@id/button_login"
-        android:layout_centerHorizontal="true"
-        android:text="Sign Up"
-        android:textSize="18sp"
-        android:textColor="@color/hyperlinks"/>
+        android:layout_margin="30dp"
+        android:adjustViewBounds="true"
+        android:divider="@drawable/line_separator"
+        android:showDividers="middle"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/text_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="Sign Up"
+            android:textSize="18sp"
+            android:textColor="@color/hyperlinks"/>
+
+        <TextView
+            android:id="@+id/text_clear_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Clear Role"
+            android:textSize="18sp"
+            android:textColor="@color/hyperlinks"/>
+    </LinearLayout>
 </RelativeLayout>

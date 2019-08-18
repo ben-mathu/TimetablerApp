@@ -1,6 +1,6 @@
 package com.example.timetablerapp.data.user;
 
-import com.example.timetablerapp.data.user.security_utils.SaltReponse;
+import com.example.timetablerapp.data.utils.security_utils.SaltReponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

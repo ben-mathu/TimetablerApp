@@ -94,4 +94,13 @@ public class Constants {
     public static final String NOTIFICATION_ID = "notification_id";
     public static final String ACTION_SNOOZE = "Reminder";
     public static final String NOTIFICATION_CONTENT = "notification_content";
+    public static final String REMINDER = "reminder";
+    public static final String START_DATE = "start_date";
+    public static final String END_DATE = "end_date";
+
+    public static final String SCHEDULE = "job scheduled";
+    public static final String USER_ID = "user_id";
+    public static final String IS_LOGGED_IN = "isLoggedIn";
+    public static final String IS_TIME_REACHED = "isTimeReached";
+    public static final String IS_TIME_ADDED = "isTimeAdded";
 }

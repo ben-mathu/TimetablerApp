@@ -31,8 +31,8 @@ public class AdminRepo implements UserDataSource<Admin> {
     public void userSignUp(UserAuthCallback callBack, Admin obj, String pass) {
         remoteDs.userSignUp(new UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
-                callBack.userIsAuthSuccessfull(message);
+            public void userIsAuthSuccessful(String message) {
+                callBack.userIsAuthSuccessful(message);
                 save(obj);
             }
 
@@ -49,7 +49,7 @@ public class AdminRepo implements UserDataSource<Admin> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }
 

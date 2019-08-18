@@ -26,7 +26,7 @@ public interface SignUpContract {
 
         void showProgrammes(List<Programme> programmes);
 
-        void startLoginActiity();
+        void startLoginActivity();
     }
 
     interface Presenter {

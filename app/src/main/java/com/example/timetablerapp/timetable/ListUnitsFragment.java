@@ -58,14 +58,14 @@ public class ListUnitsFragment extends Fragment implements UnitView {
         if (role.equalsIgnoreCase("lecturer")) {
             presenter.getUnitsByLecturerId(
                     MainApplication.getSharedPreferences()
-                        .getString(Constants.LECTURER_ID, "")
+                        .getString(Constants.USER_ID, "")
             );
 
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Lecture Units");
         } else if (role.equalsIgnoreCase("student")) {
             presenter.getUnitsByStudentId(
                     MainApplication.getSharedPreferences()
-                    .getString(Constants.STUDENT_ID, "")
+                    .getString(Constants.USER_ID, "")
             );
 
             ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Student Units");

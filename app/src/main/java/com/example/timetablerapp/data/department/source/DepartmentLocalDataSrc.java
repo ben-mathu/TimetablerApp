@@ -40,14 +40,14 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
         if (cursor.moveToFirst()) {
             Department department = new Department();
 
-            department.setDepartmentId(cursor.getString(1));
-            department.setDepartmentName(cursor.getString(2));
-            department.setFacultyId(cursor.getString(3));
+            department.setDepartmentId(cursor.getString(0));
+            department.setDepartmentName(cursor.getString(1));
+            department.setFacultyId(cursor.getString(2));
 
             List<Department> departments = new ArrayList<>();
             departments.add(department);
 
-            if (departments.isEmpty()) {
+            if (!departments.isEmpty()) {
                 callBack.loadDepartmentsSuccessful(departments);
             } else {
                 callBack.dataNotAvailable("Department not found.");

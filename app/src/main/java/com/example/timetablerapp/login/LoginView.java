@@ -25,5 +25,5 @@ public interface LoginView {
 
     void startTimetableActivity();
 
-    void configureSettings(DeadlineSettings settings);
+//    void configureSettings(DeadlineSettings settings);
 }

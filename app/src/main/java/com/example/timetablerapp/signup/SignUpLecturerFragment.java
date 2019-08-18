@@ -19,6 +19,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
@@ -42,6 +43,7 @@ import java.util.List;
 public class SignUpLecturerFragment extends Fragment implements View.OnClickListener, SignUpContract.View {
     private SignUpPresenter presenter;
 
+    private TextView txtLogin;
     private EditText edtUserId, edtFName, edtLName, edtMName, edtUsername, edtPassword;
     private Spinner spnDepartments, spnFaculties;
     private Switch switchInSess;
@@ -77,6 +79,12 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up_lecturer, container, false);
 
+        txtLogin = view.findViewById(R.id.text_login);
+        txtLogin.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        });
+
         // Initialize Widgets
         edtUserId = view.findViewById(R.id.edit_user_id);
         edtFName = view.findViewById(R.id.edit_first_name);
@@ -106,8 +114,8 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         lec.setMiddleName(edtMName.getText().toString());
         lec.setUsername(edtUsername.getText().toString());
         lec.setPassword(edtPassword.getText().toString());
-        lec.setFacultyId(faculties.get(spnFaculties.getSelectedItemPosition()).getFacultyId());
-        lec.setDepartmentId(departments.get(spnDepartments.getSelectedItemPosition()).getDepartmentId());
+        lec.setFacultyId(faculties.get(spnFaculties.getCount() > 0 ? spnFaculties.getSelectedItemPosition() : 0).getFacultyId());
+        lec.setDepartmentId(departments.get(spnDepartments.getCount() > 0 ? spnDepartments.getSelectedItemPosition() : 0).getDepartmentId());
         boolean inSess = switchInSess.isChecked();
         lec.setInSesson(inSess);
 
@@ -176,7 +184,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
 
     @Override
     public void showMessages(String message) {
-
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -202,7 +210,11 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     }
 
     @Override
-    public void startLoginActiity() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
+    public void startLoginActivity() {
+        startActivity(
+                new Intent(getActivity(), LoginActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        );
+        getActivity().finish();
     }
 }

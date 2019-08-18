@@ -1,4 +1,4 @@
-package com.example.timetablerapp.data.user.security_utils;
+package com.example.timetablerapp.data.utils.security_utils;
 
 import com.google.gson.annotations.SerializedName;
 

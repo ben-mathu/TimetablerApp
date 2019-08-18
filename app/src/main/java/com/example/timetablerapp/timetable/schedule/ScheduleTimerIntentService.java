@@ -1,6 +1,7 @@
 package com.example.timetablerapp.timetable.schedule;
 
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,14 +9,34 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.text.format.DateFormat;
+import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.settings.model.DeadlineSettings;
+import com.example.timetablerapp.data.timer_schedule.TimerApi;
+import com.example.timetablerapp.data.utils.RetrofitClient;
+import com.example.timetablerapp.timetable.TimetableActivity;
+import com.example.timetablerapp.timetable.dialog.ScheduleTimerActivity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.app.Notification.EXTRA_NOTIFICATION_ID;
 import static android.app.Notification.VISIBILITY_PRIVATE;
 
 /**
@@ -25,119 +46,154 @@ public class ScheduleTimerIntentService extends IntentService {
     private static final String TAG = ScheduleTimerIntentService.class.getSimpleName();
 
     private NotificationCompat.Builder notification;
-
-    private MessageHandler messageHandler;
+    private Timer timer;
 
     private String daysStr, hoursStr, minutesStr, secondsStr;
     private String notificationContent;
 
+    private boolean isRegistrationScheduled = false;
+    private boolean isDeadlineReached = false;
+
     private int notificationId = 0;
 
-    public ScheduleTimerIntentService(String name) {
-        super(name);
+    public ScheduleTimerIntentService() {
+        super("Timer Scheduler");
+        timer = new Timer();
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        Log.d(TAG, "onHandleIntent: Service started");
         notificationId = MainApplication.getSharedPreferences().getInt(Constants.NOTIFICATION_ID, 0);
 
-        String timeRemaining = intent.getStringExtra(Constants.NOTIFICATION_CONTENT);
+//        String timeRemaining = intent.getStringExtra(Constants.NOTIFICATION_CONTENT);
+//
+//        Pattern pattern = Pattern.compile("^(\\d+):(\\d+):(\\d+):(\\d+)$");
+//
+//        Matcher matcher = pattern.matcher(timeRemaining);
+//
+//        if (matcher.find()) {
+//            daysStr = matcher.group(1);
+//            hoursStr = matcher.group(2);
+//            minutesStr = matcher.group(3);
+//            secondsStr = matcher.group(4);
+//        }
 
-        Pattern pattern = Pattern.compile("^(\\d+):(\\d+):(\\d+):(\\d+)$");
+        isDeadlineReached = MainApplication.getSharedPreferences().getBoolean(Constants.IS_TIME_REACHED, false);
 
-        Matcher matcher = pattern.matcher(timeRemaining);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                isRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
+                if (!isRegistrationScheduled) {
+                    Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
+                            .create(TimerApi.class)
+                            .getRegistrationSchedule();
 
-        if (matcher.find()) {
-            daysStr = matcher.group(1);
-            hoursStr = matcher.group(2);
-            minutesStr = matcher.group(3);
-            secondsStr = matcher.group(4);
-        }
+                    call.enqueue(new Callback<DeadlineSettings>() {
+                        @Override
+                        public void onResponse(Call<DeadlineSettings> call, Response<DeadlineSettings> response) {
+                            if (response.isSuccessful()) {
+                                String startDate = response.body().getStartDate();
+                                String deadline = response.body().getDeadline();
 
-        Thread thread = new Thread(
-                new Timerseconds(
-                        Integer.parseInt(secondsStr),
-                        Integer.parseInt(minutesStr),
-                        Integer.parseInt(hoursStr),
-                        Integer.parseInt(daysStr)
-                )
-        );
-
-        messageHandler = new MessageHandler();
-    }
-
-    public class Timerseconds implements Runnable {
-        int seconds = 0;
-        private final int minutes;
-        private final int hours;
-        private final int days;
-
-        public Timerseconds(int seconds, int minutes, int hours, int days) {
-            this.seconds = seconds;
-            this.minutes = minutes;
-            this.hours = hours;
-            this.days = days;
-        }
-
-        @Override
-        public void run() {
-            for (int i = days; i >= 0; i--) {
-                for (int j = hours; j >= 0; i--) {
-                    for (int k = minutes; k >=0; j--) {
-                        for (int m = seconds; m >= 0; m--) {
-                            try {
-                                Thread.sleep(1000);
-                                if (m < 10)
-                                    secondsStr = 0 + String.valueOf(m);
-                                else
-                                    secondsStr = String.valueOf(m);
-
-                                if (k < 10)
-                                    minutesStr = 0 + String.valueOf(k);
-                                else
-                                    minutesStr = String.valueOf(k);
-
-                                if (j < 10)
-                                    hoursStr = 0 + String.valueOf(j);
-                                else
-                                    hoursStr = String.valueOf(j);
-
-                                if (i < 10)
-                                    daysStr = 0 + String.valueOf(i);
-                                else
-                                    daysStr = String.valueOf(i);
-
-                                notificationContent = daysStr + ":" + hoursStr + ":" + minutesStr + ":" + secondsStr;
-
-                                Bundle bundle = new Bundle();
-                                bundle.putString(Constants.NOTIFICATION_CONTENT, notificationContent);
-
-                                Message message = new Message();
-                                message.setData(bundle);
-
-                                messageHandler.sendMessage(message);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                formatNotification(startDate, deadline);
+                            } else {
+                                Log.d(TAG, "onResponse: Error no response");
                             }
                         }
-                    }
+
+                        @Override
+                        public void onFailure(Call<DeadlineSettings> call, Throwable throwable) {
+                            Log.e(TAG, "onFailure: Error check logs", throwable);
+                        }
+                    });
                 }
             }
+        }, 0, 5000);
+    }
+
+    private void formatNotification(String start, String end) {
+        // show that time
+        MainApplication.getSharedPreferences().edit()
+                .putBoolean(Constants.SCHEDULE, true)
+                .apply();
+
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        try {
+            // get today's date
+            Date today = calendar.getTime();
+            long todayInMillis = today.getTime();
+
+            Date startDate = sf.parse(start);
+            long startDateInMillis = startDate.getTime();
+
+            Date deadline = sf.parse(end);
+            long deadlineInMillis = deadline.getTime();
+
+            // compare dates
+            if (deadlineInMillis > todayInMillis) {
+                if (startDateInMillis > todayInMillis) {
+                    notificationContent = start + " " + end;
+
+                    Log.d(TAG, "formatNotification: " + notificationContent);
+                    MainApplication.getSharedPreferences().edit()
+                            .putString(Constants.START_DATE, start)
+                            .putString(Constants.END_DATE, end)
+                            .apply();
+                    showNotification("Scheduled time for Registration: start " + start + "end " + end);
+                } else {
+                    // show that time is reached
+                    MainApplication.getSharedPreferences().edit()
+                            .putBoolean(Constants.IS_TIME_REACHED, false)
+                            .apply();
+
+                    notificationContent = DateFormat.format("dd-MM-yyyy HH:mm:ss", deadlineInMillis).toString();
+                    Log.d(TAG, "formatNotification: " + notificationContent);
+
+                    // save time state
+                    MainApplication.getSharedPreferences().edit()
+                            .putString(Constants.START_DATE, start)
+                            .putString(Constants.END_DATE, end)
+                            .apply();
+                    showNotification("Deadline is on: " + notificationContent);
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
-    private class MessageHandler extends Handler {
+    private void showNotification(String notificationContent) {
+        Intent intent = new Intent(this, TimetableActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        @Override
-        public void handleMessage(Message msg) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-            notificationContent = msg.getData().getString(Constants.NOTIFICATION_CONTENT);
+        Intent snoozeIntent = new Intent(this, ReminderIntentService.class);
+        snoozeIntent.setAction(Constants.ACTION_SNOOZE);
+        snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
 
-            notification = new NotificationCompat.Builder(ScheduleTimerIntentService.this, MainApplication.CHANNEL_ID)
-                    .setContentText(notificationContent);
+        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
 
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(ScheduleTimerIntentService.this);
-            notificationManager.notify(notificationId, notification.build());
-        }
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MainApplication.CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_schedule)
+                .setContentTitle("Scheduled unit registration")
+                .setContentText(notificationContent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .addAction(R.drawable.ic_snooze, "Remind me", snoozePendingIntent)
+                .setVisibility(VISIBILITY_PRIVATE)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        int notificationId = new Random().nextInt(10) + 20;
+        MainApplication.getSharedPreferences().edit().putInt(Constants.NOTIFICATION_ID, notificationId).apply();
+
+        notificationManager.notify(notificationId, notification.build());
     }
 }

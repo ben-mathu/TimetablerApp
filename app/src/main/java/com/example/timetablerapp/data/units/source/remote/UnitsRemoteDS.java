@@ -2,11 +2,8 @@ package com.example.timetablerapp.data.units.source.remote;
 
 import android.util.Log;
 
-import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.timetable.TimetableApi;
-import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.timetable.model.TimetableResponse;
 import com.example.timetablerapp.data.units.UnitApi;
 import com.example.timetablerapp.data.units.UnitDataSource;
@@ -22,7 +19,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * 19/05/19 -bernard
@@ -157,7 +153,7 @@ public class UnitsRemoteDS implements UnitDataSource {
     public void getAllUnitsByDepartmentId(String departmentId, UnitsLoadedCallback callback) {
         Call<UnitResponse> call = RetrofitClient.getRetrofit()
                 .create(UnitApi.class)
-                .getUnitsByDepartmentId(departmentId);
+                .getUnitsOnOffer(departmentId);
 
         call.enqueue(new Callback<UnitResponse>() {
             @Override

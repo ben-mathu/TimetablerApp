@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:id="@+id/ll_columns"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
             android:textAlignment="center"
             android:textSize="21sp"
             android:textColor="@color/white"
-            android:background="@drawable/edittext_background"/>
+            android:background="@drawable/edit_background"/>
 
         <TextView
             android:id="@+id/text_unit"
@@ -34,14 +34,12 @@
             android:textAlignment="center"
             android:textSize="21sp"
             android:textColor="@color/white"
-            android:background="@drawable/edittext_background"/>
-    </LinearLayout>
+            android:background="@drawable/edit_background"/>
+    </LinearLayout>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_timetable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:layout_below="@+id/ll_columns"/>
+        android:orientation="horizontal"/>
 </RelativeLayout>

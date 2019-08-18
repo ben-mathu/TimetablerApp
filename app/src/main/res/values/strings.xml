@@ -27,6 +27,9 @@
     <string name="ok">ok</string>
     <string name="channel_name">Unit Registration Notification</string>
     <string name="channel_description">Notify Students when to register for courses</string>
+    <string name="surname">Surname</string>
+    <string name="placeholder">Timetable will appear here</string>
+    <string name="placeholder2">Timer</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

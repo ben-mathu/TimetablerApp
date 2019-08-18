@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
@@ -37,6 +39,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
 
     private SignUpPresenter presenter;
 
+    private TextView txtLogin;
     private EditText edtFName, edtMName, edtLName, edtUsername, edtPassword, edtAdminId;
     private Button btnRegister;
 
@@ -64,6 +67,12 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up_admin, container, false);
 
+        txtLogin = view.findViewById(R.id.text_login);
+        txtLogin.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        });
+
         edtAdminId = view.findViewById(R.id.edit_admin_id);
         edtFName = view.findViewById(R.id.edit_first_name);
         edtMName = view.findViewById(R.id.edit_middle_name);
@@ -90,6 +99,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
         View layoutView = inflater.inflate(R.layout.dialog_db_password, null);
 
         EditText editText = layoutView.findViewById(R.id.edit_password);
+        editText.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Enter Db Password");
@@ -138,7 +148,11 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
     }
 
     @Override
-    public void startLoginActiity() {
-        startActivity(new Intent(getActivity(), LoginActivity.class));
+    public void startLoginActivity() {
+        startActivity(
+                new Intent(getActivity(), LoginActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        );
+        getActivity().finish();
     }
 }

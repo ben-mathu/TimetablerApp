@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
@@ -26,7 +28,7 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
 
     private UnitsPresenter presenter;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewTimetable;
     private TimetableAdapter adapter;
 
     private String role = "";
@@ -36,34 +38,40 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onStart() {
+        super.onStart();
+
         role = MainApplication.getSharedPreferences()
                 .getString(Constants.ROLE, "");
-
-        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
 
         if (role.equalsIgnoreCase("student")) {
             presenter.getTimetableByStudentId(
                     MainApplication.getSharedPreferences()
-                        .getString(Constants.STUDENT_ID, "")
+                            .getString(Constants.USER_ID, "")
             );
         } else if (role.equalsIgnoreCase("lecturer")) {
             presenter.getTimetableByLecturerId(
                     MainApplication.getSharedPreferences()
-                        .getString(Constants.LECTURER_ID, "")
+                            .getString(Constants.USER_ID, "")
             );
         } else if (role.equalsIgnoreCase("admin")){
             presenter.getTimetable();
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_show_timetable, container, false);
-        recyclerView = view.findViewById(R.id.recycler_timetable);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerViewTimetable = view.findViewById(R.id.recycler_timetable);
+        recyclerViewTimetable.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
         return view;
     }
 
@@ -73,10 +81,12 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
     }
 
     @Override
-    public void showTimetable(List<Timetable> timetablelist) {
-        if (timetablelist != null) {
-            adapter = new TimetableAdapter(timetablelist, getActivity());
-            recyclerView.setAdapter(adapter);
+    public void showTimetable(List<Timetable> timetableList) {
+        if (timetableList != null) {
+            if (!timetableList.isEmpty()) {
+                adapter = new TimetableAdapter(timetableList, getActivity());
+                recyclerViewTimetable.setAdapter(adapter);
+            }
         }
     }
 
@@ -87,6 +97,6 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
 
     @Override
     public void showMessage(String message) {
-
+        Toast.makeText(getActivity(), "Message: " + message, Toast.LENGTH_SHORT).show();
     }
 }

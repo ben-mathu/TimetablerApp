@@ -31,8 +31,8 @@ public class FacultiesRepository implements FacultyDS {
     public void getAllFromRemote(LoadFacultiesCallBack callBack, String campusId) {
         facultyRemoteDS.getAllFromRemote(new LoadFacultiesCallBack() {
             @Override
-            public void gettinFacultiesSuccessful(List<Faculty> faculties) {
-                callBack.gettinFacultiesSuccessful(faculties);
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
+                callBack.loadingFacultiesSuccessful(faculties);
             }
 
             @Override
@@ -46,8 +46,8 @@ public class FacultiesRepository implements FacultyDS {
     public void getAllFromRemote(LoadFacultiesCallBack callBack) {
         facultyRemoteDS.getAllFromRemote(new LoadFacultiesCallBack() {
             @Override
-            public void gettinFacultiesSuccessful(List<Faculty> faculties) {
-                callBack.gettinFacultiesSuccessful(faculties);
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
+                callBack.loadingFacultiesSuccessful(faculties);
             }
 
             @Override

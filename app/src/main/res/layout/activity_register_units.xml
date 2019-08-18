@@ -49,13 +49,17 @@
         android:id="@+id/unit_to_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_below="@+id/toolbar_user_details"/>
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/toolbar_user_details"
+        android:layout_above="@+id/button_register_units"/>
 
     <Button
+        android:id="@+id/button_register_units"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_alignParentBottom="true"
         android:text="@string/register"
         android:textColor="@color/white"

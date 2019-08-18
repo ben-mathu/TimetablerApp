@@ -25,10 +25,10 @@ public interface UnitApi {
     @GET("students/units")
     Call<UnitResponse> getUnitsByStudentId(@Query(Constants.STUDENT_ID) String strId);
 
-    @GET("get-units")
-    Call<UnitResponse> getUnitsByDepartmentId(@Query(Constants.DEPARTMENT_ID) String departmentId);
+    @GET("units-on-offer")
+    Call<UnitResponse> getUnitsOnOffer(@Query(Constants.DEPARTMENT_ID) String department);
 
-    @PUT("submit-units/{" + Constants.STUDENT_ID + "}")
+    @PUT("submit-units")
     Call<SuccessfulReport> submitRegisteredUnits(@Header("Content-Type") String contentType,
                                                  @Query(Constants.STUDENT_ID) String userId,
                                                  @Body UnitsRequest request);

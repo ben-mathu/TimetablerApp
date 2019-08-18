@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProgrammeDS extends DataSource<Programme> {
     void getAllFromRemote(LoadProgrammesCallBack callBack, String name);
 
+    void getFromLocalDb(LoadProgrammesCallBack callBack);
+
     interface LoadProgrammesCallBack {
         void loadProgrammesSuccessfully(List<Programme> programmes);
         void dataNotAvailable(String message);

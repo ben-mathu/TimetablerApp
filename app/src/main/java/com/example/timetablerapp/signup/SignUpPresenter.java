@@ -109,7 +109,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     public void getFaculties(String campusId) {
         facultiesRepository.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
-            public void gettinFacultiesSuccessful(List<Faculty> faculties) {
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
                 view.showFaculties(faculties);
             }
 
@@ -122,13 +122,13 @@ public class SignUpPresenter implements SignUpContract.Presenter {
 
     @Override
     public void registerUser(Lecturer lec) {
-        if (lec.getPassword().isEmpty() &&
-                lec.getFacultyId().isEmpty() &&
-                lec.getDepartmentId().isEmpty() &&
-                lec.getFirstName().isEmpty() &&
-                lec.getId().isEmpty() &&
-                lec.getLastName().isEmpty() &&
-                lec.getMiddleName().isEmpty() &&
+        if (lec.getPassword().isEmpty() ||
+                lec.getFacultyId().isEmpty() ||
+                lec.getDepartmentId().isEmpty() ||
+                lec.getFirstName().isEmpty() ||
+                lec.getId().isEmpty() ||
+                lec.getLastName().isEmpty() ||
+                lec.getMiddleName().isEmpty() ||
                 lec.getUsername().isEmpty()
         ) {
             view.showMessages("Please fill out the form all field are required");
@@ -144,9 +144,9 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         }
         lecturerRepo.userSignUp(new UserDataSource.UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
+            public void userIsAuthSuccessful(String message) {
                 view.showMessages(message);
-                view.startLoginActiity();
+                view.startLoginActivity();
             }
 
             @Override
@@ -158,16 +158,16 @@ public class SignUpPresenter implements SignUpContract.Presenter {
 
     @Override
     public void registerUser(Student student, Department department, Faculty faculty, Campus campus, Programme programme) {
-        if (student.getPassword().isEmpty() &&
-                student.getFacultyId().isEmpty() &&
-                student.getDepartmentId().isEmpty() &&
-                student.getFname().isEmpty() &&
-                student.getStudentId().isEmpty() &&
-                student.getLname().isEmpty() &&
-                student.getMname().isEmpty() &&
-                student.getUsername().isEmpty() &&
-                student.getAdmissionDate().isEmpty() &&
-                student.getProgrammeId().isEmpty() &&
+        if (student.getPassword().isEmpty() ||
+                student.getFacultyId().isEmpty() ||
+                student.getDepartmentId().isEmpty() ||
+                student.getFname().isEmpty() ||
+                student.getStudentId().isEmpty() ||
+                student.getLname().isEmpty() ||
+                student.getMname().isEmpty() ||
+                student.getUsername().isEmpty() ||
+                student.getAdmissionDate().isEmpty() ||
+                student.getProgrammeId().isEmpty() ||
                 student.getYearOfStudy().isEmpty()
         ) {
             view.showMessages("Please fill out the form all field are required");
@@ -183,9 +183,9 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         }
         studentRepo.userSignUp(new UserDataSource.UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
+            public void userIsAuthSuccessful(String message) {
                 view.showMessages(message);
-                view.startLoginActiity();
+                view.startLoginActivity();
             }
 
             @Override
@@ -203,11 +203,11 @@ public class SignUpPresenter implements SignUpContract.Presenter {
 
     @Override
     public void registerUser(Admin admin, String pass) {
-        if (admin.getPassword().isEmpty() &&
-                admin.getfName().isEmpty() &&
-                admin.getAdminId().isEmpty() &&
-                admin.getlName().isEmpty() &&
-                admin.getmName().isEmpty() &&
+        if (admin.getPassword().isEmpty() ||
+                admin.getfName().isEmpty() ||
+                admin.getAdminId().isEmpty() ||
+                admin.getlName().isEmpty() ||
+                admin.getmName().isEmpty() ||
                 admin.getUsername().isEmpty()
         ) {
             view.showMessages("Please fill out the form all field are required");
@@ -224,9 +224,9 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         adminRepo.userSignUp(new UserDataSource.UserAuthCallback() {
 
             @Override
-            public void userIsAuthSuccessfull(String message) {
+            public void userIsAuthSuccessful(String message) {
                 view.showMessages(message);
-                view.startLoginActiity();
+                view.startLoginActivity();
             }
 
             @Override
@@ -240,7 +240,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     public void getFaculties() {
         facultiesRepository.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
-            public void gettinFacultiesSuccessful(List<Faculty> faculties) {
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
                 view.showFaculties(faculties);
             }
 

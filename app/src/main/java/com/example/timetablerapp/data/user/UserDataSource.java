@@ -2,9 +2,6 @@ package com.example.timetablerapp.data.user;
 
 import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
-import com.example.timetablerapp.data.user.lecturer.LecturerDS;
-import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
-import com.example.timetablerapp.data.user.student.model.Student;
 
 /**
  * 19/05/19 -bernard
@@ -15,10 +12,11 @@ public interface UserDataSource<T> extends DataSource<T> {
 
     interface UserAuthCallback {
 
-        void userIsAuthSuccessfull(String message);
+        void userIsAuthSuccessful(String message);
         void authNotSuccessful(String message);
     }
-    void validateUser(String role, String username, String password, UserAuthCallback callback);
+
+    void validateUser(String role, String username, String password, String userId, UserAuthCallback callback);
 
     void sendUserRole(GetSaltCallBack callBack, String role);
 

@@ -2,26 +2,25 @@ package com.example.timetablerapp.data.user.student;
 
 
 import com.example.timetablerapp.data.user.UserDataSource;
-import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.model.Student;
-import com.example.timetablerapp.data.user.student.source.StudentDataSourceLocal;
-import com.example.timetablerapp.data.user.student.source.StudentDataSourceRemote;
+import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
+import com.example.timetablerapp.data.user.student.source.StudentRemoteDS;
 
 /**
  * 06/05/19 -bernard
  */
 public class StudentRepository implements UserDataSource<Student> {
     private static StudentRepository INSTANCE = null;
-    private StudentDataSourceRemote userDataSourceRemote;
-    private StudentDataSourceLocal userDataSourceLocal;
+    private StudentRemoteDS userDataSourceRemote;
+    private StudentLocalDS userDataSourceLocal;
 
 
-    public StudentRepository(StudentDataSourceRemote userDataSourceRemote, StudentDataSourceLocal userDataSourceLocal) {
+    public StudentRepository(StudentRemoteDS userDataSourceRemote, StudentLocalDS userDataSourceLocal) {
         this.userDataSourceLocal = userDataSourceLocal;
         this.userDataSourceRemote = userDataSourceRemote;
     }
 
-    public static StudentRepository newInstance(StudentDataSourceRemote userDataSourceRemote, StudentDataSourceLocal userDataSourceLocal) {
+    public static StudentRepository newInstance(StudentRemoteDS userDataSourceRemote, StudentLocalDS userDataSourceLocal) {
         if (INSTANCE == null) {
             INSTANCE = new StudentRepository(userDataSourceRemote, userDataSourceLocal);
         }
@@ -33,8 +32,8 @@ public class StudentRepository implements UserDataSource<Student> {
         save(obj);
         userDataSourceRemote.userSignUp(new UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
-                callBack.userIsAuthSuccessfull(message);
+            public void userIsAuthSuccessful(String message) {
+                callBack.userIsAuthSuccessful(message);
             }
 
             @Override
@@ -51,11 +50,11 @@ public class StudentRepository implements UserDataSource<Student> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
-        userDataSourceRemote.validateUser(role, username, password, new UserAuthCallback() {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+        userDataSourceRemote.validateUser(role, username, password, userId, new UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
-                callback.userIsAuthSuccessfull(message);
+            public void userIsAuthSuccessful(String message) {
+                callback.userIsAuthSuccessful(message);
             }
 
             @Override

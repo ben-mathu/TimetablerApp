@@ -6,28 +6,22 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
+import com.example.timetablerapp.timetable.dialog.ReminderDialogActivity;
+
 /**
  * 14/06/19 -bernard
  */
 public class ReminderIntentService extends IntentService {
 
-    public ReminderIntentService(String name) {
-        super(name);
+    public ReminderIntentService() {
+        super("Reminder Service");
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this)
-                .setTitle("Reminder")
-                .setPositiveButton("ok", (dialogInterface, i) -> {
+        Intent activityIntent = new Intent(this, ReminderDialogActivity.class);
+        activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-                })
-                .setNegativeButton("Cancel", (dialogInterface, i) -> {
-                    
-                })
-                .setCancelable(false);
-
-        dialog.create();
-        dialog.show();
+        startActivity(activityIntent);
     }
 }

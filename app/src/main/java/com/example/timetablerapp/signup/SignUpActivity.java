@@ -1,5 +1,6 @@
 package com.example.timetablerapp.signup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,9 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.timetablerapp.MainActivity;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.login.LoginActivity;
 
 /**
  * 08/05/19 -bernard
@@ -56,6 +59,7 @@ public class SignUpActivity extends AppCompatActivity {
                         .putString(Constants.ROLE, "")
                         .apply();
                 Toast.makeText(this, "Press the back button", Toast.LENGTH_LONG).show();
+                startActivity(new Intent(this, MainActivity.class));
         }
         return true;
     }
@@ -104,5 +108,11 @@ public class SignUpActivity extends AppCompatActivity {
                         .commit();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }

@@ -1,7 +1,5 @@
 package com.example.timetablerapp.data.user.lecturer;
 
-import android.database.Cursor;
-
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerLocalDS;
@@ -30,11 +28,11 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
 
     @Override
     public void userSignUp(UserAuthCallback callBack, Lecturer lecturer, String pass) {
-        save(lecturer);
         lecturerRemoteDS.userSignUp(new UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
-                callBack.userIsAuthSuccessfull(message);
+            public void userIsAuthSuccessful(String message) {
+                save(lecturer);
+                callBack.userIsAuthSuccessful(message);
             }
 
             @Override
@@ -48,8 +46,8 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
     public void authUser(UserAuthCallback callBack, Lecturer lecturer) {
         lecturerRemoteDS.userSignUp(new UserAuthCallback(){
             @Override
-            public void userIsAuthSuccessfull(String message) {
-                callBack.userIsAuthSuccessfull(message);
+            public void userIsAuthSuccessful(String message) {
+                callBack.userIsAuthSuccessful(message);
             }
 
             @Override
@@ -60,11 +58,25 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
-        lecturerLocalDS.validateUser(role, username, password, new UserAuthCallback() {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+        lecturerLocalDS.validateUser(role, username, password, userId, new UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
-                callback.userIsAuthSuccessfull(message);
+            public void userIsAuthSuccessful(String message) {
+                callback.userIsAuthSuccessful(message);
+            }
+
+            @Override
+            public void authNotSuccessful(String message) {
+                validateUserFromRemote(role, username, password, userId, callback)
+;            }
+        });
+    }
+
+    private void validateUserFromRemote(String role, String username, String password, String userId, UserAuthCallback callback) {
+        lecturerRemoteDS.validateUser(role, username, password, userId, new UserAuthCallback() {
+            @Override
+            public void userIsAuthSuccessful(String message) {
+                callback.userIsAuthSuccessful(message);
             }
 
             @Override

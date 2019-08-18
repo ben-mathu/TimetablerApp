@@ -96,7 +96,7 @@ object TimetablerContract {
                     "${TimetablerContract.Admin.USERNAME} VARCHAR(15) UNIQUE," +
                     "${TimetablerContract.Admin.PASSWORD} VARCHAR(32) UNIQUE)"
 
-    const val SQL_DELETE_ADMIN = "DROP TABLE IF EXISTS ${TimetablerContract.Lecturer.TABLE_NAME}"
+    const val SQL_DELETE_ADMIN = "DROP TABLE IF EXISTS ${TimetablerContract.Admin.TABLE_NAME}"
 
     // define campus details
     object Campus : BaseColumns {
@@ -107,7 +107,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_CAMPUS_TABLE =
             "CREATE TABLE ${Campus.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${Campus.CAMPUS_ID} VARCHAR(25)," +
                     "${Campus.CAMPUS_NAME} VARCHAR(255))"
 
@@ -122,7 +122,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_FACULTY_TABLE =
             "CREATE TABLE ${Faculty.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${Faculty.FACULTY_ID} VARCHAR(25)," +
                     "${Faculty.FACULTY_NAME} VARCHAR(255)," +
                     "${Faculty.CAMPUS_ID} VARCHAR(25))"
@@ -139,7 +139,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_DEPARTMENT_TABLE =
             "CREATE TABLE ${Department.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${Department.DEPARTMENT_ID} VARCHAR(25)," +
                     "${Department.DEPARTMENT_NAME} VARCHAR(25)," +
                     "${Department.FACULTY_ID} VARCHAR(25))"
@@ -156,7 +156,7 @@ object TimetablerContract {
 
     const val SQL_CREATE_PROGRAMME_TABLE =
             "CREATE TABLE ${Programme.TABLE_NAME} (" +
-                    "${BaseColumns._ID} INTERGER PRIMARY KEY," +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
                     "${Programme.PROGRAMME_ID} VARCHAR(25)," +
                     "${Programme.PROGRAMME_NAME} VARCHAR(255)," +
                     "${Programme.DEPARTMENT_ID} VARCHAR(25)," +

@@ -27,6 +27,11 @@ public class ProgLocalDS implements ProgrammeDS {
     }
 
     @Override
+    public void getFromLocalDb(LoadProgrammesCallBack callBack) {
+
+    }
+
+    @Override
     public void update(Programme item) {
 
     }

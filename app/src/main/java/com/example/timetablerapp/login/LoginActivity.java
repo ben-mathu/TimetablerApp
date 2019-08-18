@@ -45,9 +45,23 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private EditText edtUsername, edtPassword;
     private Button btnLogin;
     private ProgressBar progressBar;
-    private TextView txtSignUp;
+    private TextView txtSignUp, txtClearRole;
 
+    private boolean isLoggedIn = false;
     private String notificationContent = "";
+    private String role;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isLoggedIn = MainApplication.getSharedPreferences().getBoolean(Constants.IS_LOGGED_IN, false);
+
+        // check if session is saved
+        if (isLoggedIn) {
+            startActivity(new Intent(this, TimetableActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +81,21 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             finish();
         });
 
-        btnLogin.setOnClickListener(v -> loginPresenter.login());
+        txtClearRole = findViewById(R.id.text_clear_role);
+        role = txtClearRole.getText() + ": " + MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
+
+        txtClearRole.setText(role);
+
+        txtClearRole.setOnClickListener(v -> {
+            MainApplication.getSharedPreferences().edit()
+                    .putString(Constants.ROLE, "")
+                    .apply();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        });
+
+        btnLogin.setOnClickListener(v -> {
+            loginPresenter.login();
+        });
     }
 
     @Override
@@ -77,12 +105,14 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void showUsernameError(int s) {
-        edtUsername.setError(getString(R.string.username_error));
+        String message = getResources().getString(s);
+        edtUsername.setError(message);
     }
 
     @Override
     public void showPasswordError(int s) {
-        edtPassword.setError(getString(R.string.password_error));
+        String message = getResources().getString(s);
+        edtPassword.setError(message);
     }
 
     @Override
@@ -114,77 +144,88 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @Override
     public void startTimetableActivity() {
-        startActivity(new Intent(this, TimetableActivity.class));
+        //Save session
+        MainApplication.getSharedPreferences().edit()
+                .putBoolean(Constants.IS_LOGGED_IN, true)
+                .apply();
+
+        startActivity(
+                new Intent(this, TimetableActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        );
+        finish();
 
         loginPresenter.fetchSettings();
     }
 
-    @Override
-    public void configureSettings(DeadlineSettings settings) {
-        Calendar calendar = Calendar.getInstance();
+//    @Override
+//    public void configureSettings(DeadlineSettings settings) {
+//        Calendar calendar = Calendar.getInstance();
+//
+//        String startDateStr = settings.getStartDate();
+//        String deadlineStr = settings.getDeadline();
+//
+//        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+//
+//        try {
+//            // get today's date
+//            Date today = calendar.getTime();
+//            long todayInMillis = today.getTime();
+//
+//            Date startDate = sf.parse(startDateStr);
+//            long startDateInMillis = startDate.getTime();
+//
+//            Date deadline = sf.parse(deadlineStr);
+//            long deadlineInMillis = deadline.getTime();
+//
+//            // compare dates
+//            if (deadlineInMillis > todayInMillis) {
+//                if (startDateInMillis > todayInMillis) {
+//
+//                    notificationContent = "Start date: " + startDateStr + "End Date: " + deadlineStr;
+//                    showNotification(notificationContent);
+//                } else {
+//                    notificationContent = DateFormat.format("dd:HH:mm:ss", todayInMillis - deadlineInMillis).toString();
+//                    showNotification(notificationContent);
+//
+//                    // Start intent service to handle timers on the notification.
+//                    Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
+//                    intentService.putExtra(Constants.NOTIFICATION_CONTENT, notificationContent);
+//                    startService(intentService);
+//                }
+//            }
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-        String startDateStr = settings.getStartDate();
-        String deadlineStr = settings.getDeadline();
-
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-
-        try {
-            Date today = calendar.getTime();
-            long todayInMillis = today.getTime();
-
-            Date startDate = sf.parse(startDateStr);
-            long startDateInMillis = startDate.getTime();
-
-            Date deadline = sf.parse(deadlineStr);
-            long deadlineInMillis = deadline.getTime();
-
-            if (deadlineInMillis > todayInMillis) {
-                if (startDateInMillis > todayInMillis) {
-
-                    notificationContent = "Start date: " + startDateStr + "End Date: " + deadlineStr;
-                    showNotification(notificationContent);
-                } else {
-                    notificationContent = DateFormat.format("dd:HH:mm:ss", todayInMillis - deadlineInMillis).toString();
-                    showNotification(notificationContent);
-
-                    // Start intent service to handle timers on the notification.
-                    Intent intertService = new Intent(this, ScheduleTimerIntentService.class);
-                    intertService.putExtra(Constants.NOTIFICATION_CONTENT, notificationContent);
-                    startService(intertService);
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showNotification(String notificationContent) {
-        Intent intent = new Intent(this, ScheduleTimerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        Intent snoozeIntent = new Intent(this, ScheduleTimerReceiver.class);
-        snoozeIntent.setAction(Constants.ACTION_SNOOZE);
-        snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
-
-        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
-
-        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MainApplication.CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_schedule)
-                .setContentTitle("Scheduled Unit Registration")
-                .setContentText(notificationContent)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .addAction(R.drawable.ic_snooze, "Remind me", snoozePendingIntent)
-                .setVisibility(VISIBILITY_PRIVATE)
-                .setAutoCancel(true);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        int notificationId = new Random().nextInt(10) + 20;
-        MainApplication.getSharedPreferences().edit().putInt(Constants.NOTIFICATION_ID, notificationId).apply();
-
-        notificationManager.notify(notificationId, notification.build());
-    }
+//    private void showNotification(String notificationContent) {
+//        Intent intent = new Intent(this, ScheduleTimerActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//        Intent snoozeIntent = new Intent(this, ScheduleTimerReceiver.class);
+//        snoozeIntent.setAction(Constants.ACTION_SNOOZE);
+//        snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
+//
+//        PendingIntent snoozePendingIntent = PendingIntent.getBroadcast(this, 0, snoozeIntent, 0);
+//
+//        NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MainApplication.CHANNEL_ID)
+//                .setSmallIcon(R.drawable.ic_schedule)
+//                .setContentTitle("Scheduled Unit Registration")
+//                .setContentText(notificationContent)
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                .setContentIntent(pendingIntent)
+//                .addAction(R.drawable.ic_snooze, "Remind me", snoozePendingIntent)
+//                .setVisibility(VISIBILITY_PRIVATE)
+//                .setAutoCancel(true);
+//
+//        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//
+//        int notificationId = new Random().nextInt(10) + 20;
+//        MainApplication.getSharedPreferences().edit().putInt(Constants.NOTIFICATION_ID, notificationId).apply();
+//
+//        notificationManager.notify(notificationId, notification.build());
+//    }
 }

@@ -7,18 +7,16 @@ import android.util.Log;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
-import com.example.timetablerapp.data.user.lecturer.LecturerDS;
-import com.example.timetablerapp.data.user.student.StudentDataSource;
 import com.example.timetablerapp.data.user.student.model.Student;
 
 /**
  * 06/05/19 -bernard
  */
-public class StudentDataSourceLocal implements UserDataSource<Student> {
-    private static final String TAG = StudentDataSourceLocal.class.getSimpleName();
+public class StudentLocalDS implements UserDataSource<Student> {
+    private static final String TAG = StudentLocalDS.class.getSimpleName();
     private SQLiteDatabase database;
 
-    public StudentDataSourceLocal() {
+    public StudentLocalDS() {
         database = MainApplication.getWritableDatabase();
     }
 
@@ -33,7 +31,7 @@ public class StudentDataSourceLocal implements UserDataSource<Student> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }
 

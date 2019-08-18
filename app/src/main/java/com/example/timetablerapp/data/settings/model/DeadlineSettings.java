@@ -10,6 +10,8 @@ public class DeadlineSettings {
     private String startDate;
     @SerializedName("deadline")
     private String deadline;
+    @SerializedName("activity")
+    private boolean isActive = false;
 
     public String getDeadline() {
         return deadline;
@@ -25,5 +27,13 @@ public class DeadlineSettings {
 
     public void setStartDate(String startDate) {
         this.startDate = startDate;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

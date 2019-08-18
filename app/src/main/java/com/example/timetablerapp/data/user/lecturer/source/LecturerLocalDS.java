@@ -18,8 +18,8 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
     private static final String TAG = LecturerLocalDS.class.getSimpleName();
     private SQLiteDatabase database;
 
-    public LecturerLocalDS(SQLiteDatabase database) {
-        this.database = database;
+    public LecturerLocalDS() {
+        this.database = MainApplication.getWritableDatabase();
     }
 
     @Override
@@ -33,10 +33,10 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
         String passwd = getPassWd(role, username);
         if (passwd.equals(password)) {
-            callback.userIsAuthSuccessfull("Successfully logged in.");
+            callback.userIsAuthSuccessful("Successfully logged in.");
         } else {
             callback.authNotSuccessful("Username or password is wrong, please try again.");
         }
@@ -64,7 +64,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
         if (cursor.moveToFirst())  {
             passWd = cursor.getString(cursor.getColumnIndex(Constants.PASSWORD));
             MainApplication.getSharedPreferences().edit()
-                    .putString(colId,
+                    .putString(Constants.USER_ID,
                             cursor.getString(cursor.getColumnIndex(colId))).apply();
         }
 

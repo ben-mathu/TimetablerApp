@@ -3,7 +3,6 @@ package com.example.timetablerapp.login;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.encryption.Hashing;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
@@ -32,6 +31,8 @@ public class LoginPresenter {
         String password = view.getPassword();
         String role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 
+        String userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
+
         if (username.isEmpty()) {
             view.showUsernameError(R.string.username_error);
             return;
@@ -46,9 +47,9 @@ public class LoginPresenter {
             e.printStackTrace();
         }
 
-        lecturerRepo.validateUser(role, username, password, new UserDataSource.UserAuthCallback() {
+        lecturerRepo.validateUser(role, username, password, userId, new UserDataSource.UserAuthCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
+            public void userIsAuthSuccessful(String message) {
                 view.showMessage(message);
                 view.startTimetableActivity();
             }
@@ -59,19 +60,18 @@ public class LoginPresenter {
                 view.showPasswordError(R.string.auth_error);
             }
         });
-
     }
 
     public void fetchSettings() {
         lecturerRepo.fetchSettingsFromRemote(new UserDataSource.FetchSettingsCallback() {
             @Override
             public void fetchingSettingsSuccessful(DeadlineSettings settings) {
-                view.configureSettings(settings);
+//                view.configureSettings(settings);
             }
 
             @Override
             public void settingsNotAvailable(String message) {
-
+                view.showMessage(message);
             }
         });
     }

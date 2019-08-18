@@ -21,6 +21,7 @@ import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.register_units.adapter_utils.UnitsAdapter;
 import com.example.timetablerapp.timetable.TimetableActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,12 +46,16 @@ public class RegisterUnitsActivity extends AppCompatActivity implements Register
     protected void onStart() {
         super.onStart();
         presenter = new RegisterUnitsPresenter(this, this, MainApplication.getDepRepo(), MainApplication.getUnitRepo());
+
+        presenter.getDepartment();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_units);
+
+        unitList = new ArrayList<>();
 
         txtUserId = findViewById(R.id.text_user_id);
         txtUsername = findViewById(R.id.text_user_name);
@@ -62,27 +67,14 @@ public class RegisterUnitsActivity extends AppCompatActivity implements Register
         txtUserType.setText(userType);
         txtUsername.setText(username);
 
-        if (userType.equalsIgnoreCase("lecturer")) {
-            userId = MainApplication.getSharedPreferences().getString(Constants.LECTURER_ID, "");
-            txtUserId.setText(userId);
-        } else if (userType.equalsIgnoreCase("student")) {
-            userId = MainApplication.getSharedPreferences().getString(Constants.STUDENT_ID, "");
-            txtUserId.setText(userId);
-        }
+        userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
+        txtUserId.setText(userId);
 
-        recyclerView = findViewById(R.id.recycler_timetable);
+        recyclerView = findViewById(R.id.unit_to_register);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        btnRegisterUnits = findViewById(R.id.button_register);
-        btnRegisterUnits.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.submitUnits(userId, unitList);
-            }
-        });
-
-        presenter.getDepartment();
-
+        btnRegisterUnits = findViewById(R.id.button_register_units);
+        btnRegisterUnits.setOnClickListener(view -> presenter.submitUnits(userId, unitList));
     }
 
     @Override
@@ -106,7 +98,7 @@ public class RegisterUnitsActivity extends AppCompatActivity implements Register
     public void setUnits(List<Unit> units) {
         adapter = new UnitsAdapter(units, new UnitsAdapter.OnItemCheckedListener() {
             @Override
-            public void onItemCheck(Unit unit) {
+            public void onItemChecked(Unit unit) {
                 unitList.add(unit);
             }
 
@@ -125,7 +117,6 @@ public class RegisterUnitsActivity extends AppCompatActivity implements Register
 
     @Override
     public void startTimetableActivity() {
-        Intent intent = new Intent(this, TimetableActivity.class);
-        startActivity(intent);
+        finish();
     }
 }

@@ -1,14 +1,10 @@
 package com.example.timetablerapp.data.user.student.source;
 
-import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.user.UserApi;
 import com.example.timetablerapp.data.user.UserDataSource;
-import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.StudentApi;
-import com.example.timetablerapp.data.user.student.StudentDataSource;
-import com.example.timetablerapp.data.user.security_utils.SaltReponse;
+import com.example.timetablerapp.data.utils.security_utils.SaltReponse;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.model.StudentRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
@@ -20,7 +16,7 @@ import retrofit2.Response;
 /**
  * 06/05/19 -bernard
  */
-public class StudentDataSourceRemote implements UserDataSource<Student> {
+public class StudentRemoteDS implements UserDataSource<Student> {
 
     @Override
     public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
@@ -35,7 +31,7 @@ public class StudentDataSourceRemote implements UserDataSource<Student> {
             @Override
             public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
                 if (response.isSuccessful()) {
-                    callBack.userIsAuthSuccessfull("Successfully registered.");
+                    callBack.userIsAuthSuccessful("Successfully registered.");
                 } else {
                     callBack.authNotSuccessful("An Error occurred, please try again.");
                 }
@@ -54,7 +50,7 @@ public class StudentDataSourceRemote implements UserDataSource<Student> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
     }
 
     @Override

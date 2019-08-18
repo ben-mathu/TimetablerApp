@@ -14,7 +14,7 @@ public interface FacultyDS extends DataSource<Faculty> {
 
 
     interface LoadFacultiesCallBack {
-        void gettinFacultiesSuccessful(List<Faculty> faculties);
+        void loadingFacultiesSuccessful(List<Faculty> faculties);
         void dataNotAvailable(String message);
     }
 }

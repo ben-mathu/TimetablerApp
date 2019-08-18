@@ -34,7 +34,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             @Override
             public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
                 if (response.isSuccessful()) {
-                    callBack.userIsAuthSuccessfull(response.body().getMessage());
+                    callBack.userIsAuthSuccessful(response.body().getMessage());
                 } else {
                     callBack.authNotSuccessful("An error has occurred, please try again");
                 }
@@ -44,6 +44,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             public void onFailure(Call<SuccessfulReport> call, Throwable t) {
                 callBack.authNotSuccessful("An error has occurred");
                 Log.e(TAG, "onFailure: ", t);
+                t.printStackTrace();
             }
         });
     }
@@ -54,7 +55,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }
 
