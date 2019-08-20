@@ -72,9 +72,6 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
     @Override
     protected void onStart() {
         super.onStart();
-        // Start intent service to handle timers on the notification.
-        Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
-        startService(intentService);
 
         presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
 
@@ -138,6 +135,10 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
+
+        // Start intent service to handle timers on the notification.
+        Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
+        startService(intentService);
 
         isUnitRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
 
@@ -233,7 +234,6 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
                 if (timeRemaining < 1000 && isTimeAdded) {
                     timer.cancel();
-                    timer.purge();
                 }
 
                 if (timeRemaining < 1000 && !isTimeAdded) {
@@ -263,6 +263,14 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
                             .apply();
                 }
             }
+
+            @Override
+            public boolean cancel() {
+                timer.purge();
+                return super.cancel();
+            }
+
+//            schedu
         }, 0, 1000);
     }
 
@@ -295,6 +303,8 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
                 // remove session
                 MainApplication.getSharedPreferences().edit()
                         .putBoolean(Constants.IS_LOGGED_IN, false)
+                        .putBoolean(Constants.IS_TIME_ADDED, false)
+                        .putBoolean(Constants.SCHEDULE, false)
                         .putString(Constants.USER_ID, "")
                         .putString(Constants.START_DATE, "")
                         .putString(Constants.END_DATE, "")

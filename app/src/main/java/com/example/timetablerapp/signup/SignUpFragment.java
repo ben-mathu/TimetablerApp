@@ -212,14 +212,19 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         student.setPassword(edtPassword.getText().toString());
         student.setYearOfStudy(edtYearOfStudy.getText().toString());
         student.setAdmissionDate(btnDatePicker.getText().toString());
-        student.setCampusId(campuses.get(spnCampuses.getCount() > 0 ? spnCampuses.getSelectedItemPosition() : 0).getCampusId());
-        student.setFacultyId(faculties.get(spnFaculties.getCount() > 0 ? spnFaculties.getSelectedItemPosition() : 0).getFacultyId());
-        student.setDepartmentId(departmentList.get(spnDepartments.getCount() > 0 ? spnDepartments.getSelectedItemPosition() : 0).getDepartmentId());
-        student.setProgrammeId(programmes.get(spnProgrammes.getCount() > 0 ? spnProgrammes.getSelectedItemPosition() : 0).getProgrammeId());
-        boolean inSess = switchInSess.isChecked();
-        student.setInSession(inSess);
 
-        presenter.registerUser(student, department, faculty, campus, programme);
+        try {
+            student.setCampusId(campuses.get(spnCampuses.getCount() > 0 ? spnCampuses.getSelectedItemPosition() : 0).getCampusId());
+            student.setFacultyId(faculties.get(spnFaculties.getCount() > 0 ? spnFaculties.getSelectedItemPosition() : 0).getFacultyId());
+            student.setDepartmentId(departmentList.get(spnDepartments.getCount() > 0 ? spnDepartments.getSelectedItemPosition() : 0).getDepartmentId());
+            student.setProgrammeId(programmes.get(spnProgrammes.getCount() > 0 ? spnProgrammes.getSelectedItemPosition() : 0).getProgrammeId());
+            boolean inSess = switchInSess.isChecked();
+            student.setInSession(inSess);
+
+            presenter.registerUser(student, department, faculty, campus, programme);
+        } catch (IndexOutOfBoundsException e) {
+            showMessages("Requires all field, Contact admin if you have a problem");
+        }
     }
 
     @Override

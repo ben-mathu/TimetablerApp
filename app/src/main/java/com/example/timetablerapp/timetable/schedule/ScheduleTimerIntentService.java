@@ -94,10 +94,12 @@ public class ScheduleTimerIntentService extends IntentService {
                         @Override
                         public void onResponse(Call<DeadlineSettings> call, Response<DeadlineSettings> response) {
                             if (response.isSuccessful()) {
-                                String startDate = response.body().getStartDate();
-                                String deadline = response.body().getDeadline();
+                                if (response.body().getDeadline() != null && response.body().getStartDate() != null) {
+                                    String startDate = response.body().getStartDate();
+                                    String deadline = response.body().getDeadline();
 
-                                formatNotification(startDate, deadline);
+                                    formatNotification(startDate, deadline);
+                                }
                             } else {
                                 Log.d(TAG, "onResponse: Error no response");
                             }
@@ -110,7 +112,7 @@ public class ScheduleTimerIntentService extends IntentService {
                     });
                 }
             }
-        }, 0, 5000);
+        }, 0, TimeUnit.MINUTES.toMillis(5));
     }
 
     private void formatNotification(String start, String end) {
