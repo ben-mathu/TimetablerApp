@@ -11,7 +11,7 @@
         android:layout_height="160dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/download"
+        android:src="@drawable/logo"
         android:layout_centerHorizontal="true" />
 
     <TextView

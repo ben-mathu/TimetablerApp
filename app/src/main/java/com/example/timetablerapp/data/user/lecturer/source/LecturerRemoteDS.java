@@ -59,6 +59,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
     public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer, String pass) {
         LecturerRequest lecturerRequest = new LecturerRequest();
         lecturerRequest.setLecturer(lecturer);
+        lecturerRequest.setPass(pass);
 
         Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
                 .create(LecturerApi.class)

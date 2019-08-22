@@ -39,7 +39,7 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
             public void authNotSuccessful(String message) {
                 callBack.authNotSuccessful(message);
             }
-        }, lecturer, "");
+        }, lecturer, pass);
     }
 
     @Override
