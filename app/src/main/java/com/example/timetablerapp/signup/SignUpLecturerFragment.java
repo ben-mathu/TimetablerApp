@@ -1,11 +1,14 @@
 package com.example.timetablerapp.signup;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
@@ -55,6 +58,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     private String role = "";
     private String depName = "";
     private String facultyName = "";
+    private String dbPassword;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +123,31 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         boolean inSess = switchInSess.isChecked();
         lec.setInSesson(inSess);
 
-        presenter.registerUser(lec);
+        LayoutInflater inflater = getLayoutInflater();
+        View layoutView = inflater.inflate(R.layout.dialog_db_password, null);
+
+        EditText editText = layoutView.findViewById(R.id.edit_password);
+        editText.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Enter Db Password");
+        builder.setView(layoutView);
+        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dbPassword = editText.getText().toString();
+                presenter.registerUser(lec, dbPassword);
+            }
+        });
+
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
     }
 
     private String getDepartmentId(String depName) {

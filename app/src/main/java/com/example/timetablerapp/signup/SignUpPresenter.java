@@ -121,7 +121,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void registerUser(Lecturer lec) {
+    public void registerUser(Lecturer lec, String passw) {
         if (lec.getPassword().isEmpty() ||
                 lec.getFacultyId().isEmpty() ||
                 lec.getDepartmentId().isEmpty() ||
@@ -153,7 +153,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void authNotSuccessful(String message) {
                 view.showMessages(message);
             }
-        }, lec, "");
+        }, lec, passw);
     }
 
     @Override
@@ -208,7 +208,8 @@ public class SignUpPresenter implements SignUpContract.Presenter {
                 admin.getAdminId().isEmpty() ||
                 admin.getlName().isEmpty() ||
                 admin.getmName().isEmpty() ||
-                admin.getUsername().isEmpty()
+                admin.getUsername().isEmpty() ||
+                pass.isEmpty()
         ) {
             view.showMessages("Please fill out the form all field are required");
             return;

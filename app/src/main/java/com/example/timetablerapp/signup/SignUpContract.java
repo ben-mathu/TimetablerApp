@@ -35,7 +35,7 @@ public interface SignUpContract {
         void getCampuses();
         void getFaculties(String campusName);
 
-        void registerUser(Lecturer lec);
+        void registerUser(Lecturer lec, String passw);
 
         void registerUser(Student student, Department department, Faculty faculty, Campus campus, Programme programme);
 
