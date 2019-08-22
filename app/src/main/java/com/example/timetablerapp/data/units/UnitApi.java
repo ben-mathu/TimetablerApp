@@ -32,6 +32,10 @@ public interface UnitApi {
     Call<SuccessfulReport> submitRegisteredUnits(@Header("Content-Type") String contentType,
                                                  @Query(Constants.STUDENT_ID) String userId,
                                                  @Body UnitsRequest request);
+    @PUT("submit-units")
+    Call<SuccessfulReport> submitRegisteredUnitsLec(@Header("Content-Type") String contentType,
+                                                 @Query(Constants.LECTURER_ID) String userId,
+                                                 @Body UnitsRequest request);
 
     @PUT("set-registration-date")
     Call<SuccessfulReport> setRegistrationDeadline(@Header("Content-Type") String contentType,

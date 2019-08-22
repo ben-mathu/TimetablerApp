@@ -38,7 +38,9 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableViewHolder> 
         String timeslot = timetableList.get(i).getTimeslot().getDay() + " " + timetableList.get(i).getTimeslot().getTime();
 
         holder.txtTimeslot.setText(timeslot);
-        holder.txtUnit.setText(timetableList.get(i).getUnit().getUnitName());
+        if (timetableList.get(i).getUnit() != null) {
+            holder.txtUnit.setText(timetableList.get(i).getUnit().getUnitName());
+        }
     }
 
     @Override
