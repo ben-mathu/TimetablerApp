@@ -25,6 +25,7 @@ import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.register_units.RegisterUnitsActivity;
+import com.example.timetablerapp.show_units.RegisteredUnitsActivity;
 import com.example.timetablerapp.timetable.chat.ChatSectionFragment;
 import com.example.timetablerapp.timetable.dialog.ScheduleRegistration;
 import com.example.timetablerapp.timetable.schedule.ScheduleTimerIntentService;
@@ -72,6 +73,7 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
     @Override
     protected void onStart() {
         super.onStart();
+        isUnitRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
 
         presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
 
@@ -139,8 +141,6 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
         // Start intent service to handle timers on the notification.
         Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
         startService(intentService);
-
-        isUnitRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
 
         txtUserId = findViewById(R.id.text_user_id);
         txtUsername = findViewById(R.id.text_user_name);
@@ -234,6 +234,8 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
                 if (timeRemaining < 1000 && isTimeAdded) {
                     timer.cancel();
+                    startActivity(new Intent(TimetableActivity.this, TimetableActivity.class));
+                    finish();
                 }
 
                 if (timeRemaining < 1000 && !isTimeAdded) {
@@ -276,17 +278,19 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
         if (userType.equalsIgnoreCase("admin")) {
-            menu.add(0,0,0, R.string.schedule_registration);
+            menu.add(0,102,0, R.string.schedule_registration);
         }
 
         if (userType.equalsIgnoreCase("student") ||
                 userType.equalsIgnoreCase("lecturer") ||
-                userType.equalsIgnoreCase("admin") && isUnitRegistrationScheduled) {
-            menu.add(0, 1, 1, "Register Units");
+                userType.equalsIgnoreCase("admin")) {
+            if (isUnitRegistrationScheduled || userType.equalsIgnoreCase("admin")) {
+                menu.add(0, 103, 1, "Register Units");
+            }
         }
-
-        getMenuInflater().inflate(R.menu.main_menu, menu);
 
         return true;
     }
@@ -312,11 +316,13 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
                         .putInt(Constants.NOTIFICATION_ID, 0)
                         .apply();
                 break;
-            case 0:
+            case R.id.show_registered_units:
+                startActivity(new Intent(this, RegisteredUnitsActivity.class));
+            case 102:
                 DialogFragment dialog = new ScheduleRegistration();
                 dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
                 break;
-            case 1:
+            case 103:
                 startActivity(new Intent(this, RegisterUnitsActivity.class));
                 break;
             default:

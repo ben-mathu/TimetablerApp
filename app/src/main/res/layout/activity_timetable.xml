@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.v7.widget.Toolbar
@@ -73,16 +74,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:visibility="gone"
-        android:layout_below="@+id/toolbar_user_details"/>
+        tools:visibility="visible"/>
 
     <TextView
         android:id="@+id/text_timetable_schedule"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
-        android:layout_below="@+id/toolbar_user_details"
         android:background="@color/transparent"
-        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
         android:text="@string/placeholder"
         android:visibility="visible"
         android:textAlignment="center"
@@ -92,10 +92,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_below="@+id/timetable_fragment_container"
         android:orientation="vertical">
 
         <TextView
@@ -103,7 +102,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_below="@+id/timetable_fragment_container"
             android:text="Chat/Forum"
             android:textColor="@color/white"/>
 
@@ -119,7 +117,6 @@
             android:id="@+id/chat_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/text_title"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

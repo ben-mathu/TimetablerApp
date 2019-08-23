@@ -65,6 +65,17 @@ public class UnitsAdapter extends RecyclerView.Adapter<UnitViewHolder> {
         return unitList.size();
     }
 
+    public void removeUnitsFromList(List<Unit> units) {
+        top:for (Unit unit : units) {
+            for (Unit u : unitList) {
+                if (u.getId().equals(unit.getId())) {
+                    unitList.remove(u);
+                    continue top;
+                }
+            }
+        }
+    }
+
     public interface OnItemCheckedListener {
         void onItemChecked(Unit unit);
         void onItemUnchecked(Unit unit);

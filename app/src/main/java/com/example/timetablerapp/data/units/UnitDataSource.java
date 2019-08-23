@@ -15,6 +15,8 @@ public interface UnitDataSource extends DataSource<Unit> {
 
     void getUnitsByStudentId(String strId, UnitsLoadedCallback callback);
 
+    void getUnits(UnitsLoadedCallback callback);
+
     void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback);
 
     void getTimetableByLecturerId(String lecturerId, TimetableLoadedCallback callback);
@@ -26,6 +28,10 @@ public interface UnitDataSource extends DataSource<Unit> {
     void submitRegisteredUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback);
 
     void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback);
+
+    void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback);
+
+
 
     interface UnitsRegisteredCallback {
         void successful(String message);

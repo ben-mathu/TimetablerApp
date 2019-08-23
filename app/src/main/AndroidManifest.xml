@@ -38,6 +38,9 @@
 
         <activity android:name=".timetable.chat.OpenChatActivity" />
 
+        <activity android:name=".show_units.RegisteredUnitsActivity"
+            android:theme="@style/AppThemeNoActionBar"/>
+
         <receiver android:name=".timetable.schedule.ScheduleTimerReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

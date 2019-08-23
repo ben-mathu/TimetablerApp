@@ -40,4 +40,21 @@ public interface UnitApi {
     @PUT("set-registration-date")
     Call<SuccessfulReport> setRegistrationDeadline(@Header("Content-Type") String contentType,
                                                    @Body UnitsRemoteDS.DeadlineRequest request);
+
+    @PUT("delete-unit")
+    Call<SuccessfulReport> removeUnits(@Header("Content-Type") String contentType,
+                                       @Body UnitRequest req,
+                                       @Query(Constants.STUDENT_ID) String userId);
+
+    @PUT("delete-unit")
+    Call<SuccessfulReport> removeUnitsLec(@Header("Content-Type") String contentType,
+                                          @Body UnitRequest req,
+                                          @Query(Constants.LECTURER_ID) String userId);
+
+    @PUT("delete-unit")
+    Call<SuccessfulReport> removeUnitsAdmin(@Header("Content-Type") String contentType,
+                                            @Body UnitRequest req);
+
+    @GET("registered-units")
+    Call<UnitResponse> getUnitsGeneral();
 }

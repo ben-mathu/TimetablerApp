@@ -121,7 +121,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void registerUser(Lecturer lec, String passw) {
+    public void registerUser(Lecturer lec, String passw, Faculty faculty, Department department) {
         if (lec.getPassword().isEmpty() ||
                 lec.getFacultyId().isEmpty() ||
                 lec.getDepartmentId().isEmpty() ||
@@ -154,6 +154,9 @@ public class SignUpPresenter implements SignUpContract.Presenter {
                 view.showMessages(message);
             }
         }, lec, passw);
+
+        departmentRepository.save(department);
+        facultiesRepository.save(faculty);
     }
 
     @Override

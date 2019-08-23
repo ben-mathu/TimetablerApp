@@ -85,7 +85,34 @@ public class ScheduleTimerIntentService extends IntentService {
             @Override
             public void run() {
                 isRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
-                if (!isRegistrationScheduled) {
+                String role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
+                if (!isRegistrationScheduled && role.equalsIgnoreCase("lecturer")) {
+                    String userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
+                    Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
+                            .create(TimerApi.class)
+                            .getRegistrationSchedule(userId);
+
+                    call.enqueue(new Callback<DeadlineSettings>() {
+                        @Override
+                        public void onResponse(Call<DeadlineSettings> call, Response<DeadlineSettings> response) {
+                            if (response.isSuccessful()) {
+                                if (response.body().getDeadline() != null && response.body().getStartDate() != null) {
+                                    String startDate = response.body().getStartDate();
+                                    String deadline = response.body().getDeadline();
+
+                                    formatNotification(startDate, deadline);
+                                }
+                            } else {
+                                Log.d(TAG, "onResponse: Error no response");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<DeadlineSettings> call, Throwable throwable) {
+                            Log.e(TAG, "onFailure: Error check logs", throwable);
+                        }
+                    });
+                } else {
                     Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
                             .create(TimerApi.class)
                             .getRegistrationSchedule();
@@ -102,6 +129,9 @@ public class ScheduleTimerIntentService extends IntentService {
                                 }
                             } else {
                                 Log.d(TAG, "onResponse: Error no response");
+                                MainApplication.getSharedPreferences().edit()
+                                        .putBoolean(Constants.SCHEDULE, false)
+                                        .apply();
                             }
                         }
 

@@ -5,4 +5,13 @@
     <item android:id="@+id/logout"
         android:title="@string/logout"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/show_registered_units"
+        android:title="@string/registered_units"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/show_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom" />
 </menu>

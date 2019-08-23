@@ -75,6 +75,21 @@ public class UnitsRepo implements UnitDataSource {
     }
 
     @Override
+    public void getUnits(UnitsLoadedCallback callback) {
+        unitsRemoteDS.getUnits(new UnitsLoadedCallback() {
+            @Override
+            public void successful(List<Unit> units) {
+                callback.successful(units);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
     public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
         unitsRemoteDS.getTimetableByStudentId(studentId, new TimetableLoadedCallback() {
             @Override
@@ -142,6 +157,21 @@ public class UnitsRepo implements UnitDataSource {
     @Override
     public void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback) {
         unitsRemoteDS.setRegistrationDeadline(startDate, deadline, new UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
+        unitsRemoteDS.removeUnits(userId, unitList, new UnitDataSource.UnitsRegisteredCallback() {
             @Override
             public void successful(String message) {
                 callback.successful(message);

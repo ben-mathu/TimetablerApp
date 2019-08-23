@@ -35,6 +35,11 @@ public class UnitsLocalDS implements UnitDataSource {
     }
 
     @Override
+    public void getUnits(UnitsLoadedCallback callback) {
+
+    }
+
+    @Override
     public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
 
     }
@@ -61,6 +66,11 @@ public class UnitsLocalDS implements UnitDataSource {
 
     @Override
     public void setRegistrationDeadline(String startDate, String deadline, UnitsRegisteredCallback callback) {
+
+    }
+
+    @Override
+    public void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
 
     }
 }

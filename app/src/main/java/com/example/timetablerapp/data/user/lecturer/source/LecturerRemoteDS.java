@@ -186,7 +186,6 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
                 public void onResponse(Call<LecturerResponse> call, Response<LecturerResponse> response) {
                     if (response.isSuccessful() &&
                             response.body().getLecturer() != null &&
-                            response.body().getProgramme() != null &&
                             response.body().getFaculty() != null &&
                             response.body().getDepartment() != null) {
                         Lecturer lecturer = response.body().getLecturer();
@@ -200,7 +199,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
 
                                 departmentLocalDS.save(response.body().getDepartment());
                                 facultyLocalDS.save(response.body().getFaculty());
-                                progLocalDS.save(response.body().getProgramme());
+//                                progLocalDS.save(response.body().getProgramme());
 
                                 callback.userIsAuthSuccessful("Authentication Successful");
                             } else {

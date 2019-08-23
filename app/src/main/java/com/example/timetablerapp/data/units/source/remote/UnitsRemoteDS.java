@@ -99,6 +99,33 @@ public class UnitsRemoteDS implements UnitDataSource {
     }
 
     @Override
+    public void getUnits(UnitsLoadedCallback callback) {
+        Call<UnitResponse> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .getUnitsGeneral();
+
+        call.enqueue(new Callback<UnitResponse>() {
+            @Override
+            public void onResponse(Call<UnitResponse> call, Response<UnitResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Unit> unitList = response.body().getUnitList();
+                    if (unitList != null) {
+                        callback.successful(unitList);
+                    }
+                } else {
+                    callback.unsuccessful("Units are not available, please contact admin");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnitResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                callback.unsuccessful("An error occurred, please contact admin.");
+            }
+        });
+    }
+
+    @Override
     public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
         Call<TimetableResponse> call = RetrofitClient.getRetrofit()
                 .create(TimetableApi.class)
@@ -254,6 +281,87 @@ public class UnitsRemoteDS implements UnitDataSource {
                 callback.unsuccessful(t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
+        String role = MainApplication.getSharedPreferences()
+                .getString(Constants.ROLE, "");
+
+        UnitRequest req = new UnitRequest();
+        req.setUnits(unitList);
+
+        if (role.equalsIgnoreCase("student")) {
+            Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                    .create(UnitApi.class)
+                    .removeUnits("application/json", req, userId);
+
+            call.enqueue(new Callback<SuccessfulReport>() {
+                @Override
+                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            callback.successful(response.body().getMessage());
+                        }
+                    } else {
+                        callback.unsuccessful("An error occurred units were not removed, please contact administrator");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                    callback.unsuccessful("An error occurred units were not removed, please contact administrator");
+                }
+            });
+        }
+
+        if (role.equalsIgnoreCase("lecturer")) {
+            Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                    .create(UnitApi.class)
+                    .removeUnitsLec("application/json", req, userId);
+
+            call.enqueue(new Callback<SuccessfulReport>() {
+                @Override
+                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            callback.successful(response.body().getMessage());
+                        }
+                    } else {
+                        callback.unsuccessful("An error occurred units were not removed, please contact administrator");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                    callback.unsuccessful("An error occurred units were not removed, please contact administrator");
+                }
+            });
+        }
+
+        if (role.equalsIgnoreCase("admin")) {
+            Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                    .create(UnitApi.class)
+                    .removeUnitsAdmin("application/json", req);
+
+            call.enqueue(new Callback<SuccessfulReport>() {
+                @Override
+                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            callback.successful(response.body().getMessage());
+                        }
+                    } else {
+                        callback.unsuccessful("An error occurred units were not removed, please contact administrator");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                    callback.unsuccessful("An error occurred units were not removed, please contact administrator");
+                }
+            });
+        }
     }
 
     public class DeadlineRequest {

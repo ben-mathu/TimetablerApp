@@ -55,6 +55,9 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     private List<Faculty> faculties;
     private List<Department> departments;
 
+    private Faculty faculty;
+    private Department department;
+
     private String role = "";
     private String depName = "";
     private String facultyName = "";
@@ -136,7 +139,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dbPassword = editText.getText().toString();
-                presenter.registerUser(lec, dbPassword);
+                presenter.registerUser(lec, dbPassword, faculty, department);
             }
         });
 
@@ -186,21 +189,15 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 facultyName = parent.getItemAtPosition(position).toString();
-                for (Faculty faculty : faculties) {
-                    if (facultyName.equals(faculty.getFacultyName())) {
-                        presenter.getDepartments(faculty.getFacultyId());
-                    }
-                }
+                presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
+                faculty = faculties.get(parent.getSelectedItemPosition());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 facultyName = parent.getSelectedItem().toString();
-                for (Faculty faculty : faculties) {
-                    if (facultyName.equals(faculty.getFacultyName())) {
-                        presenter.getDepartments(faculty.getFacultyId());
-                    }
-                }
+                presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
+                faculty = faculties.get(parent.getSelectedItemPosition());
             }
         });
     }
@@ -227,6 +224,17 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
                     android.R.layout.simple_spinner_dropdown_item, departmentNames);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnDepartments.setAdapter(arrayAdapter);
+            spnDepartments.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    department = departments.get(adapterView.getSelectedItemPosition());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    department = departments.get(adapterView.getSelectedItemPosition());
+                }
+            });
         } else {
             Toast.makeText(getActivity(), "Sorry there are not departments in faculty: " + facultyName, Toast.LENGTH_SHORT).show();
         }

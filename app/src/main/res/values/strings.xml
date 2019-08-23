@@ -30,6 +30,9 @@
     <string name="surname">Surname</string>
     <string name="placeholder">Timetable will appear here</string>
     <string name="placeholder2">Timer</string>
+    <string name="registered_units">Show Registered Units</string>
+    <string name="remove">Remove</string>
+    <string name="settings">Settings</string>
 
     <string-array name="roles">
         <item>Lecturer</item>
