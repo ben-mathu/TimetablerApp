@@ -1,9 +1,7 @@
-package com.example.timetablerapp.timetable.dialog;
+package com.example.timetablerapp.dashboard.dialog;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;

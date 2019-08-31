@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable.schedule;
+package com.example.timetablerapp.dashboard.schedule;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.timetable.TimetableActivity;
+import com.example.timetablerapp.dashboard.TimetableActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

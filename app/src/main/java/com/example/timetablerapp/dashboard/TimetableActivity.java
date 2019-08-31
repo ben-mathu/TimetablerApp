@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable;
+package com.example.timetablerapp.dashboard;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -30,10 +30,9 @@ import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.register_units.RegisterUnitsActivity;
 import com.example.timetablerapp.settings.SettingsActivity;
 import com.example.timetablerapp.show_units.RegisteredUnitsActivity;
-import com.example.timetablerapp.timetable.chat.ChatSectionFragment;
-import com.example.timetablerapp.timetable.dialog.ScheduleRegistration;
-import com.example.timetablerapp.timetable.schedule.ScheduleTimerIntentService;
-import com.example.timetablerapp.timetable.schedule.NotificationIntentService;
+import com.example.timetablerapp.dashboard.dialog.ScheduleRegistration;
+import com.example.timetablerapp.dashboard.schedule.ScheduleTimerIntentService;
+import com.example.timetablerapp.dashboard.schedule.NotificationIntentService;
 
 import java.io.File;
 import java.text.ParseException;

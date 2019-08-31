@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable.chat;
+package com.example.timetablerapp.dashboard.chat;
 
 import android.content.Context;
 import android.content.Intent;

@@ -29,38 +29,38 @@
 
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".signup.SignUpActivity" />
-        <activity android:name=".timetable.TimetableActivity" />
+        <activity android:name=".dashboard.TimetableActivity" />
 
         <activity android:name=".register_units.RegisterUnitsActivity"
             android:theme="@style/AppThemeNoActionBar"/>
 
-        <activity android:name=".timetable.dialog.ScheduleTimerActivity" />
+        <activity android:name=".dashboard.dialog.ScheduleTimerActivity" />
 
-        <activity android:name=".timetable.dialog.ReminderDialogActivity"
+        <activity android:name=".dashboard.dialog.ReminderDialogActivity"
             android:theme="@style/Theme.AppCompat.Dialog"/>
 
-        <activity android:name=".timetable.chat.OpenChatActivity" />
+        <activity android:name=".dashboard.chat.OpenChatActivity" />
 
         <activity android:name=".show_units.RegisteredUnitsActivity"
             android:theme="@style/AppThemeNoActionBar"/>
 
         <activity android:name=".settings.SettingsActivity"/>
 
-        <receiver android:name=".timetable.schedule.ScheduleTimerReceiver" >
+        <receiver android:name=".dashboard.schedule.ScheduleTimerReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.INPUT_METHOD_CHANGED" />
             </intent-filter>
         </receiver>
 
-        <service android:name=".timetable.schedule.ScheduleTimerIntentService" />
+        <service android:name=".dashboard.schedule.ScheduleTimerIntentService" />
 
-        <service android:name=".timetable.schedule.ReminderIntentService" />
+        <service android:name=".dashboard.schedule.ReminderIntentService" />
 
-        <service android:name=".timetable.schedule.ScheduleTimerJobSchedule"
+        <service android:name=".dashboard.schedule.ScheduleTimerJobSchedule"
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
-        <service android:name=".timetable.schedule.NotificationIntentService"
+        <service android:name=".dashboard.schedule.NotificationIntentService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 

@@ -1,6 +1,5 @@
 package com.example.timetablerapp.signup;
 
-import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,16 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -34,10 +29,8 @@ import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.login.LoginActivity;
-import com.example.timetablerapp.timetable.TimetableActivity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**

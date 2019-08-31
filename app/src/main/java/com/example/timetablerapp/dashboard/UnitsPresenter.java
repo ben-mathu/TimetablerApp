@@ -1,6 +1,5 @@
-package com.example.timetablerapp.timetable;
+package com.example.timetablerapp.dashboard;
 
-import com.example.timetablerapp.BasePresenter;
 import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.UnitsRepo;

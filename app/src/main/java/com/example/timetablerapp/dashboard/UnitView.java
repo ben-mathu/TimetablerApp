@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable;
+package com.example.timetablerapp.dashboard;
 
 import com.example.timetablerapp.MainView;
 import com.example.timetablerapp.data.timetable.model.Timetable;

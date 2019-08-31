@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable;
+package com.example.timetablerapp.dashboard;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable.schedule;
+package com.example.timetablerapp.dashboard.schedule;
 
 import android.app.PendingIntent;
 import android.app.job.JobParameters;
@@ -17,7 +17,7 @@ import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.data.timer_schedule.TimerApi;
 import com.example.timetablerapp.data.utils.RetrofitClient;
-import com.example.timetablerapp.timetable.dialog.ScheduleTimerActivity;
+import com.example.timetablerapp.dashboard.dialog.ScheduleTimerActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

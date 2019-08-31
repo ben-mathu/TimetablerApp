@@ -1,13 +1,9 @@
 package com.example.timetablerapp.login;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -18,22 +14,8 @@ import com.example.timetablerapp.MainActivity;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.signup.SignUpActivity;
-import com.example.timetablerapp.timetable.TimetableActivity;
-import com.example.timetablerapp.timetable.dialog.ScheduleTimerActivity;
-import com.example.timetablerapp.timetable.schedule.ScheduleTimerIntentService;
-import com.example.timetablerapp.timetable.schedule.ScheduleTimerReceiver;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-
-import static android.app.Notification.EXTRA_NOTIFICATION_ID;
-import static android.app.Notification.VISIBILITY_PRIVATE;
-import static android.app.Notification.VISIBILITY_PUBLIC;
+import com.example.timetablerapp.dashboard.TimetableActivity;
 
 /**
  * 06/05/19 -bernard

@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +24,6 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.login.LoginActivity;
-import com.example.timetablerapp.timetable.TimetableActivity;
 
 import java.util.List;
 

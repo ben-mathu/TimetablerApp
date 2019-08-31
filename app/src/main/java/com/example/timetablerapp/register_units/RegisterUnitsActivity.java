@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +19,6 @@ import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.register_units.adapter_utils.UnitsAdapter;
-import com.example.timetablerapp.timetable.TimetableActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,8 @@
-package com.example.timetablerapp.timetable.schedule;
+package com.example.timetablerapp.dashboard.schedule;
 
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -18,8 +15,7 @@ import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.data.timer_schedule.TimerApi;
 import com.example.timetablerapp.data.utils.RetrofitClient;
-import com.example.timetablerapp.timetable.TimetableActivity;
-import com.example.timetablerapp.timetable.dialog.ScheduleTimerActivity;
+import com.example.timetablerapp.dashboard.TimetableActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,8 +25,6 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable.dialog;
+package com.example.timetablerapp.dashboard.dialog;
 
 import android.support.v7.app.AppCompatActivity;
 

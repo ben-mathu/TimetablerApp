@@ -1,12 +1,10 @@
-package com.example.timetablerapp.timetable.schedule;
+package com.example.timetablerapp.dashboard.schedule;
 
 import android.app.IntentService;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 
-import com.example.timetablerapp.timetable.dialog.ReminderDialogActivity;
+import com.example.timetablerapp.dashboard.dialog.ReminderDialogActivity;
 
 /**
  * 14/06/19 -bernard

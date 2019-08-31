@@ -1,9 +1,8 @@
-package com.example.timetablerapp.timetable.schedule;
+package com.example.timetablerapp.dashboard.schedule;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * 13/06/19 -bernard

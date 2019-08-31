@@ -1,4 +1,4 @@
-package com.example.timetablerapp.timetable.chat;
+package com.example.timetablerapp.dashboard.chat;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
