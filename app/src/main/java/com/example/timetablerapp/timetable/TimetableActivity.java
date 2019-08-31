@@ -1,6 +1,9 @@
 package com.example.timetablerapp.timetable;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,12 +28,14 @@ import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.register_units.RegisterUnitsActivity;
+import com.example.timetablerapp.settings.SettingsActivity;
 import com.example.timetablerapp.show_units.RegisteredUnitsActivity;
 import com.example.timetablerapp.timetable.chat.ChatSectionFragment;
 import com.example.timetablerapp.timetable.dialog.ScheduleRegistration;
 import com.example.timetablerapp.timetable.schedule.ScheduleTimerIntentService;
 import com.example.timetablerapp.timetable.schedule.NotificationIntentService;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -39,6 +44,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 08/05/19 -bernard
@@ -50,19 +57,23 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
     private Date date;
     private Timer timer;
     private UnitsPresenter presenter;
+    private Bitmap bitmap;
 
     private Toolbar toolbar;
     private TextView txtUsername, txtUserType, txtUserId;
     private TextView txtTimer, txtTimetableTimer;
+    private CircleImageView circleImageView;
+
     private FrameLayout frameTimetable;
 
     private Fragment fragment;
 
 //    private boolean isJobScheduled = false;
 
-    private String userType = "", userName = "", userId = "";
+    private String userType = "", username = "", userId = "";
     private String deadline = "", startDate = "";
     private String strTimer = "";
+    private String fileName = "";
 
     private long timeRemaining = 0;
 
@@ -131,6 +142,19 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
             frameTimetable.setVisibility(View.VISIBLE);
             txtTimetableTimer.setVisibility(View.GONE);
         }
+
+        fileName = userId + " " + username + ".png";
+
+        // get uri
+        Uri uri = Uri.parse("content://com.example.timetablerapp/" + fileName);
+        File file = new File(this.getFilesDir(), uri.getPath());
+        String filepath = file.getPath();
+
+        bitmap = BitmapFactory.decodeFile(filepath);
+
+        if (bitmap != null) {
+            circleImageView.setImageBitmap(bitmap);
+        }
     }
 
     @Override
@@ -148,12 +172,14 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
         txtTimer = findViewById(R.id.text_scheduled_timer);
         txtTimetableTimer = findViewById(R.id.text_timetable_schedule);
 
+        circleImageView = findViewById(R.id.circle_view);
+
         frameTimetable = findViewById(R.id.timetable_fragment_container);
 
         userType = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
         txtUserType.setText(userType);
-        userName = MainApplication.getSharedPreferences().getString(Constants.USERNAME, "");
-        txtUsername.setText(userName);
+        username = MainApplication.getSharedPreferences().getString(Constants.USERNAME, "");
+        txtUsername.setText(username);
 
         userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
         txtUserId.setText(userId);
@@ -180,15 +206,15 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
                     .commit();
         }
 
-        fragment = getSupportFragmentManager().findFragmentById(R.id.chat_fragment_container);
-
-        if (fragment == null) {
-            fragment = new ChatSectionFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.chat_fragment_container, fragment)
-                    .commit();
-        }
+//        fragment = getSupportFragmentManager().findFragmentById(R.id.chat_fragment_container);
+//
+//        if (fragment == null) {
+//            fragment = new ChatSectionFragment();
+//
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.chat_fragment_container, fragment)
+//                    .commit();
+//        }
     }
 
     private void startTimer() {
@@ -234,11 +260,7 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
                 if (timeRemaining < 1000 && isTimeAdded) {
                     timer.cancel();
-                    startActivity(new Intent(TimetableActivity.this, TimetableActivity.class));
-                    finish();
-                }
-
-                if (timeRemaining < 1000 && !isTimeAdded) {
+                } else if (timeRemaining < 1000 && !isTimeAdded) {
                     isUnitRegistrationScheduled = false;
 
                     MainApplication.getSharedPreferences().edit()
@@ -318,6 +340,10 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
                 break;
             case R.id.show_registered_units:
                 startActivity(new Intent(this, RegisteredUnitsActivity.class));
+                break;
+            case R.id.show_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
             case 102:
                 DialogFragment dialog = new ScheduleRegistration();
                 dialog.show(getSupportFragmentManager(), "NoticeDialogFragment");
@@ -361,16 +387,16 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
     @Override
     public void showMessage(String message) {
-        sf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+//        sf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
-        if (message.startsWith("Unit") || message.startsWith("unit")) {
-            try {
-                timeRemaining = sf.parse(deadline).getTime() - Calendar.getInstance().getTimeInMillis();
-                startTimer();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (message.startsWith("Unit") || message.startsWith("unit")) {
+//            try {
+//                timeRemaining = sf.parse(deadline).getTime() - Calendar.getInstance().getTimeInMillis();
+//                startTimer();
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }

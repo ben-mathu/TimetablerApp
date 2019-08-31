@@ -175,6 +175,7 @@ public class ScheduleTimerIntentService extends IntentService {
                     MainApplication.getSharedPreferences().edit()
                             .putString(Constants.START_DATE, start)
                             .putString(Constants.END_DATE, end)
+                            .putBoolean(Constants.SCHEDULE, true)
                             .apply();
                     showNotification("Scheduled time for Registration: start " + start + "end " + end);
                 } else {
@@ -190,6 +191,7 @@ public class ScheduleTimerIntentService extends IntentService {
                     MainApplication.getSharedPreferences().edit()
                             .putString(Constants.START_DATE, start)
                             .putString(Constants.END_DATE, end)
+                            .putBoolean(Constants.SCHEDULE, true)
                             .apply();
                     showNotification("Deadline is on: " + notificationContent);
                 }

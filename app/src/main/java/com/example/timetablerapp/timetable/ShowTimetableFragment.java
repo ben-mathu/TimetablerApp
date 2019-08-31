@@ -77,7 +77,7 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
 
     @Override
     public void setUnits(List<Unit> units) {
-
+        // left blank intentionally - not essential for this fragment
     }
 
     @Override
@@ -92,7 +92,7 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
 
     @Override
     public void setSalt(String salt) {
-
+        // left blank intentionally - not essential for this fragment
     }
 
     @Override

@@ -39,6 +39,8 @@ import com.example.timetablerapp.data.user.student.source.StudentRemoteDS;
  */
 public class MainApplication extends Application {
     private static final String TAG = MainApplication.class.getSimpleName();
+    public static final int READ_EXTERNAL_STORAGE_REQUEST_CODE = 104;
+    public static final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 105;
 
     public static final String CHANNEL_ID = "1";
     private static SharedPreferences sharedPreferences;

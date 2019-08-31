@@ -100,6 +100,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
 
         EditText editText = layoutView.findViewById(R.id.edit_password);
         editText.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
+        editText.setHintTextColor(ResourcesCompat.getColor(getResources(), R.color.my_kind_of_grey, null));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Enter Db Password");

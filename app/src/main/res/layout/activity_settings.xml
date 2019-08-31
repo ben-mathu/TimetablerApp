@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_view_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Settings"
+        app:titleTextColor="@color/white"
+        android:elevation="3dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_user_profile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_view_details"
+        android:layout_margin="30dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circle_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:elevation="3dp"
+                android:src="@color/colorPrimary2"/>
+
+            <ImageView
+                android:id="@+id/img_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_centerInParent="true"
+                android:background="@color/primaryShade"
+                android:elevation="3dp"
+                android:layout_weight="0.5"
+                android:src="@drawable/ic_edit"
+                android:layout_gravity="end"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Hello"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:weightSum="3">
+
+                <TextView
+                    android:id="@+id/text_display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:text="World"/>
+
+                <ImageView
+                    android:id="@+id/img_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:src="@drawable/ic_edit"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="life is crazy"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_new_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/ll_user_profile"
+        android:background="@drawable/edit_background"
+        android:layout_margin="20dp"
+        android:weightSum="5">
+
+        <EditText
+            android:id="@+id/edit_new_password"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4.3"
+            android:background="@color/transparent"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="2dp"
+            android:gravity="bottom"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:hint="@string/new_password"
+            android:textColorHint="@color/my_kind_of_grey"/>
+
+        <ImageButton
+            android:id="@+id/image_show_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:src="@drawable/ic_show_password"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button_save_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/ll_new_password"
+        android:text="@string/save"
+        android:textColor="@color/colorAccent"/>
+</RelativeLayout>

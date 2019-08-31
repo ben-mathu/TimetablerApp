@@ -12,12 +12,14 @@
         android:elevation="3dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circle_view"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
-            android:src="@color/sterleto_blue" />
+            android:elevation="3dp"
+            android:src="@color/colorPrimary2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,6 +105,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="Chat/Forum"
+            android:visibility="gone"
             android:textColor="@color/white"/>
 
         <View

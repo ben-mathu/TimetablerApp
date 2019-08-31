@@ -110,9 +110,4 @@ public class RegisteredUnitsActivity extends AppCompatActivity implements Regist
 
         recyclerView.setAdapter(unitsAdapter);
     }
-
-    @Override
-    public void onBackPressed() {
-        startTimetableActivity();
-    }
 }
