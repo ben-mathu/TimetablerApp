@@ -15,7 +15,7 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.signup.SignUpActivity;
-import com.example.timetablerapp.dashboard.TimetableActivity;
+import com.example.timetablerapp.dashboard.DashboardActivity;
 
 /**
  * 06/05/19 -bernard
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         // check if session is saved
         if (isLoggedIn) {
-            startActivity(new Intent(this, TimetableActivity.class));
+            startActivity(new Intent(this, DashboardActivity.class));
             finish();
         }
     }
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
                 .apply();
 
         startActivity(
-                new Intent(this, TimetableActivity.class)
+                new Intent(this, DashboardActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
         );
         finish();

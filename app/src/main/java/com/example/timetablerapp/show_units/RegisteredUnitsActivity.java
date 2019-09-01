@@ -17,7 +17,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.register_units.adapter_utils.UnitsAdapter;
-import com.example.timetablerapp.dashboard.TimetableActivity;
+import com.example.timetablerapp.dashboard.DashboardActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +90,7 @@ public class RegisteredUnitsActivity extends AppCompatActivity implements Regist
 
     @Override
     public void startTimetableActivity() {
-        startActivity(new Intent(this, TimetableActivity.class));
+        startActivity(new Intent(this, DashboardActivity.class));
         finish();
     }
 

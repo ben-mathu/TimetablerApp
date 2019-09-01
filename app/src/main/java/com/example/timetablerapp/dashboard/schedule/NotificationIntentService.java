@@ -10,7 +10,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.dashboard.TimetableActivity;
+import com.example.timetablerapp.dashboard.DashboardActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,7 +63,7 @@ public class NotificationIntentService extends IntentService {
     }
 
     private void showNotification(String notificationContent) {
-        Intent intent = new Intent(this, TimetableActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);

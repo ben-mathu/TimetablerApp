@@ -15,7 +15,7 @@ import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.data.timer_schedule.TimerApi;
 import com.example.timetablerapp.data.utils.RetrofitClient;
-import com.example.timetablerapp.dashboard.TimetableActivity;
+import com.example.timetablerapp.dashboard.DashboardActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -196,7 +196,7 @@ public class ScheduleTimerIntentService extends IntentService {
     }
 
     private void showNotification(String notificationContent) {
-        Intent intent = new Intent(this, TimetableActivity.class);
+        Intent intent = new Intent(this, DashboardActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);

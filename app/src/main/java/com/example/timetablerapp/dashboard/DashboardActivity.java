@@ -49,15 +49,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * 08/05/19 -bernard
  */
-public class TimetableActivity extends AppCompatActivity implements ScheduleRegistration.OnClickListener,UnitView {
-    private static final String TAG = TimetableActivity.class.getSimpleName();
+public class DashboardActivity extends AppCompatActivity implements ScheduleRegistration.OnClickListener,UnitView {
+    private static final String TAG = DashboardActivity.class.getSimpleName();
 
+    // Important classes
     private SimpleDateFormat sf;
     private Date date;
     private Timer timer;
     private UnitsPresenter presenter;
     private Bitmap bitmap;
 
+    // Widgets
     private Toolbar toolbar;
     private TextView txtUsername, txtUserType, txtUserId;
     private TextView txtTimer, txtTimetableTimer;
@@ -67,6 +69,7 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
     private Fragment fragment;
 
+    // Literals
 //    private boolean isJobScheduled = false;
 
     private String userType = "", username = "", userId = "";
@@ -159,15 +162,12 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timetable);
+        setContentView(R.layout.activity_dashboard);
 
         // Start intent service to handle timers on the notification.
         Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
         startService(intentService);
 
-        txtUserId = findViewById(R.id.text_user_id);
-        txtUsername = findViewById(R.id.text_user_name);
-        txtUserType = findViewById(R.id.text_user_type);
         txtTimer = findViewById(R.id.text_scheduled_timer);
         txtTimetableTimer = findViewById(R.id.text_timetable_schedule);
 
@@ -175,11 +175,15 @@ public class TimetableActivity extends AppCompatActivity implements ScheduleRegi
 
         frameTimetable = findViewById(R.id.timetable_fragment_container);
 
+        txtUserType = findViewById(R.id.text_user_type);
         userType = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
         txtUserType.setText(userType);
+
+        txtUsername = findViewById(R.id.text_user_name);
         username = MainApplication.getSharedPreferences().getString(Constants.USERNAME, "");
         txtUsername.setText(username);
 
+        txtUserId = findViewById(R.id.text_user_id);
         userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
         txtUserId.setText(userId);
 
