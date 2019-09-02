@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary3"
     android:orientation="horizontal"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -14,15 +15,51 @@
         <RelativeLayout
             android:id="@+id/rl_dash_buttons"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:elevation="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circle_view"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:layout_margin="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="50dp"
                 android:elevation="3dp"
                 android:src="@color/colorPrimary2" />
+
+            <ImageView
+                android:id="@+id/image_dashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:layout_below="@id/circle_view"
+                android:background="@color/colorPrimary3"
+                android:src="@drawable/ic_dashboard"/>
+
+            <ImageView
+                android:id="@+id/image_lecturer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:layout_below="@id/image_dashboard"
+                android:src="@drawable/ic_lecturer"/>
+
+            <ImageView
+                android:id="@+id/image_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:layout_below="@id/image_lecturer"
+                android:src="@drawable/ic_lecturer"/>
+
+            <android.support.design.widget.NavigationView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_below="@id/circle_view"
+                app:menu="@menu/bottom_navigation_menu"/>
         </RelativeLayout>
 
         <LinearLayout

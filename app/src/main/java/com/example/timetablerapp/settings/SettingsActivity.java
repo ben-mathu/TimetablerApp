@@ -14,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ import android.widget.TextView;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -75,12 +77,11 @@ public class SettingsActivity extends AppCompatActivity {
                 != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MainApplication.READ_EXTERNAL_STORAGE_REQUEST_CODE);
-            }
-
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainApplication.WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
+            } else {
+                DialogFragment dialog = ShowExplanationDialog.newFragment("I require your permission to write to storage to make your experience even better.");
+                dialog.show(getSupportFragmentManager(), "Explanation Dialog");
             }
         }
 
@@ -225,12 +226,12 @@ public class SettingsActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else if (ACTIVITY_CAM_RESULT == requestCode) { // only for camera pictures
-
-            // get the bitmap from intent
+            // get the bitmap from
             bitmap = (Bitmap) data.getExtras().get("data");
             imgPicChange.setImageBitmap(bitmap);
 
             try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
+
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -244,8 +245,12 @@ public class SettingsActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case MainApplication.READ_EXTERNAL_STORAGE_REQUEST_CODE:
-                if (grantResults.length <= 0
-                        && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    onBackPressed();
+                }
+                break;
+            case MainApplication.WRITE_EXTERNAL_STORAGE_REQUEST_CODE:
+                if (grantResults.length <=0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     onBackPressed();
                 }
         }

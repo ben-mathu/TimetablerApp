@@ -41,6 +41,9 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
     public void onStart() {
         super.onStart();
 
+        // Initialize presenter onStart
+        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
+
         role = MainApplication.getSharedPreferences()
                 .getString(Constants.ROLE, "");
 
@@ -57,13 +60,6 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
         } else if (role.equalsIgnoreCase("admin")){
             presenter.getTimetable();
         }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
     }
 
     @Nullable

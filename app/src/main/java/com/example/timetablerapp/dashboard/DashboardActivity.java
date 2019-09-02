@@ -6,10 +6,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
@@ -17,12 +21,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.chat.ChatSectionFragment;
+import com.example.timetablerapp.dashboard.dialog.AddClassFragment;
+import com.example.timetablerapp.dashboard.dialog.AddLecturerFragment;
+import com.example.timetablerapp.dashboard.dialog.AddUnitFragment;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
@@ -64,6 +74,12 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
     private TextView txtUsername, txtUserType, txtUserId;
     private TextView txtTimer, txtTimetableTimer;
     private CircleImageView circleImageView;
+    private Button btnAddLecturer, btnAddUnits, btnAddClass;
+    private LinearLayout llAddingItems;
+    private BottomNavigationView navigationView;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private ViewPagerAdapter viewPagerAdapter;
 
     private FrameLayout frameTimetable;
 
@@ -157,6 +173,13 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         if (bitmap != null) {
             circleImageView.setImageBitmap(bitmap);
         }
+
+//        // toggle visibility
+//        if (userType.equalsIgnoreCase("admin")) {
+//            llAddingItems.setVisibility(View.VISIBLE);
+//        } else {
+//            llAddingItems.setVisibility(View.GONE);
+//        }
     }
 
     @Override
@@ -218,6 +241,72 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 //                    .add(R.id.chat_fragment_container, fragment)
 //                    .commit();
 //        }
+
+//        llAddingItems = findViewById(R.id.ll_admin_functions);
+//        // declaration and definition of add buttons
+//        // Add lecturers
+//        btnAddLecturer = findViewById(R.id.button_lecturers);
+//        btnAddLecturer.setOnClickListener(view -> {
+//            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.lecturer_fragment_container);
+//
+//            if (fragment == null) {
+//                fragment = new AddLecturerFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.lecturer_fragment_container, fragment)
+//                        .commit();
+//            }
+//        });
+//
+//        // Add Classes
+//        btnAddUnits = findViewById(R.id.button_units);
+//        btnAddUnits.setOnClickListener(view -> {
+//            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.unit_fragment_container);
+//
+//            if (fragment != null) {
+//                fragment = new AddUnitFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.unit_fragment_container, fragment)
+//                        .commit();
+//            }
+//        });
+//
+//        // Add Units
+//        btnAddClass = findViewById(R.id.button_classes);
+//        btnAddClass.setOnClickListener(view -> {
+//            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.class_fragment_container);
+//
+//            if (fragment != null) {
+//                fragment = new AddClassFragment();
+//                getSupportFragmentManager().beginTransaction()
+//                        .add(R.id.class_fragment_container, fragment)
+//                        .commit();
+//            }
+//        });
+
+//        navigationView = findViewById(R.id.bottom_navigation);
+//        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.room:
+//                        break;
+//                    case R.id.course:
+//                        break;
+//                    case R.id.lecturer:
+//                        break;
+//                    case R.id.dashboard:
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
+
+        viewPager = findViewById(R.id.view_pager);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout = findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager, true);
+
     }
 
     private void startTimer() {
