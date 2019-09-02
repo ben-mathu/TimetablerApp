@@ -18,6 +18,8 @@
         <item name="android:colorBackground">@color/colorPrimary</item>
         <item name="editTextColor">@color/white</item>
         <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 
     <style name="Theme_TimePicker" parent="Theme.AppCompat.Light.Dialog">

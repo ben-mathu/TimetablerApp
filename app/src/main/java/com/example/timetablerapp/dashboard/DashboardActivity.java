@@ -29,10 +29,9 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.chat.ChatSectionFragment;
 import com.example.timetablerapp.dashboard.dialog.AddClassFragment;
+import com.example.timetablerapp.dashboard.dialog.AddCourseFragment;
 import com.example.timetablerapp.dashboard.dialog.AddLecturerFragment;
-import com.example.timetablerapp.dashboard.dialog.AddUnitFragment;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
@@ -59,14 +58,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * 08/05/19 -bernard
  */
-public class DashboardActivity extends AppCompatActivity implements ScheduleRegistration.OnClickListener,UnitView {
+public class DashboardActivity extends AppCompatActivity implements ScheduleRegistration.OnClickListener, DashboardView {
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
     // Important classes
     private SimpleDateFormat sf;
     private Date date;
     private Timer timer;
-    private UnitsPresenter presenter;
+    private DashboardPresenter presenter;
     private Bitmap bitmap;
 
     // Widgets
@@ -104,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         super.onStart();
         isUnitRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
 
-        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
+        presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
 
         isTimeAdded = MainApplication.getSharedPreferences().getBoolean(Constants.IS_TIME_ADDED, false);
 
@@ -174,12 +173,9 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
             circleImageView.setImageBitmap(bitmap);
         }
 
-//        // toggle visibility
-//        if (userType.equalsIgnoreCase("admin")) {
-//            llAddingItems.setVisibility(View.VISIBLE);
-//        } else {
-//            llAddingItems.setVisibility(View.GONE);
-//        }
+        if (userType.equalsIgnoreCase("admin")) {
+            navigationView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -242,70 +238,56 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 //                    .commit();
 //        }
 
-//        llAddingItems = findViewById(R.id.ll_admin_functions);
-//        // declaration and definition of add buttons
-//        // Add lecturers
-//        btnAddLecturer = findViewById(R.id.button_lecturers);
-//        btnAddLecturer.setOnClickListener(view -> {
-//            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.lecturer_fragment_container);
-//
-//            if (fragment == null) {
-//                fragment = new AddLecturerFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.lecturer_fragment_container, fragment)
-//                        .commit();
-//            }
-//        });
-//
-//        // Add Classes
-//        btnAddUnits = findViewById(R.id.button_units);
-//        btnAddUnits.setOnClickListener(view -> {
-//            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.unit_fragment_container);
-//
-//            if (fragment != null) {
-//                fragment = new AddUnitFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.unit_fragment_container, fragment)
-//                        .commit();
-//            }
-//        });
-//
-//        // Add Units
-//        btnAddClass = findViewById(R.id.button_classes);
-//        btnAddClass.setOnClickListener(view -> {
-//            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.class_fragment_container);
-//
-//            if (fragment != null) {
-//                fragment = new AddClassFragment();
-//                getSupportFragmentManager().beginTransaction()
-//                        .add(R.id.class_fragment_container, fragment)
-//                        .commit();
-//            }
-//        });
+        navigationView = findViewById(R.id.bottom_navigation);
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.room:
+                        fragment = getSupportFragmentManager().findFragmentByTag("room");
 
-//        navigationView = findViewById(R.id.bottom_navigation);
-//        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.room:
-//                        break;
-//                    case R.id.course:
-//                        break;
-//                    case R.id.lecturer:
-//                        break;
-//                    case R.id.dashboard:
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
+                        if (fragment == null) {
+                            fragment = new AddClassFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, fragment, "room")
+                                    .commit();
+                        }
+                        break;
+                    case R.id.course:
+                        fragment = getSupportFragmentManager().findFragmentByTag("course");
 
-        viewPager = findViewById(R.id.view_pager);
-        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
-        viewPager.setAdapter(viewPagerAdapter);
-        tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager, true);
+                        if (fragment == null) {
+                            fragment = new AddCourseFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, fragment, "course")
+                                    .commit();
+                        }
+                        break;
+                    case R.id.lecturer:
+                        fragment = getSupportFragmentManager().findFragmentByTag("lecturer");
+
+                        if (fragment == null) {
+                            fragment = new AddLecturerFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, fragment, "lecturer")
+                                    .commit();
+                        }
+                        break;
+                    case R.id.dashboard:
+                        getSupportFragmentManager().beginTransaction()
+                                .remove(fragment)
+                                .commit();
+                        break;
+                }
+                return true;
+            }
+        });
+
+//        viewPager = findViewById(R.id.view_pager);
+//        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
+//        viewPager.setAdapter(viewPagerAdapter);
+//        tabLayout = findViewById(R.id.tab_layout);
+//        tabLayout.setupWithViewPager(viewPager, true);
 
     }
 

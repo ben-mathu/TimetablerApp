@@ -1,7 +1,5 @@
 package com.example.timetablerapp.data.user.lecturer.model;
 
-import android.support.annotation.NonNull;
-
 import com.example.timetablerapp.data.Constants;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,6 +17,8 @@ public class Lecturer {
     private String middleName;
     @SerializedName("username")
     private String username;
+    @SerializedName(Constants.EMAIL)
+    private String email;
     @SerializedName("password")
     private String password;
     @SerializedName("faculty_id")
@@ -30,7 +30,7 @@ public class Lecturer {
 
     public Lecturer(String id, String firstName,
                     String lastName, String middleName,
-                    String username, String password,
+                    String username, String email, String password,
                     String departmentId, String facultyId,
                     boolean inSesson) {
         this.id = id;
@@ -38,6 +38,7 @@ public class Lecturer {
         this.lastName = lastName;
         this.middleName = middleName;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.departmentId = departmentId;
         this.facultyId = facultyId;
@@ -117,5 +118,13 @@ public class Lecturer {
 
     public void setFacultyId(String facultyId) {
         this.facultyId = facultyId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

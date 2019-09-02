@@ -56,7 +56,7 @@ public class LoginPresenterTest {
     public void login_UsernameAndPasswordAreCorrect_StartMainActivity() {
         when(view.getUsername()).thenReturn("Jones");
         when(view.getPassword()).thenReturn("password");
-        userRepository.validateUser("lecturer", "Jones", "password", , callback);
+        userRepository.validateUser("lecturer", "Jones", "password", "123456", callback);
         presenter.login();
 
         verify(callback, times(1)).authNotSuccessful("");

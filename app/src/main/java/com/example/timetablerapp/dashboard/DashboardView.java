@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 19/05/19 -bernard
  */
-public interface UnitView  extends MainView {
+public interface DashboardView extends MainView {
     void setUnits(List<Unit> units);
 
     void showTimetable(List<Timetable> timetablelist);

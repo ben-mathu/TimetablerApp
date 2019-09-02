@@ -103,4 +103,6 @@ public class Constants {
     public static final String IS_LOGGED_IN = "isLoggedIn";
     public static final String IS_TIME_REACHED = "isTimeReached";
     public static final String IS_TIME_ADDED = "isTimeAdded";
+    public static final String EMAIL = "email";
+    public static final String ACCESS_CODE = "access_code";
 }

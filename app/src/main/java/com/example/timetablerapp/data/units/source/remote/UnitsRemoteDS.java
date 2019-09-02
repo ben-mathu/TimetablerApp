@@ -151,7 +151,27 @@ public class UnitsRemoteDS implements UnitDataSource {
 
     @Override
     public void getTimetableByLecturerId(String lecturerId, TimetableLoadedCallback callback) {
+        Call<TimetableResponse> call = RetrofitClient.getRetrofit()
+                .create(TimetableApi.class)
+                .getTimetable(lecturerId);
 
+        call.enqueue(new Callback<TimetableResponse>() {
+            @Override
+            public void onResponse(Call<TimetableResponse> call, Response<TimetableResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getTimetableList());
+                } else {
+                    callback.unsuccessful("An error occurred, please refresh");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TimetableResponse> call, Throwable t) {
+                t.printStackTrace();
+                Log.e(TAG, "Error", t);
+                callback.unsuccessful("An error has occurred, please try again");
+            }
+        });
     }
 
     @Override

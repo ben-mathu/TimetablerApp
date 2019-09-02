@@ -131,6 +131,21 @@
                 android:background="@drawable/edit_background"/>
         </LinearLayout>
 
+        <EditText
+            android:id="@+id/edit_email_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:padding="10dp"
+            android:layout_below="@+id/ll_credentials"
+            android:background="@drawable/edit_background"
+            android:hint="@string/email"
+            android:textColorHint="@color/my_kind_of_grey"
+            android:textColor="@color/white"
+            android:inputType="textEmailAddress"/>
+
         <TextView
             android:id="@+id/faculties"
             android:layout_width="wrap_content"
@@ -138,7 +153,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="40dp"
             android:layout_marginBottom="5dp"
-            android:layout_below="@+id/ll_credentials"
+            android:layout_below="@+id/edit_email_address"
             android:textColor="#fff"
             android:text="@string/faculties"/>
 

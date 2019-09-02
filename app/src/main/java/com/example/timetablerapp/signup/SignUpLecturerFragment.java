@@ -40,7 +40,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     private SignUpPresenter presenter;
 
     private TextView txtLogin;
-    private EditText edtUserId, edtFName, edtLName, edtMName, edtUsername, edtPassword;
+    private EditText edtUserId, edtFName, edtLName, edtMName, edtUsername, edtPassword, edtEmail;
     private Spinner spnDepartments, spnFaculties;
     private Switch switchInSess;
     private Button btnRegister;
@@ -92,6 +92,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         edtMName = view.findViewById(R.id.edit_middle_name);
         edtUsername = view.findViewById(R.id.edit_username);
         edtPassword = view.findViewById(R.id.edit_password);
+        edtEmail = view.findViewById(R.id.edit_email_address);
 
         spnFaculties = view.findViewById(R.id.spinner_faculties);
         presenter.getFaculties();
@@ -113,6 +114,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         lec.setLastName(edtLName.getText().toString());
         lec.setMiddleName(edtMName.getText().toString());
         lec.setUsername(edtUsername.getText().toString());
+        lec.setEmail(edtEmail.getText().toString());
         lec.setPassword(edtPassword.getText().toString());
         lec.setFacultyId(faculties.get(spnFaculties.getCount() > 0 ? spnFaculties.getSelectedItemPosition() : 0).getFacultyId());
         lec.setDepartmentId(departments.get(spnDepartments.getCount() > 0 ? spnDepartments.getSelectedItemPosition() : 0).getDepartmentId());

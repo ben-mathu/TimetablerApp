@@ -23,10 +23,10 @@ import java.util.List;
 /**
  * 23/05/19 -bernard
  */
-public class ShowTimetableFragment extends Fragment implements UnitView {
+public class ShowTimetableFragment extends Fragment implements DashboardView {
     private static final String TAG = ShowTimetableFragment.class.getSimpleName();
 
-    private UnitsPresenter presenter;
+    private DashboardPresenter presenter;
 
     private RecyclerView recyclerViewTimetable;
     private TimetableAdapter adapter;
@@ -42,7 +42,7 @@ public class ShowTimetableFragment extends Fragment implements UnitView {
         super.onStart();
 
         // Initialize presenter onStart
-        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
+        presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
 
         role = MainApplication.getSharedPreferences()
                 .getString(Constants.ROLE, "");

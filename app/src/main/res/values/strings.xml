@@ -45,6 +45,7 @@
     <string name="lecturer">Lecturer</string>
     <string name="room">Room</string>
     <string name="course">Course</string>
+    <string name="error">An error occurred, please contact administrator</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

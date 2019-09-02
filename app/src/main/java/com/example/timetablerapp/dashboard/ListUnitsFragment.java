@@ -26,10 +26,10 @@ import java.util.List;
  *
  * List units associated with the lecturer
  */
-public class ListUnitsFragment extends Fragment implements UnitView {
+public class ListUnitsFragment extends Fragment implements DashboardView {
 
     private UnitsAdapter adapter;
-    private UnitsPresenter presenter;
+    private DashboardPresenter presenter;
 
     private RecyclerView listView;
 
@@ -51,7 +51,7 @@ public class ListUnitsFragment extends Fragment implements UnitView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new UnitsPresenter(this, MainApplication.getUnitRepo());
+        presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
 
         role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 
