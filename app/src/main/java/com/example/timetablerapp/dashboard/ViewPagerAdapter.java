@@ -11,8 +11,8 @@ import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.dialog.AddClassFragment;
-import com.example.timetablerapp.dashboard.dialog.AddLecturerFragment;
+import com.example.timetablerapp.dashboard.dialog.room.AddClassFragment;
+import com.example.timetablerapp.dashboard.dialog.lecturer.AddLecturerFragment;
 import com.example.timetablerapp.dashboard.dialog.AddUnitFragment;
 
 /**

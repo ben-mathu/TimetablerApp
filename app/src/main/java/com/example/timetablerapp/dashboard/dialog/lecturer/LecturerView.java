@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard;
+package com.example.timetablerapp.dashboard.dialog.lecturer;
 
 import com.example.timetablerapp.data.user.lecturer.model.LecRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;

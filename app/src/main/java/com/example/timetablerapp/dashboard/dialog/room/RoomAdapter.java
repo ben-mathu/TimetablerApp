@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard;
+package com.example.timetablerapp.dashboard.dialog.room;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.room.Room;
-import com.example.timetablerapp.data.units.model.Unit;
 
 import java.util.List;
 

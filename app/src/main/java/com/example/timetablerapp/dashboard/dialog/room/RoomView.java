@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard;
+package com.example.timetablerapp.dashboard.dialog.room;
 
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.hall.model.Hall;

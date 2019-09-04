@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard;
+package com.example.timetablerapp.dashboard.dialog.room;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,12 +7,12 @@ import android.widget.TextView;
 import com.example.timetablerapp.R;
 
 /**
- * 02/09/19 -bernard
+ * 03/09/19 -bernard
  */
-public class LecturerViewHolder extends RecyclerView.ViewHolder {
+public class RoomViewHolder extends RecyclerView.ViewHolder {
     TextView txtId, txtName;
 
-    public LecturerViewHolder(View itemView) {
+    public RoomViewHolder(View itemView) {
         super(itemView);
 
         txtId = itemView.findViewById(R.id.text_id);

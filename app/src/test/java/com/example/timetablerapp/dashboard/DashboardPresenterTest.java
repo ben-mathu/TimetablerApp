@@ -1,6 +1,7 @@
 package com.example.timetablerapp.dashboard;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 
@@ -8,12 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
-import org.mockito.stubbing.Answer;
 
-import okhttp3.Response;
-
-import static net.bytebuddy.matcher.ElementMatchers.any;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;

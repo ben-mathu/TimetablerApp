@@ -1,5 +1,8 @@
 package com.example.timetablerapp.dashboard;
 
+import com.example.timetablerapp.dashboard.dialog.course.CourseView;
+import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
+import com.example.timetablerapp.dashboard.dialog.room.RoomView;
 import com.example.timetablerapp.data.department.DepartmentDS;
 import com.example.timetablerapp.data.department.DepartmentRepository;
 import com.example.timetablerapp.data.department.model.Department;
@@ -19,7 +22,6 @@ import com.example.timetablerapp.data.units.UnitsRepo;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
-import com.example.timetablerapp.data.user.lecturer.model.LecRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 

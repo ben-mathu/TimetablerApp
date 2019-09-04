@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard;
+package com.example.timetablerapp.dashboard.dialog.lecturer;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

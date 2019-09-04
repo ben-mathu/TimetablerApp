@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard.dialog;
+package com.example.timetablerapp.dashboard.dialog.course;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,14 +22,12 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.CourseAdapter;
-import com.example.timetablerapp.dashboard.CourseView;
+import com.example.timetablerapp.dashboard.dialog.course.CourseAdapter;
+import com.example.timetablerapp.dashboard.dialog.course.CourseView;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
-import com.example.timetablerapp.dashboard.DashboardView;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
-import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
 
 import java.util.ArrayList;

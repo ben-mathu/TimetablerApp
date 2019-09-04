@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard.dialog;
+package com.example.timetablerapp.dashboard.dialog.lecturer;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -21,9 +21,6 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
-import com.example.timetablerapp.dashboard.LecturerAdapter;
-import com.example.timetablerapp.dashboard.LecturerView;
-import com.example.timetablerapp.data.user.lecturer.model.LecRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 

@@ -29,9 +29,9 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.dialog.AddClassFragment;
-import com.example.timetablerapp.dashboard.dialog.AddCourseFragment;
-import com.example.timetablerapp.dashboard.dialog.AddLecturerFragment;
+import com.example.timetablerapp.dashboard.dialog.room.AddClassFragment;
+import com.example.timetablerapp.dashboard.dialog.course.AddCourseFragment;
+import com.example.timetablerapp.dashboard.dialog.lecturer.AddLecturerFragment;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
