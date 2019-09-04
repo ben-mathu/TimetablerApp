@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -57,4 +58,11 @@ public interface UnitApi {
 
     @GET("registered-units")
     Call<UnitResponse> getUnitsGeneral();
+
+    @GET("units")
+    Call<UnitResponse> getUnits();
+
+    @POST("add-unit")
+    Call<SuccessfulReport> addCourse(@Header("Content-Type") String contentType,
+                                    @Body UnitsRemoteDS.UnitReq unitReq);
 }

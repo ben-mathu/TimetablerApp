@@ -52,7 +52,7 @@ public class ScheduleRegistration extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         calendar = Calendar.getInstance();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.schedule_unit_registration, null);
@@ -94,7 +94,7 @@ public class ScheduleRegistration extends DialogFragment {
 
             DatePickerDialog d = new DatePickerDialog(
                     getActivity(),
-                    R.style.Theme_DatePicker,
+                    R.style.Theme_Dialogs,
                     onDateSetListener,
                     Calendar.getInstance().get(Calendar.YEAR),
                     Calendar.getInstance().get(Calendar.MONTH),
@@ -127,7 +127,7 @@ public class ScheduleRegistration extends DialogFragment {
                     // display time picker dialog
                     TimePickerDialog dialog = new TimePickerDialog(
                             getActivity(),
-                            R.style.Theme_TimePicker,
+                            R.style.Theme_Dialogs,
                             onTimeSetListener,
                             Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
                             Calendar.getInstance().get(Calendar.MINUTE),
@@ -139,7 +139,7 @@ public class ScheduleRegistration extends DialogFragment {
 
             DatePickerDialog d = new DatePickerDialog(
                     getActivity(),
-                    R.style.Theme_DatePicker,
+                    R.style.Theme_Dialogs,
                     onDateSetListener,
                     Calendar.getInstance().get(Calendar.YEAR),
                     Calendar.getInstance().get(Calendar.MONTH),

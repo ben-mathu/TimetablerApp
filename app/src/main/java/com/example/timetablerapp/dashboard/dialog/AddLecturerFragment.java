@@ -138,7 +138,11 @@ public class AddLecturerFragment extends Fragment implements LecturerView {
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        try {
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

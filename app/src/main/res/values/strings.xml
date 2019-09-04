@@ -46,6 +46,11 @@
     <string name="room">Room</string>
     <string name="course">Course</string>
     <string name="error">An error occurred, please contact administrator</string>
+    <string name="add_course">Add Course</string>
+    <string name="unit_id">Unit Id</string>
+    <string name="unit_name">Unit Name</string>
+    <string name="is_common">Is Common</string>
+    <string name="is_practical">Is Practical</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

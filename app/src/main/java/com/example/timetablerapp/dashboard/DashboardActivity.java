@@ -282,13 +282,6 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                 return true;
             }
         });
-
-//        viewPager = findViewById(R.id.view_pager);
-//        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), this);
-//        viewPager.setAdapter(viewPagerAdapter);
-//        tabLayout = findViewById(R.id.tab_layout);
-//        tabLayout.setupWithViewPager(viewPager, true);
-
     }
 
     private void startTimer() {

@@ -15,17 +15,23 @@ public class Unit {
     private String programmeId;
     @SerializedName(Constants.FACULTY_ID)
     private String facultyId;
+    @SerializedName(Constants.DEPARTMENT_ID)
+    private String departmentId;
     @SerializedName(Constants.IS_PRACTICAL)
     private boolean isPractical = false;
+    @SerializedName(Constants.COMMON)
+    private boolean isCommon;
 
     private boolean isSelected;
 
-    public Unit(String id, String unitName, String programmeId, String facultyId, boolean isPractical, boolean isSelected) {
+    public Unit(String id, String unitName, String programmeId, String facultyId, String departmentId, boolean isPractical, boolean isCommon, boolean isSelected) {
         this.id = id;
         this.unitName = unitName;
         this.programmeId = programmeId;
         this.facultyId = facultyId;
+        this.departmentId = departmentId;
         this.isPractical = isPractical;
+        this.isCommon = isCommon;
         this.isSelected = isSelected;
     }
 
@@ -78,5 +84,21 @@ public class Unit {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public boolean isCommon() {
+        return isCommon;
+    }
+
+    public void setCommon(boolean common) {
+        isCommon = common;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 }

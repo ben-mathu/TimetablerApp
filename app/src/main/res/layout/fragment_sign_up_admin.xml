@@ -79,6 +79,22 @@
         android:inputType="textPersonName"/>
 
     <EditText
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:padding="10dp"
+        android:layout_below="@+id/edit_last_name"
+        android:hint="Email"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textEmailAddress" />
+
+    <EditText
         android:id="@+id/edit_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +107,7 @@
         android:textColorHint="@color/colorHint"
         android:textColor="@color/white"
         android:background="@drawable/edit_background"
-        android:layout_below="@+id/edit_last_name"
+        android:layout_below="@+id/edit_email"
         android:inputType="textPersonName"/>
 
     <EditText

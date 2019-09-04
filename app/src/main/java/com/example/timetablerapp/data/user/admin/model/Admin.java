@@ -19,6 +19,8 @@ public class Admin {
     private String username;
     @SerializedName(Constants.PASSWORD)
     private String password;
+    @SerializedName(Constants.EMAIL)
+    private String email;
 
     public Admin(String adminId, String fName, String mName, String lName, String username, String password) {
         this.adminId = adminId;
@@ -78,5 +80,13 @@ public class Admin {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

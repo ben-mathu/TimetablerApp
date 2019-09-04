@@ -105,4 +105,5 @@ public class Constants {
     public static final String IS_TIME_ADDED = "isTimeAdded";
     public static final String EMAIL = "email";
     public static final String ACCESS_CODE = "access_code";
+    public static final String COMMON = "is_common";
 }

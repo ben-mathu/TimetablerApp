@@ -127,7 +127,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         EditText editText = layoutView.findViewById(R.id.edit_password);
         editText.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
         builder.setTitle("Enter Db Password");
         builder.setView(layoutView);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {

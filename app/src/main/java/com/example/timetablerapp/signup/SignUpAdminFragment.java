@@ -35,7 +35,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
     private SignUpPresenter presenter;
 
     private TextView txtLogin;
-    private EditText edtFName, edtMName, edtLName, edtUsername, edtPassword, edtAdminId;
+    private EditText edtFName, edtMName, edtLName, edtUsername, edtPassword, edtAdminId, edtEmail;
     private Button btnRegister;
 
     private String role = "";
@@ -74,6 +74,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
         edtLName = view.findViewById(R.id.edit_last_name);
         edtUsername = view.findViewById(R.id.edit_username);
         edtPassword = view.findViewById(R.id.edit_password);
+        edtEmail = view.findViewById(R.id.edit_email);
 
         btnRegister = view.findViewById(R.id.button_register);
         btnRegister.setOnClickListener(this);
@@ -89,6 +90,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
         admin.setlName(edtLName.getText().toString());
         admin.setUsername(edtUsername.getText().toString());
         admin.setPassword(edtPassword.getText().toString());
+        admin.setEmail(edtEmail.getText().toString());
 
         LayoutInflater inflater = getLayoutInflater();
         View layoutView = inflater.inflate(R.layout.dialog_db_password, null);
@@ -97,7 +99,7 @@ public class SignUpAdminFragment extends Fragment implements SignUpContract.View
         editText.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
         editText.setHintTextColor(ResourcesCompat.getColor(getResources(), R.color.my_kind_of_grey, null));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
         builder.setTitle("Enter Db Password");
         builder.setView(layoutView);
         builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {

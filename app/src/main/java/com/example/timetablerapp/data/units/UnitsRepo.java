@@ -89,6 +89,20 @@ public class UnitsRepo implements UnitDataSource {
         });
     }
 
+    public void getCourses(UnitsLoadedCallback callback) {
+        unitsRemoteDS.getCourses(new UnitsLoadedCallback() {
+            @Override
+            public void successful(List<Unit> units) {
+                callback.successful(units);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     @Override
     public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
         unitsRemoteDS.getTimetableByStudentId(studentId, new TimetableLoadedCallback() {
@@ -182,6 +196,20 @@ public class UnitsRepo implements UnitDataSource {
     @Override
     public void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
         unitsRemoteDS.removeUnits(userId, unitList, new UnitDataSource.UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    public void addCourse(Unit unit, String passcode, UnitsRegisteredCallback callback) {
+        unitsRemoteDS.addCourse(unit, passcode, new UnitsRegisteredCallback() {
             @Override
             public void successful(String message) {
                 callback.successful(message);

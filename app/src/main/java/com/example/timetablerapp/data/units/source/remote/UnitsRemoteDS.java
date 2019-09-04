@@ -125,6 +125,32 @@ public class UnitsRemoteDS implements UnitDataSource {
         });
     }
 
+    public void getCourses(UnitsLoadedCallback callback) {
+        Call<UnitResponse> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .getUnits();
+
+        call.enqueue(new Callback<UnitResponse>() {
+            @Override
+            public void onResponse(Call<UnitResponse> call, Response<UnitResponse> response) {
+                if (response.isSuccessful()) {
+                    List<Unit> unitList = response.body().getUnitList();
+                    if (unitList != null) {
+                        callback.successful(unitList);
+                    }
+                } else {
+                    callback.unsuccessful("Units are not available, please contact admin");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UnitResponse> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                callback.unsuccessful("An error occurred, please contact admin.");
+            }
+        });
+    }
+
     @Override
     public void getTimetableByStudentId(String studentId, TimetableLoadedCallback callback) {
         Call<TimetableResponse> call = RetrofitClient.getRetrofit()
@@ -384,6 +410,29 @@ public class UnitsRemoteDS implements UnitDataSource {
         }
     }
 
+    public void addCourse(Unit unit, String passCode, UnitsRegisteredCallback callback) {
+        UnitReq unitReq = new UnitReq(unit, passCode);
+        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .addCourse("application/json", unitReq);
+
+        call.enqueue(new Callback<SuccessfulReport>() {
+            @Override
+            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful("Successfully added unit");
+                } else {
+                    callback.unsuccessful("Please try again");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                callback.unsuccessful("An error occurred, please contact administrator");
+            }
+        });
+    }
+
     public class DeadlineRequest {
         @SerializedName("start_date")
         private String startDate;
@@ -404,6 +453,25 @@ public class UnitsRemoteDS implements UnitDataSource {
 
         public void setStartDate(String startDate) {
             this.startDate = startDate;
+        }
+    }
+
+    public class UnitReq {
+        @SerializedName("unit")
+        private Unit unit;
+        @SerializedName("passcode")
+        private String passCode;
+
+        public UnitReq(Unit unit, String passCode) {
+            this.unit = unit;
+            this.passCode = passCode;
+        }
+        public void setUnit(Unit unit) {
+            this.unit = unit;
+        }
+
+        public Unit getUnit() {
+            return unit;
         }
     }
 }

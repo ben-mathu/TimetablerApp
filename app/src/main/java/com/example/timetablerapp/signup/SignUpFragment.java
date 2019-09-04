@@ -186,7 +186,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
                     btnDatePicker.setText(DateFormat.format("yyyy-MM-dd", calendar.getTimeInMillis()));
                 }
             };
-            DatePickerDialog d = new DatePickerDialog(getActivity(), datePickerDialog,
+            DatePickerDialog d = new DatePickerDialog(getActivity(),
+                    R.style.Theme_Dialogs,
+                    datePickerDialog,
                     Calendar.getInstance().get(Calendar.YEAR),
                     Calendar.getInstance().get(Calendar.MONTH),
                     Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
