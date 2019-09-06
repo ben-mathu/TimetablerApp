@@ -1,7 +1,13 @@
 package com.example.timetablerapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.login.LoginActivity;
+import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 import com.example.timetablerapp.signup.SignUpActivity;
 
 public class MainActivity extends AppCompatActivity implements MainView{
@@ -33,6 +40,25 @@ public class MainActivity extends AppCompatActivity implements MainView{
     protected void onStart() {
         super.onStart();
         checkIfRoleAlreadySelected();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.INTERNET)) {
+                DialogFragment dialog = ShowExplanationDialog.newFragment("Hi, the application requires internet access and I need your permission first.", MainApplication.INTERNET_ACCESS_REQUEST_CODE);
+                dialog.show(getSupportFragmentManager(), "Explanation dialog");
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, MainApplication.INTERNET_ACCESS_REQUEST_CODE);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MainApplication.INTERNET_ACCESS_REQUEST_CODE:
+                DialogFragment dialog = ShowExplanationDialog.newFragment("Hi, the application requires internet access and I need your permission first.", MainApplication.INTERNET_ACCESS_REQUEST_CODE);
+                dialog.show(getSupportFragmentManager(), "Explanation dialog");
+                break;
+        }
     }
 
     private void checkIfRoleAlreadySelected() {

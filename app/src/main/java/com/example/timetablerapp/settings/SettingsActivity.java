@@ -2,6 +2,7 @@ package com.example.timetablerapp.settings;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -73,14 +74,12 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainApplication.WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
             } else {
-                DialogFragment dialog = ShowExplanationDialog.newFragment("I require your permission to write to storage to make your experience even better.");
+                DialogFragment dialog = ShowExplanationDialog.newFragment("I require your permission to write to storage to make your experience even better.", MainApplication.WRITE_EXTERNAL_STORAGE_REQUEST_CODE);
                 dialog.show(getSupportFragmentManager(), "Explanation Dialog");
             }
         }
@@ -95,6 +94,8 @@ public class SettingsActivity extends AppCompatActivity {
         Uri uri = Uri.parse("content://com.example.timetablerapp/" + fileName);
         File file = new File(this.getFilesDir(), uri.getPath());
         String filepath = file.getPath();
+
+        filepath = this.getFilesDir().getPath().toString() + "/" +  fileName;
 
         bitmap = BitmapFactory.decodeFile(filepath);
 
@@ -131,7 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), ACTIVITY_RESULT);
             });
 
-            builderImage= new AlertDialog.Builder(SettingsActivity.this)
+            builderImage= new AlertDialog.Builder(SettingsActivity.this, R.style.Theme_Dialogs)
                     .setView(v)
                     .setTitle("Change Picture")
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -215,7 +216,7 @@ public class SettingsActivity extends AppCompatActivity {
             imgPicChange.setImageBitmap(bitmap);
 
             // save the image to a file
-            try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
+            try (FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE)) {
 
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             } catch (FileNotFoundException e) {
@@ -230,7 +231,7 @@ public class SettingsActivity extends AppCompatActivity {
             bitmap = (Bitmap) data.getExtras().get("data");
             imgPicChange.setImageBitmap(bitmap);
 
-            try (FileOutputStream outputStream = new FileOutputStream(fileName)) {
+            try (FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE)) {
 
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
             } catch (FileNotFoundException e) {

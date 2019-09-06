@@ -1,6 +1,7 @@
 package com.example.timetablerapp.dashboard;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -92,6 +93,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
     private String strTimer = "";
     private String fileName = "";
 
+    private int screenSize = 0;
     private long timeRemaining = 0;
 
     private boolean isUnitRegistrationScheduled = false;
@@ -167,13 +169,15 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         File file = new File(this.getFilesDir(), uri.getPath());
         String filepath = file.getPath();
 
+        filepath = this.getFilesDir().getPath().toString() + "/" + fileName;
+
         bitmap = BitmapFactory.decodeFile(filepath);
 
         if (bitmap != null) {
             circleImageView.setImageBitmap(bitmap);
         }
 
-        if (userType.equalsIgnoreCase("admin")) {
+        if (userType.equalsIgnoreCase("admin") && screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             navigationView.setVisibility(View.VISIBLE);
         }
     }
@@ -238,50 +242,59 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 //                    .commit();
 //        }
 
-        navigationView = findViewById(R.id.bottom_navigation);
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.room:
-                        fragment = getSupportFragmentManager().findFragmentByTag("room");
+        /*
+            get screen size
+         */
 
-                        if (fragment == null) {
-                            fragment = new AddClassFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, "room")
-                                    .commit();
-                        }
-                        break;
-                    case R.id.course:
-                        fragment = getSupportFragmentManager().findFragmentByTag("course");
+        screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
 
-                        if (fragment == null) {
-                            fragment = new AddCourseFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, "course")
-                                    .commit();
-                        }
-                        break;
-                    case R.id.lecturer:
-                        fragment = getSupportFragmentManager().findFragmentByTag("lecturer");
+        if (screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            navigationView = findViewById(R.id.bottom_navigation);
+            navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.room:
+                            fragment = getSupportFragmentManager().findFragmentByTag("room");
 
-                        if (fragment == null) {
-                            fragment = new AddLecturerFragment();
+                            if (fragment == null) {
+                                fragment = new AddClassFragment();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container, fragment, "room")
+                                        .commit();
+                            }
+                            break;
+                        case R.id.course:
+                            fragment = getSupportFragmentManager().findFragmentByTag("course");
+
+                            if (fragment == null) {
+                                fragment = new AddCourseFragment();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container, fragment, "course")
+                                        .commit();
+                            }
+                            break;
+                        case R.id.lecturer:
+                            fragment = getSupportFragmentManager().findFragmentByTag("lecturer");
+
+                            if (fragment == null) {
+                                fragment = new AddLecturerFragment();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container, fragment, "lecturer")
+                                        .commit();
+                            }
+                            break;
+                        case R.id.dashboard:
                             getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, "lecturer")
+                                    .remove(fragment)
                                     .commit();
-                        }
-                        break;
-                    case R.id.dashboard:
-                        getSupportFragmentManager().beginTransaction()
-                                .remove(fragment)
-                                .commit();
-                        break;
+                            break;
+                    }
+                    return true;
                 }
-                return true;
-            }
-        });
+            });
+        }
     }
 
     private void startTimer() {

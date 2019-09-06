@@ -82,7 +82,7 @@ public class ScheduleRegistration extends DialogFragment {
                     // display time picker dialog
                     TimePickerDialog dialog = new TimePickerDialog(
                             getActivity(),
-                            R.style.Theme_TimePicker,
+                            R.style.Theme_Dialogs,
                             onTimeSetListener,
                             Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
                             Calendar.getInstance().get(Calendar.MINUTE),

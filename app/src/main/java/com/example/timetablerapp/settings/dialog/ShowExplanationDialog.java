@@ -24,9 +24,10 @@ public class ShowExplanationDialog extends DialogFragment {
 
     public ShowExplanationDialog() {}
 
-    public static DialogFragment newFragment(String message) {
+    public static DialogFragment newFragment(String message, int requestCode) {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.MESSAGE, message);
+        bundle.putInt(Constants.REQUEST_CODE, requestCode);
 
         DialogFragment fragment = new ShowExplanationDialog();
         fragment.setArguments(bundle);
@@ -37,7 +38,8 @@ public class ShowExplanationDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String message = getArguments().getString(Constants.MESSAGE);
+        String message = getArguments().getString(Constants.MESSAGE, "");
+        int requestCode = getArguments().getInt(Constants.REQUEST_CODE, 0);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
 //        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Dialog_Alert);
@@ -59,6 +61,13 @@ public class ShowExplanationDialog extends DialogFragment {
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
             );
         });
+
+        if (requestCode == 106) {
+            builder.setNegativeButton("exit", (dialogInterface, i) -> {
+                dismiss();
+                getActivity().finish();
+            });
+        }
         builder.setTitle("Permission Explanation");
 
         return builder.create();
