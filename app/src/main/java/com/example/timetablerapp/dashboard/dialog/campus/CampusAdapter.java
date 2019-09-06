@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard.dialog.room;
+package com.example.timetablerapp.dashboard.dialog.campus;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,42 +9,42 @@ import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.dialog.util.UtilViewHolder;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.campuses.model.Campus;
 
 import java.util.List;
 
 /**
- * 03/09/19 -bernard
+ * 06/09/19 -bernard
  */
-public class RoomAdapter extends RecyclerView.Adapter<UtilViewHolder> {
-    private Context context;
-    private List<Room> rooms;
+public class CampusAdapter extends RecyclerView.Adapter<UtilViewHolder> {
 
-    public RoomAdapter(Context context, List<Room> rooms) {
+    private List<Campus> list;
+    private Context context;
+
+    public CampusAdapter(List<Campus> campuses, Context context) {
+        this.list = campuses;
         this.context = context;
-        this.rooms = rooms;
     }
 
     @NonNull
     @Override
     public UtilViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.room_list, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.lecturer_list, parent, false);
         return new UtilViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UtilViewHolder holder, int position) {
-        holder.txtId.setText(rooms.get(position).getHall_id());
-        String name = rooms.get(position).getId();
-        holder.txtName.setText(name);
+        holder.txtId.setText(list.get(position).getCampusId());
+        holder.txtName.setText(list.get(position).getCampusName());
     }
 
     @Override
     public int getItemCount() {
-        return rooms.size();
+        return list.size();
     }
 
-    public void setList(List<Room> filteredList) {
-        rooms = filteredList;
+    public void setList(List<Campus> filteredList) {
+        list = filteredList;
     }
 }

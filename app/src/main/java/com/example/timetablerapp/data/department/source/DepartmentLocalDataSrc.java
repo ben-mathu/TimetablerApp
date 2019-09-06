@@ -26,7 +26,7 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
     }
 
     @Override
-    public void getAllFromRemote(LoadDepartmentsCallBack callBack, String name) {
+    public void getDepsByIdFromRemote(LoadDepartmentsCallBack callBack, String name) {
 
     }
 
@@ -53,6 +53,11 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
                 callBack.dataNotAvailable("Department not found.");
             }
         }
+    }
+
+    @Override
+    public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
+
     }
 
     @Override

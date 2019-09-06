@@ -25,11 +25,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.dialog.campus.CampusesFragment;
+import com.example.timetablerapp.dashboard.dialog.department.DepartmentsFragment;
+import com.example.timetablerapp.dashboard.dialog.faculty.FacultiesFragment;
 import com.example.timetablerapp.dashboard.dialog.room.AddClassFragment;
 import com.example.timetablerapp.dashboard.dialog.course.AddCourseFragment;
 import com.example.timetablerapp.dashboard.dialog.lecturer.AddLecturerFragment;
@@ -75,7 +79,9 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
     private TextView txtTimer, txtTimetableTimer;
     private CircleImageView circleImageView;
     private Button btnAddLecturer, btnAddUnits, btnAddClass;
+    private Button btnAddDep, btnAddFaculty, btnAddCampus;
     private LinearLayout llAddingItems;
+    private RelativeLayout rlButtons;
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -164,11 +170,8 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         fileName = userId + " " + username + ".png";
 
-        // get uri
-        Uri uri = Uri.parse("content://com.example.timetablerapp/" + fileName);
-        File file = new File(this.getFilesDir(), uri.getPath());
-        String filepath = file.getPath();
-
+        // get file path
+        String filepath = "";
         filepath = this.getFilesDir().getPath().toString() + "/" + fileName;
 
         bitmap = BitmapFactory.decodeFile(filepath);
@@ -179,6 +182,10 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         if (userType.equalsIgnoreCase("admin") && screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             navigationView.setVisibility(View.VISIBLE);
+        }
+
+        if (userType.equalsIgnoreCase("admin")) {
+            rlButtons.setVisibility(View.VISIBLE);
         }
     }
 
@@ -256,32 +263,32 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.room:
-                            fragment = getSupportFragmentManager().findFragmentByTag("room");
+                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_ROOM);
 
                             if (fragment == null) {
                                 fragment = new AddClassFragment();
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, "room")
+                                        .replace(R.id.fragment_container, fragment, Constants.TAG_ROOM)
                                         .commit();
                             }
                             break;
                         case R.id.course:
-                            fragment = getSupportFragmentManager().findFragmentByTag("course");
+                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_COURSES);
 
                             if (fragment == null) {
                                 fragment = new AddCourseFragment();
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, "course")
+                                        .replace(R.id.fragment_container, fragment, Constants.TAG_COURSES)
                                         .commit();
                             }
                             break;
                         case R.id.lecturer:
-                            fragment = getSupportFragmentManager().findFragmentByTag("lecturer");
+                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_LECTURER);
 
                             if (fragment == null) {
                                 fragment = new AddLecturerFragment();
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, "lecturer")
+                                        .replace(R.id.fragment_container, fragment, Constants.TAG_LECTURER)
                                         .commit();
                             }
                             break;
@@ -292,6 +299,45 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                             break;
                     }
                     return true;
+                }
+            });
+        }
+
+        rlButtons = findViewById(R.id.rl_button_holder);
+        if (userType.equalsIgnoreCase("admin")) {
+            btnAddCampus = findViewById(R.id.button_add_campus);
+            btnAddCampus.setOnClickListener(view -> {
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_CAMPUS);
+
+                if (fragment == null) {
+                    fragment = new CampusesFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.TAG_CAMPUS)
+                            .commit();
+                }
+            });
+
+            btnAddDep = findViewById(R.id.button_add_department);
+            btnAddDep.setOnClickListener(view -> {
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_DEPARTMENT);
+
+                if (fragment == null) {
+                    fragment = new DepartmentsFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.TAG_DEPARTMENT)
+                            .commit();
+                }
+            });
+
+            btnAddFaculty = findViewById(R.id.button_add_faculty);
+            btnAddFaculty.setOnClickListener(view -> {
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_FACULTY);
+
+                if (fragment == null) {
+                    fragment = new FacultiesFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.TAG_FACULTY)
+                            .commit();
                 }
             });
         }

@@ -10,9 +10,11 @@ import java.util.List;
  * 08/05/19 -bernard
  */
 public interface DepartmentDS extends DataSource<Department> {
-    void getAllFromRemote(LoadDepartmentsCallBack callBack, String name);
+    void getDepsByIdFromRemote(LoadDepartmentsCallBack callBack, String name);
 
     void getFromLocalDb(LoadDepartmentsCallBack callBack);
+
+    void getAllFromRemote(LoadDepartmentsCallBack callBack);
 
     interface LoadDepartmentsCallBack {
         void loadDepartmentsSuccessful(List<Department> departments);

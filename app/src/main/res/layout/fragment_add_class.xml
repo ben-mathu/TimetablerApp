@@ -5,29 +5,37 @@
     android:padding="10dp"
     android:background="@color/colorPrimary3">
 
-    <android.support.v7.widget.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_action_buttons"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:gravity="end" />
+        android:orientation="horizontal"
+        android:weightSum="6">
 
-    <Button
-        android:id="@+id/button_add_course"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@+id/search_view"
-        android:text="Add Room"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/button_background_three"/>
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="end" />
+
+        <Button
+            android:id="@+id/button_add_course"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Add Room"
+            android:background="@drawable/button_background_three"/>
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_courses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/button_add_course"/>
+        android:layout_below="@+id/ll_action_buttons"/>
 </RelativeLayout>

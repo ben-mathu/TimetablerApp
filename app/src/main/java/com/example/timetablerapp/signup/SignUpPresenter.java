@@ -62,7 +62,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
 
     @Override
     public void getDepartments(String id) {
-        departmentRepository.getAllFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
+        departmentRepository.getDepsByIdFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
                 view.showDepartments(departments);

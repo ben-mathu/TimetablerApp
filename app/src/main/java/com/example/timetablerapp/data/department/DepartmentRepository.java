@@ -1,16 +1,8 @@
 package com.example.timetablerapp.data.department;
 
-import android.content.ContentValues;
-import android.os.Bundle;
-
-import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.campuses.CampusesDS;
-import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.department.source.DepartmentLocalDataSrc;
 import com.example.timetablerapp.data.department.source.DepartmentRemoteDataSrc;
-import com.example.timetablerapp.data.faculties.FacultyDS;
-import com.example.timetablerapp.data.faculties.model.Faculty;
 
 import java.util.List;
 
@@ -35,8 +27,8 @@ public class DepartmentRepository implements DepartmentDS {
     }
 
     @Override
-    public void getAllFromRemote(LoadDepartmentsCallBack callBack, String id) {
-        departmentRemoteDataSrc.getAllFromRemote(new LoadDepartmentsCallBack() {
+    public void getDepsByIdFromRemote(LoadDepartmentsCallBack callBack, String id) {
+        departmentRemoteDataSrc.getDepsByIdFromRemote(new LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
                 callBack.loadDepartmentsSuccessful(departments);
@@ -62,6 +54,11 @@ public class DepartmentRepository implements DepartmentDS {
                 callBack.dataNotAvailable(message);
             }
         });
+    }
+
+    @Override
+    public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
+
     }
 
     @Override

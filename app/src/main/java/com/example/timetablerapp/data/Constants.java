@@ -107,4 +107,10 @@ public class Constants {
     public static final String ACCESS_CODE = "access_code";
     public static final String COMMON = "is_common";
     public static final String REQUEST_CODE = "request_code";
+    public static final String TAG_ROOM = "tag_room";
+    public static final String TAG_COURSES = "tag_course";
+    public static final String TAG_LECTURER = "tag_lecturer";
+    public static final String TAG_CAMPUS = "tag_campus";
+    public static final String TAG_FACULTY = "tag_faculty";
+    public static final String TAG_DEPARTMENT = "tag_department";
 }

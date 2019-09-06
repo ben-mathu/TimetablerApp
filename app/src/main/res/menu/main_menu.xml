@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/logout"
-        android:title="@string/logout"
-        app:showAsAction="never"/>
-
-    <item android:id="@+id/show_registered_units"
-        android:title="@string/registered_units"
-        app:showAsAction="never" />
-
     <item android:id="@+id/show_settings"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/logout"
+        android:title="@string/logout"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/show_registered_units"
+        android:title="@string/registered_units"
         app:showAsAction="ifRoom" />
 </menu>

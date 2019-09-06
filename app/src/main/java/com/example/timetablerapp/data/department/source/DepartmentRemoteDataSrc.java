@@ -18,7 +18,7 @@ import retrofit2.Response;
 public class DepartmentRemoteDataSrc implements DepartmentDS {
 
     @Override
-    public void getAllFromRemote(LoadDepartmentsCallBack callBack, String id) {
+    public void getDepsByIdFromRemote(LoadDepartmentsCallBack callBack, String id) {
         Call<DepartmentResponse> call = RetrofitClient.getRetrofit()
                 .create(DepartmentApi.class)
                 .getAll(id);
@@ -42,6 +42,11 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
 
     @Override
     public void getFromLocalDb(LoadDepartmentsCallBack callBack) {
+
+    }
+
+    @Override
+    public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
 
     }
 

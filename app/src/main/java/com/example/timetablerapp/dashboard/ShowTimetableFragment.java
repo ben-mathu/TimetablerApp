@@ -1,5 +1,6 @@
 package com.example.timetablerapp.dashboard;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +33,8 @@ public class ShowTimetableFragment extends Fragment implements DashboardView {
     private TimetableAdapter adapter;
 
     private String role = "";
+
+    private int screenOrientation;
 
     public static ShowTimetableFragment newInstance() {
         return new ShowTimetableFragment();
@@ -67,7 +70,14 @@ public class ShowTimetableFragment extends Fragment implements DashboardView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_show_timetable, container, false);
         recyclerViewTimetable = view.findViewById(R.id.recycler_timetable);
-        recyclerViewTimetable.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
+
+        screenOrientation = getResources().getConfiguration().orientation;
+
+        if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerViewTimetable.setLayoutManager(new LinearLayoutManager(getActivity()));
+        } else {
+            recyclerViewTimetable.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayout.HORIZONTAL, false));
+        }
         return view;
     }
 
