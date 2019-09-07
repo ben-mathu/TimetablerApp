@@ -70,6 +70,7 @@ public class CampusesFragment extends Fragment implements CampusView {
         });
 
         Button btnAddCampus = view.findViewById(R.id.button_add_item);
+        btnAddCampus.setText(R.string.add_campus);
         btnAddCampus.setOnClickListener(v -> {
             View dialogView = LayoutInflater.from(getActivity())
                     .inflate(R.layout.dialog_campus, null, false);
@@ -80,6 +81,7 @@ public class CampusesFragment extends Fragment implements CampusView {
                         Campus campus = new Campus("", edtCampusName.getText().toString());
                         presenter.addCampus(campus);
                     }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.setTitle("Add Campus");
             builder.setView(dialogView);
             builder.setCancelable(false);
             builder.create().show();

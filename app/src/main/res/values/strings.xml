@@ -52,6 +52,8 @@
     <string name="is_common">Is Common</string>
     <string name="is_practical">Is Practical</string>
     <string name="campus_name">Name</string>
+    <string name="more">More</string>
+    <string name="add_campus">Add Campus</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

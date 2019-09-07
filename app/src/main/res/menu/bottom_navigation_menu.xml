@@ -16,4 +16,8 @@
     <item android:id="@+id/course"
         android:icon="@drawable/ic_course"
         android:title="@string/course"/>
+
+    <item android:id="@+id/more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more"/>
 </menu>

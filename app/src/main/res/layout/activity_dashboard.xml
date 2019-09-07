@@ -139,50 +139,6 @@
             </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/rl_button_holder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/ll_timetable"
-            android:visibility="gone"
-            tools:visibility="visible">
-
-            <Button
-                android:id="@+id/button_add_campus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/button_background_three"
-                android:text="Campuses"
-                android:textSize="14sp"/>
-
-            <Button
-                android:id="@+id/button_add_faculty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/button_background_three"
-                android:layout_below="@+id/button_add_campus"
-                android:text="Faculties"
-                android:textSize="14sp"/>
-
-            <Button
-                android:id="@+id/button_add_department"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="60dp"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/button_background_three"
-                android:layout_below="@+id/button_add_faculty"
-                android:text="Departments"
-                android:textSize="14sp"/>
-        </RelativeLayout>
-
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,15 +24,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.dialog.campus.CampusesFragment;
-import com.example.timetablerapp.dashboard.dialog.department.DepartmentsFragment;
-import com.example.timetablerapp.dashboard.dialog.faculty.FacultiesFragment;
+import com.example.timetablerapp.dashboard.dialog.more.MoreFragment;
 import com.example.timetablerapp.dashboard.dialog.room.AddClassFragment;
 import com.example.timetablerapp.dashboard.dialog.course.AddCourseFragment;
 import com.example.timetablerapp.dashboard.dialog.lecturer.AddLecturerFragment;
@@ -48,7 +44,6 @@ import com.example.timetablerapp.dashboard.dialog.ScheduleRegistration;
 import com.example.timetablerapp.dashboard.schedule.ScheduleTimerIntentService;
 import com.example.timetablerapp.dashboard.schedule.NotificationIntentService;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -79,9 +74,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
     private TextView txtTimer, txtTimetableTimer;
     private CircleImageView circleImageView;
     private Button btnAddLecturer, btnAddUnits, btnAddClass;
-    private Button btnAddDep, btnAddFaculty, btnAddCampus;
     private LinearLayout llAddingItems;
-    private RelativeLayout rlButtons;
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -182,10 +175,6 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         if (userType.equalsIgnoreCase("admin") && screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             navigationView.setVisibility(View.VISIBLE);
-        }
-
-        if (userType.equalsIgnoreCase("admin")) {
-            rlButtons.setVisibility(View.VISIBLE);
         }
     }
 
@@ -297,47 +286,18 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                                     .remove(fragment)
                                     .commit();
                             break;
+                        case R.id.more:
+                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.MORE);
+
+                            if (fragment == null) {
+                                fragment = new MoreFragment();
+                                getSupportFragmentManager().beginTransaction()
+                                        .replace(R.id.fragment_container, fragment, Constants.MORE)
+                                        .commit();
+                            }
+                            break;
                     }
                     return true;
-                }
-            });
-        }
-
-        rlButtons = findViewById(R.id.rl_button_holder);
-        if (userType.equalsIgnoreCase("admin")) {
-            btnAddCampus = findViewById(R.id.button_add_campus);
-            btnAddCampus.setOnClickListener(view -> {
-                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_CAMPUS);
-
-                if (fragment == null) {
-                    fragment = new CampusesFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, fragment, Constants.TAG_CAMPUS)
-                            .commit();
-                }
-            });
-
-            btnAddDep = findViewById(R.id.button_add_department);
-            btnAddDep.setOnClickListener(view -> {
-                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_DEPARTMENT);
-
-                if (fragment == null) {
-                    fragment = new DepartmentsFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, fragment, Constants.TAG_DEPARTMENT)
-                            .commit();
-                }
-            });
-
-            btnAddFaculty = findViewById(R.id.button_add_faculty);
-            btnAddFaculty.setOnClickListener(view -> {
-                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_FACULTY);
-
-                if (fragment == null) {
-                    fragment = new FacultiesFragment();
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, fragment, Constants.TAG_FACULTY)
-                            .commit();
                 }
             });
         }
