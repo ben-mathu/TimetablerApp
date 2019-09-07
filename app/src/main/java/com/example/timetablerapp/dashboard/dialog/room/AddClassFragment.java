@@ -63,12 +63,12 @@ public class AddClassFragment extends Fragment implements RoomView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_class, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_item, container, false);
         presenter =  new DashboardPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getHallRepo());
 
-        recyclerView = view.findViewById(R.id.recycler_view_courses);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         searchView = view.findViewById(R.id.search_view);

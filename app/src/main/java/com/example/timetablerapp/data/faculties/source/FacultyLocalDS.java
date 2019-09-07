@@ -32,6 +32,11 @@ public class FacultyLocalDS implements FacultyDS {
     }
 
     @Override
+    public void addFaculty(Faculty faculty, SuccessFulCallback callback) {
+
+    }
+
+    @Override
     public void update(Faculty item) {
 
     }

@@ -1,6 +1,6 @@
 package com.example.timetablerapp.data.user.student.source;
 
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.UserApi;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.student.StudentApi;
@@ -23,13 +23,13 @@ public class StudentRemoteDS implements UserDataSource<Student> {
         StudentRequest request = new StudentRequest();
         request.setStudent(obj);
 
-        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)
                 .signUpStudent("application/json", request);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful()) {
                     callBack.userIsAuthSuccessful("Successfully registered.");
                 } else {
@@ -38,7 +38,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 callBack.authNotSuccessful("Error: " + t.getLocalizedMessage());
             }
         });

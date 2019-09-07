@@ -1,12 +1,8 @@
 package com.example.timetablerapp.data.campuses;
 
-import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.campuses.model.CampusRequest;
 import com.example.timetablerapp.data.campuses.model.CampusesReponse;
-import com.example.timetablerapp.data.response.SuccessfulReport;
-
-import java.util.List;
+import com.example.timetablerapp.data.response.MessageReport;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,6 +18,6 @@ public interface CampusApi {
     Call<CampusesReponse> getAll();
 
     @PUT("add-campus")
-    Call<SuccessfulReport> addCampus(@Header("Content-Type") String contentType,
-                                     @Body CampusRequest req);
+    Call<MessageReport> addCampus(@Header("Content-Type") String contentType,
+                                  @Body CampusRequest req);
 }

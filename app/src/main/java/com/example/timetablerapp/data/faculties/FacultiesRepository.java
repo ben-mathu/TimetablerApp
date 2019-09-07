@@ -58,6 +58,21 @@ public class FacultiesRepository implements FacultyDS {
     }
 
     @Override
+    public void addFaculty(Faculty faculty, SuccessFulCallback callback) {
+        facultyRemoteDS.addFaculty(faculty, new SuccessFulCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
     public void update(Faculty item) {
 
     }

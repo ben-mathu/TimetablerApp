@@ -5,8 +5,7 @@ import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.campuses.model.CampusRequest;
 import com.example.timetablerapp.data.campuses.model.CampusesReponse;
-import com.example.timetablerapp.data.faculties.FacultyDS;
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import java.util.List;
@@ -46,13 +45,13 @@ public class CampusRemoteDS implements CampusesDS {
     @Override
     public void addCampus(Campus campus, SuccessFullySavedCallback callback) {
         CampusRequest req = new CampusRequest(campus);
-        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(CampusApi.class)
                 .addCampus("application/json", req);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.success(response.body().getMessage());
                 } else {
@@ -61,7 +60,7 @@ public class CampusRemoteDS implements CampusesDS {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 callback.unSuccess("An error has occurred, please contact administrator");
             }
         });

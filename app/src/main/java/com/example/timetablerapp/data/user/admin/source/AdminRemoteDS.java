@@ -2,7 +2,7 @@ package com.example.timetablerapp.data.user.admin.source;
 
 import android.util.Log;
 
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminApi;
 import com.example.timetablerapp.data.user.admin.model.Admin;
@@ -26,13 +26,13 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
         request.setAdmin(obj);
         request.setDbPassword(pass);
 
-        Call<SuccessfulReport> call  = RetrofitClient.getRetrofit()
+        Call<MessageReport> call  = RetrofitClient.getRetrofit()
                 .create(AdminApi.class)
                 .register("application/json", request);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful()) {
                     callBack.userIsAuthSuccessful(response.body().getMessage());
                 } else {
@@ -41,7 +41,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 callBack.authNotSuccessful("An error has occurred");
                 Log.e(TAG, "onFailure: ", t);
                 t.printStackTrace();

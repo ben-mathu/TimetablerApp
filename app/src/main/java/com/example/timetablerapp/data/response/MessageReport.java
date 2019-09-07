@@ -2,7 +2,7 @@ package com.example.timetablerapp.data.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class SuccessfulReport {
+public class MessageReport {
 	@SerializedName("message")
 	private String message;
 	

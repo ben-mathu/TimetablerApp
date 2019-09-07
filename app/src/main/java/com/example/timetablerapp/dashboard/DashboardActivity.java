@@ -379,8 +379,6 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                 timer.purge();
                 return super.cancel();
             }
-
-//            schedu
         }, 0, 1000);
     }
 

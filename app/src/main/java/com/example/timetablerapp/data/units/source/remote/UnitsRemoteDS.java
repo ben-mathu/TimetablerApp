@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.timetable.TimetableApi;
 import com.example.timetablerapp.data.timetable.model.TimetableResponse;
 import com.example.timetablerapp.data.units.UnitApi;
@@ -253,15 +253,15 @@ public class UnitsRemoteDS implements UnitDataSource {
         String role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
         UnitsRequest request = new UnitsRequest();
         request.setUnitList(unitList);
-        Call<SuccessfulReport> call;
+        Call<MessageReport> call;
         if (role.equalsIgnoreCase("lecturer")) {
             call = RetrofitClient.getRetrofit()
                     .create(UnitApi.class)
                     .submitRegisteredUnitsLec("application/json", userId, request);
 
-            call.enqueue(new Callback<SuccessfulReport>() {
+            call.enqueue(new Callback<MessageReport>() {
                 @Override
-                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                     if (response.isSuccessful()) {
                         callback.successful(response.body().getMessage());
                     } else {
@@ -270,7 +270,7 @@ public class UnitsRemoteDS implements UnitDataSource {
                 }
 
                 @Override
-                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                public void onFailure(Call<MessageReport> call, Throwable t) {
                     Log.e(TAG, "onFailure: Error " + t.getLocalizedMessage() , t);
                     callback.unsuccessful("An error occurred, please contact administrator.");
                 }
@@ -280,9 +280,9 @@ public class UnitsRemoteDS implements UnitDataSource {
                     .create(UnitApi.class)
                     .submitRegisteredUnits("application/json", userId, request);
 
-            call.enqueue(new Callback<SuccessfulReport>() {
+            call.enqueue(new Callback<MessageReport>() {
                 @Override
-                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                     if (response.isSuccessful()) {
                         callback.successful(response.body().getMessage());
                     } else {
@@ -291,7 +291,7 @@ public class UnitsRemoteDS implements UnitDataSource {
                 }
 
                 @Override
-                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                public void onFailure(Call<MessageReport> call, Throwable t) {
                     Log.e(TAG, "onFailure: Error " + t.getLocalizedMessage() , t);
                     callback.unsuccessful("An error occurred, please contact administrator.");
                 }
@@ -305,13 +305,13 @@ public class UnitsRemoteDS implements UnitDataSource {
         request.setStartDate(startDate);
         request.setDeadline(deadline);
 
-        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(UnitApi.class)
                 .setRegistrationDeadline("application/json", request);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful()) {
                     callback.successful(response.body().getMessage());
                 } else {
@@ -320,7 +320,7 @@ public class UnitsRemoteDS implements UnitDataSource {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getLocalizedMessage(), t);
                 t.printStackTrace();
 
@@ -338,13 +338,13 @@ public class UnitsRemoteDS implements UnitDataSource {
         req.setUnits(unitList);
 
         if (role.equalsIgnoreCase("student")) {
-            Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+            Call<MessageReport> call = RetrofitClient.getRetrofit()
                     .create(UnitApi.class)
                     .removeUnits("application/json", req, userId);
 
-            call.enqueue(new Callback<SuccessfulReport>() {
+            call.enqueue(new Callback<MessageReport>() {
                 @Override
-                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             callback.successful(response.body().getMessage());
@@ -355,20 +355,20 @@ public class UnitsRemoteDS implements UnitDataSource {
                 }
 
                 @Override
-                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                public void onFailure(Call<MessageReport> call, Throwable t) {
                     callback.unsuccessful("An error occurred units were not removed, please contact administrator");
                 }
             });
         }
 
         if (role.equalsIgnoreCase("lecturer")) {
-            Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+            Call<MessageReport> call = RetrofitClient.getRetrofit()
                     .create(UnitApi.class)
                     .removeUnitsLec("application/json", req, userId);
 
-            call.enqueue(new Callback<SuccessfulReport>() {
+            call.enqueue(new Callback<MessageReport>() {
                 @Override
-                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             callback.successful(response.body().getMessage());
@@ -379,20 +379,20 @@ public class UnitsRemoteDS implements UnitDataSource {
                 }
 
                 @Override
-                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                public void onFailure(Call<MessageReport> call, Throwable t) {
                     callback.unsuccessful("An error occurred units were not removed, please contact administrator");
                 }
             });
         }
 
         if (role.equalsIgnoreCase("admin")) {
-            Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+            Call<MessageReport> call = RetrofitClient.getRetrofit()
                     .create(UnitApi.class)
                     .removeUnitsAdmin("application/json", req);
 
-            call.enqueue(new Callback<SuccessfulReport>() {
+            call.enqueue(new Callback<MessageReport>() {
                 @Override
-                public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                     if (response.isSuccessful()) {
                         if (response.body() != null) {
                             callback.successful(response.body().getMessage());
@@ -403,7 +403,7 @@ public class UnitsRemoteDS implements UnitDataSource {
                 }
 
                 @Override
-                public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                public void onFailure(Call<MessageReport> call, Throwable t) {
                     callback.unsuccessful("An error occurred units were not removed, please contact administrator");
                 }
             });
@@ -412,13 +412,13 @@ public class UnitsRemoteDS implements UnitDataSource {
 
     public void addCourse(Unit unit, String passCode, UnitsRegisteredCallback callback) {
         UnitReq unitReq = new UnitReq(unit, passCode);
-        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(UnitApi.class)
                 .addCourse("application/json", unitReq);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful("Successfully added unit");
                 } else {
@@ -427,7 +427,7 @@ public class UnitsRemoteDS implements UnitDataSource {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 callback.unsuccessful("An error occurred, please contact administrator");
             }
         });

@@ -1,6 +1,6 @@
 package com.example.timetablerapp.data.user.student;
 
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.ValidationRequest;
 import com.example.timetablerapp.data.user.student.model.StudentRequest;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
@@ -15,8 +15,8 @@ import retrofit2.http.POST;
  */
 public interface StudentApi {
     @POST("student-sign-up")
-    Call<SuccessfulReport> signUpStudent(@Header("Content-Type") String contentType,
-                                         @Body StudentRequest request);
+    Call<MessageReport> signUpStudent(@Header("Content-Type") String contentType,
+                                      @Body StudentRequest request);
 
     @POST("validate-user")
     Call<StudentResponse> validateLec(@Header("Content-Type") String contentType,

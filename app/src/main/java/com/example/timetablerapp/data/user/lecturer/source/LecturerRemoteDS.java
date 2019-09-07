@@ -8,7 +8,7 @@ import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
 import com.example.timetablerapp.data.department.source.DepartmentLocalDataSrc;
 import com.example.timetablerapp.data.faculties.source.FacultyLocalDS;
 import com.example.timetablerapp.data.programmes.source.ProgLocalDS;
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminApi;
 import com.example.timetablerapp.data.user.admin.model.Admin;
@@ -67,13 +67,13 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
         lecturerRequest.setLecturer(lecturer);
         lecturerRequest.setPass(pass);
 
-        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(LecturerApi.class)
                 .signUpLec("application/json", lecturerRequest);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful()) {
                     callBack.userIsAuthSuccessful(response.body().getMessage());
                 } else {
@@ -82,7 +82,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 callBack.authNotSuccessful(t.getMessage());
             }
         });

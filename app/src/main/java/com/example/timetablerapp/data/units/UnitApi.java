@@ -1,7 +1,7 @@
 package com.example.timetablerapp.data.units;
 
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.units.model.UnitRequest;
 import com.example.timetablerapp.data.units.model.UnitResponse;
 import com.example.timetablerapp.data.units.model.UnitsRequest;
@@ -13,7 +13,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -30,31 +29,31 @@ public interface UnitApi {
     Call<UnitResponse> getUnitsOnOffer(@Query(Constants.DEPARTMENT_ID) String department);
 
     @PUT("submit-units")
-    Call<SuccessfulReport> submitRegisteredUnits(@Header("Content-Type") String contentType,
-                                                 @Query(Constants.STUDENT_ID) String userId,
-                                                 @Body UnitsRequest request);
+    Call<MessageReport> submitRegisteredUnits(@Header("Content-Type") String contentType,
+                                              @Query(Constants.STUDENT_ID) String userId,
+                                              @Body UnitsRequest request);
     @PUT("submit-units")
-    Call<SuccessfulReport> submitRegisteredUnitsLec(@Header("Content-Type") String contentType,
+    Call<MessageReport> submitRegisteredUnitsLec(@Header("Content-Type") String contentType,
                                                  @Query(Constants.LECTURER_ID) String userId,
                                                  @Body UnitsRequest request);
 
     @PUT("set-registration-date")
-    Call<SuccessfulReport> setRegistrationDeadline(@Header("Content-Type") String contentType,
-                                                   @Body UnitsRemoteDS.DeadlineRequest request);
+    Call<MessageReport> setRegistrationDeadline(@Header("Content-Type") String contentType,
+                                                @Body UnitsRemoteDS.DeadlineRequest request);
 
     @PUT("delete-unit")
-    Call<SuccessfulReport> removeUnits(@Header("Content-Type") String contentType,
+    Call<MessageReport> removeUnits(@Header("Content-Type") String contentType,
+                                    @Body UnitRequest req,
+                                    @Query(Constants.STUDENT_ID) String userId);
+
+    @PUT("delete-unit")
+    Call<MessageReport> removeUnitsLec(@Header("Content-Type") String contentType,
                                        @Body UnitRequest req,
-                                       @Query(Constants.STUDENT_ID) String userId);
+                                       @Query(Constants.LECTURER_ID) String userId);
 
     @PUT("delete-unit")
-    Call<SuccessfulReport> removeUnitsLec(@Header("Content-Type") String contentType,
-                                          @Body UnitRequest req,
-                                          @Query(Constants.LECTURER_ID) String userId);
-
-    @PUT("delete-unit")
-    Call<SuccessfulReport> removeUnitsAdmin(@Header("Content-Type") String contentType,
-                                            @Body UnitRequest req);
+    Call<MessageReport> removeUnitsAdmin(@Header("Content-Type") String contentType,
+                                         @Body UnitRequest req);
 
     @GET("registered-units")
     Call<UnitResponse> getUnitsGeneral();
@@ -63,6 +62,6 @@ public interface UnitApi {
     Call<UnitResponse> getUnits();
 
     @POST("add-unit")
-    Call<SuccessfulReport> addCourse(@Header("Content-Type") String contentType,
-                                    @Body UnitsRemoteDS.UnitReq unitReq);
+    Call<MessageReport> addCourse(@Header("Content-Type") String contentType,
+                                  @Body UnitsRemoteDS.UnitReq unitReq);
 }

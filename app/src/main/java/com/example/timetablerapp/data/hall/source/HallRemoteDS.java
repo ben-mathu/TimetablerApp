@@ -1,10 +1,9 @@
 package com.example.timetablerapp.data.hall.source;
 
 import com.example.timetablerapp.data.hall.HallDS;
-import com.example.timetablerapp.data.hall.model.Hall;
 import com.example.timetablerapp.data.hall.model.HallResponse;
 import com.example.timetablerapp.data.hall.model.RoomResponse;
-import com.example.timetablerapp.data.response.SuccessfulReport;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.room.Room;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.google.gson.annotations.SerializedName;
@@ -63,13 +62,13 @@ public class HallRemoteDS {
 
     public void addRooms(Room room, String passcode, HallDS.Success success) {
         RoomRequest request = new RoomRequest(room, passcode);
-        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(HallApi.class)
                 .addRoom("application/json", request);
 
-        call.enqueue(new Callback<SuccessfulReport>() {
+        call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     success.success(response.body().getMessage());
                 } else {
@@ -78,7 +77,7 @@ public class HallRemoteDS {
             }
 
             @Override
-            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+            public void onFailure(Call<MessageReport> call, Throwable t) {
                 success.unsuccess("An error has occurred, please contact administrator");
             }
         });

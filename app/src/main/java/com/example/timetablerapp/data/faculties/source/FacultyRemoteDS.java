@@ -6,7 +6,9 @@ import com.example.timetablerapp.data.faculties.FacultyApi;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.FacultiesResponse;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.data.faculties.model.FacultyRequest;
 import com.example.timetablerapp.data.faculties.model.FacultyResponse;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import java.util.List;
@@ -65,6 +67,30 @@ public class FacultyRemoteDS implements FacultyDS {
             public void onFailure(Call<FacultyResponse> call, Throwable t) {
                 callBack.dataNotAvailable(t.getMessage());
                 Log.e(TAG, "onFailure: ", t);
+            }
+        });
+    }
+
+    @Override
+    public void addFaculty(Faculty faculty, SuccessFulCallback callback) {
+        FacultyRequest req = new FacultyRequest(faculty);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(FacultyApi.class)
+                .addFaculty("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unSuccess(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unSuccess("Error, please contact administrator");
             }
         });
     }

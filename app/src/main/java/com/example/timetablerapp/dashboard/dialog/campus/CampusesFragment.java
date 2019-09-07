@@ -46,9 +46,9 @@ public class CampusesFragment extends Fragment implements CampusView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_class, null, false);
+        View view = inflater.inflate(R.layout.fragment_add_item, null, false);
 
-        recyclerCampuses = view.findViewById(R.id.recycler_view_courses);
+        recyclerCampuses = view.findViewById(R.id.recycler_view);
         recyclerCampuses.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         SearchView searchView = view.findViewById(R.id.search_view);

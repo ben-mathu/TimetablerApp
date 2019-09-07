@@ -78,7 +78,7 @@ public class AddCourseFragment extends Fragment implements CourseView {
                 MainApplication.getDepRepo(),
                 MainApplication.getProgRepo());
 
-        recyclerView = view.findViewById(R.id.recycler_view_courses);
+        recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         searchView = view.findViewById(R.id.search_view);

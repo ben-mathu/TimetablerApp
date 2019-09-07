@@ -1,10 +1,8 @@
 package com.example.timetablerapp.dashboard;
 
-import android.view.View;
-
 import com.example.timetablerapp.dashboard.dialog.campus.CampusView;
-import com.example.timetablerapp.dashboard.dialog.campus.CampusesFragment;
 import com.example.timetablerapp.dashboard.dialog.course.CourseView;
+import com.example.timetablerapp.dashboard.dialog.faculty.FacultyView;
 import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
 import com.example.timetablerapp.dashboard.dialog.room.RoomView;
 import com.example.timetablerapp.data.campuses.CampusesDS;
@@ -38,6 +36,7 @@ import java.util.List;
  * 19/05/19 -bernard
  */
 public class DashboardPresenter {
+    private FacultyView facultyView;
     private CampusView campusView;
     private CampusesRepository campusRepo;
     private RoomView roomView;
@@ -85,6 +84,12 @@ public class DashboardPresenter {
     public DashboardPresenter(CampusView campusView,
                               CampusesRepository campusRepo) {
         this.campusView = campusView;
+        this.campusRepo = campusRepo;
+    }
+
+    public DashboardPresenter(FacultyView facultyView, FacultiesRepository facultyRepo, CampusesRepository campusRepo) {
+        this.facultyView = facultyView;
+        this.facultyRepo = facultyRepo;
         this.campusRepo = campusRepo;
     }
 
@@ -368,6 +373,49 @@ public class DashboardPresenter {
             @Override
             public void unSuccess(String message) {
                 campusView.showMessage(message);
+            }
+        });
+    }
+
+    public void getCampusesForFaculty() {
+        campusRepo.getAllFromRemote(new CampusesDS.LoadCampusesCallBack() {
+            @Override
+            public void loadCampusesSuccessful(List<Campus> campuses) {
+                facultyView.setCampusList(campuses);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                facultyView.showMessage(message);
+            }
+        });
+    }
+
+    public void addFaculty(Faculty faculty) {
+        facultyRepo.addFaculty(faculty, new FacultyDS.SuccessFulCallback() {
+
+            @Override
+            public void success(String message) {
+                facultyView.showMessage(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                facultyView.showMessage(message);
+            }
+        });
+    }
+
+    public void getFacultiesForFaculty() {
+        facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
+            @Override
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
+                facultyView.setFaculties(faculties);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                facultyView.showMessage(message);
             }
         });
     }
