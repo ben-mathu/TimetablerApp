@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:background="@color/colorPrimary3">
 
@@ -18,10 +19,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"
+            app:defaultQueryHint="Search here"
             android:gravity="end" />
 
         <Button
-            android:id="@+id/button_add_course"
+            android:id="@+id/button_add_item"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"

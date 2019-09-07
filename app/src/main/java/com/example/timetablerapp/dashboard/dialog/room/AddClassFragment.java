@@ -130,7 +130,7 @@ public class AddClassFragment extends Fragment implements RoomView {
                 switchLab = dialogView.findViewById(R.id.switch_lab);
         edtPassCode.setVisibility(View.VISIBLE);
 
-        btnAddCourse = view.findViewById(R.id.button_add_course);
+        btnAddCourse = view.findViewById(R.id.button_add_item);
         btnAddCourse.setOnClickListener(v -> {
 
             presenter.getFacultiesForHalls();
@@ -160,9 +160,9 @@ public class AddClassFragment extends Fragment implements RoomView {
 
             if (dialogView.getParent() != null) {
                 ((ViewGroup) dialogView.getParent()).removeView(dialogView);
-            } else {
-                builder.create().show();
             }
+
+            builder.create().show();
         });
         return view;
     }

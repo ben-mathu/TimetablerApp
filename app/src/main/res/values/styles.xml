@@ -20,13 +20,15 @@
         <item name="actionMenuTextColor">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:textColorHint">@color/my_kind_of_grey</item>
+        <item name="android:editTextBackground">@drawable/edit_background</item>
     </style>
 
     <style name="Theme_TimePicker" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
-            <item name="android:textColorPrimary">@color/colorPrimary</item>
-            <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
     </style>
 
     <style name="Theme_DatePicker" parent="Theme.AppCompat.Dialog">

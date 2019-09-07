@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
@@ -29,8 +32,8 @@ public class CampusesFragment extends Fragment implements CampusView {
     private CampusAdapter adapter;
     private DashboardPresenter presenter;
 
+    // Widget
     private RecyclerView recyclerCampuses;
-    private SearchView searchView;
 
     @Override
     public void onStart() {
@@ -48,7 +51,7 @@ public class CampusesFragment extends Fragment implements CampusView {
         recyclerCampuses = view.findViewById(R.id.recycler_view_courses);
         recyclerCampuses.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        searchView = view.findViewById(R.id.search_view);
+        SearchView searchView = view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -64,6 +67,23 @@ public class CampusesFragment extends Fragment implements CampusView {
                 }
                 return true;
             }
+        });
+
+        Button btnAddCampus = view.findViewById(R.id.button_add_item);
+        btnAddCampus.setOnClickListener(v -> {
+            View dialogView = LayoutInflater.from(getActivity())
+                    .inflate(R.layout.dialog_campus, null, false);
+            EditText edtCampusName = dialogView.findViewById(R.id.edit_campus_name);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs)
+                    .setPositiveButton("Send", (dialogInterface, i) -> {
+                        Campus campus = new Campus("", edtCampusName.getText().toString());
+                        presenter.addCampus(campus);
+                    }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
+            builder.setView(dialogView);
+            builder.setCancelable(false);
+            builder.create().show();
+
         });
         return view;
     }
@@ -84,6 +104,9 @@ public class CampusesFragment extends Fragment implements CampusView {
     @Override
     public void setList(List<Campus> campuses) {
         this.campuses = campuses;
+
+        adapter = new CampusAdapter(campuses, getActivity());
+        recyclerCampuses.setAdapter(adapter);
     }
 
     @Override

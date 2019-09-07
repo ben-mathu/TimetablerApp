@@ -44,6 +44,21 @@ public class CampusesRepository implements CampusesDS {
     }
 
     @Override
+    public void addCampus(Campus campus, SuccessFullySavedCallback callback) {
+        campusRemoteDS.addCampus(campus, new SuccessFullySavedCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
     public void update(Campus item) {
 
     }

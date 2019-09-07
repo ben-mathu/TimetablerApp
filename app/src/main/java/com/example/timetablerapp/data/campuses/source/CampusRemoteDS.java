@@ -3,8 +3,10 @@ package com.example.timetablerapp.data.campuses.source;
 import com.example.timetablerapp.data.campuses.CampusApi;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.model.Campus;
+import com.example.timetablerapp.data.campuses.model.CampusRequest;
 import com.example.timetablerapp.data.campuses.model.CampusesReponse;
 import com.example.timetablerapp.data.faculties.FacultyDS;
+import com.example.timetablerapp.data.response.SuccessfulReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import java.util.List;
@@ -37,6 +39,30 @@ public class CampusRemoteDS implements CampusesDS {
             @Override
             public void onFailure(Call<CampusesReponse> call, Throwable t) {
                 callBack.dataNotAvailable(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void addCampus(Campus campus, SuccessFullySavedCallback callback) {
+        CampusRequest req = new CampusRequest(campus);
+        Call<SuccessfulReport> call = RetrofitClient.getRetrofit()
+                .create(CampusApi.class)
+                .addCampus("application/json", req);
+
+        call.enqueue(new Callback<SuccessfulReport>() {
+            @Override
+            public void onResponse(Call<SuccessfulReport> call, Response<SuccessfulReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unSuccess(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SuccessfulReport> call, Throwable t) {
+                callback.unSuccess("An error has occurred, please contact administrator");
             }
         });
     }

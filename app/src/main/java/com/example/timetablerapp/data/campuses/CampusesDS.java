@@ -11,8 +11,16 @@ import java.util.List;
  */
 public interface CampusesDS extends DataSource<Campus> {
     void getAllFromRemote(LoadCampusesCallBack callBack);
+
+    void addCampus(Campus campus, SuccessFullySavedCallback callback);
+
     interface LoadCampusesCallBack {
         void loadCampusesSuccessful(List<Campus> campuses);
         void dataNotAvailable(String message);
+    }
+
+    interface SuccessFullySavedCallback {
+        void success(String message);
+        void unSuccess(String message);
     }
 }

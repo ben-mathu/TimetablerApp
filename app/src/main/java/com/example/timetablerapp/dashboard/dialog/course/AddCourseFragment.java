@@ -22,8 +22,6 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.dialog.course.CourseAdapter;
-import com.example.timetablerapp.dashboard.dialog.course.CourseView;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
@@ -158,7 +156,7 @@ public class AddCourseFragment extends Fragment implements CourseView {
                 switchPractical = dialogView.findViewById(R.id.switch_practical);
         edtPassCode.setVisibility(View.VISIBLE);
 
-        btnAddCourse = view.findViewById(R.id.button_add_course);
+        btnAddCourse = view.findViewById(R.id.button_add_item);
         btnAddCourse.setOnClickListener(v -> {
             presenter.getFaculties();
 
@@ -185,13 +183,13 @@ public class AddCourseFragment extends Fragment implements CourseView {
                         presenter.addCourse(unit, edtPassCode.getText().toString());
                     }
                 }
-            });
+            }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
 
             if (dialogView.getParent() != null) {
                 ((ViewGroup) dialogView.getParent()).removeView(dialogView);
-            } else {
-                builder.create().show();
             }
+
+            builder.create().show();
         });
 
         return view;

@@ -357,4 +357,18 @@ public class DashboardPresenter {
             }
         });
     }
+
+    public void addCampus(Campus campus) {
+        campusRepo.addCampus(campus, new CampusesDS.SuccessFullySavedCallback() {
+            @Override
+            public void success(String message) {
+                campusView.showMessage(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                campusView.showMessage(message);
+            }
+        });
+    }
 }
