@@ -62,6 +62,21 @@ public class DepartmentRepository implements DepartmentDS {
     }
 
     @Override
+    public void addDepartment(Department department, SuccessfulCallback callback) {
+        departmentRemoteDataSrc.addDepartment(department, new SuccessfulCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccessful(String message) {
+                callback.unSuccessful(message);
+            }
+        });
+    }
+
+    @Override
     public void update(Department item) {
 
     }

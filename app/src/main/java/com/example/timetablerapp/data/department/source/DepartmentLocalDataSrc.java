@@ -61,6 +61,11 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
     }
 
     @Override
+    public void addDepartment(Department department, SuccessfulCallback successfulCallback) {
+
+    }
+
+    @Override
     public void update(Department item) {
 
     }

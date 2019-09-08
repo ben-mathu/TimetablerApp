@@ -35,7 +35,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     private List<Campus> campuses;
 
     // Classes
-    private FacultyAdaper adapter;
+    private FacultyAdapter adapter;
     private DashboardPresenter presenter;
     private Campus campus;
 
@@ -117,6 +117,10 @@ public class FacultiesFragment extends Fragment implements FacultyView {
             builder.setTitle("Add Campus");
             builder.setView(dialogView);
             builder.setCancelable(false);
+
+            if (dialogView.getParent() != null) {
+                ((ViewGroup) dialogView.getParent()).removeView(dialogView);
+            }
             builder.create().show();
 
         });
@@ -160,7 +164,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     public void setFaculties(List<Faculty> faculties) {
         this.faculties = faculties;
 
-        adapter = new FacultyAdaper(getActivity(), faculties);
+        adapter = new FacultyAdapter(getActivity(), faculties);
         recyclerFaculty.setAdapter(adapter);
     }
 }

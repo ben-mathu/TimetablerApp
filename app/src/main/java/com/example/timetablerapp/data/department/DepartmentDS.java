@@ -16,8 +16,15 @@ public interface DepartmentDS extends DataSource<Department> {
 
     void getAllFromRemote(LoadDepartmentsCallBack callBack);
 
+    void addDepartment(Department department, SuccessfulCallback successfulCallback);
+
     interface LoadDepartmentsCallBack {
         void loadDepartmentsSuccessful(List<Department> departments);
         void dataNotAvailable(String message);
+    }
+
+    interface SuccessfulCallback {
+        void success(String message);
+        void unSuccessful(String message);
     }
 }

@@ -2,6 +2,7 @@ package com.example.timetablerapp.dashboard;
 
 import com.example.timetablerapp.dashboard.dialog.campus.CampusView;
 import com.example.timetablerapp.dashboard.dialog.course.CourseView;
+import com.example.timetablerapp.dashboard.dialog.department.DepartView;
 import com.example.timetablerapp.dashboard.dialog.faculty.FacultyView;
 import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
 import com.example.timetablerapp.dashboard.dialog.room.RoomView;
@@ -36,14 +37,15 @@ import java.util.List;
  * 19/05/19 -bernard
  */
 public class DashboardPresenter {
+    private DepartView departView;
     private FacultyView facultyView;
     private CampusView campusView;
-    private CampusesRepository campusRepo;
     private RoomView roomView;
     private DashboardView view;
     private LecturerView lecView;
     private CourseView courseView;
 
+    private CampusesRepository campusRepo;
     private UnitsRepo unitsRepo;
     private FacultiesRepository facultyRepo;
     private DepartmentRepository depRepo;
@@ -90,6 +92,14 @@ public class DashboardPresenter {
     public DashboardPresenter(FacultyView facultyView, FacultiesRepository facultyRepo, CampusesRepository campusRepo) {
         this.facultyView = facultyView;
         this.facultyRepo = facultyRepo;
+        this.campusRepo = campusRepo;
+    }
+
+    public DashboardPresenter(DepartView departView, FacultiesRepository facultyRepo, DepartmentRepository depRepo, CampusesRepository campusRepo) {
+
+        this.departView = departView;
+        this.facultyRepo = facultyRepo;
+        this.depRepo = depRepo;
         this.campusRepo = campusRepo;
     }
 
@@ -339,12 +349,12 @@ public class DashboardPresenter {
         depRepo.getAllFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
-
+                departView.setDepartments(departments);
             }
 
             @Override
             public void dataNotAvailable(String message) {
-
+                departView.showMessage(message);
             }
         });
     }
@@ -416,6 +426,48 @@ public class DashboardPresenter {
             @Override
             public void dataNotAvailable(String message) {
                 facultyView.showMessage(message);
+            }
+        });
+    }
+
+    public void getFacultyById(String campusId) {
+        facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
+            @Override
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
+                departView.setFaculties(faculties);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                departView.showMessage(message);
+            }
+        }, campusId);
+    }
+
+    public void getCampusesForDepartment() {
+        campusRepo.getAllFromRemote(new CampusesDS.LoadCampusesCallBack() {
+            @Override
+            public void loadCampusesSuccessful(List<Campus> campuses) {
+                departView.setCampusList(campuses);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                departView.showMessage(message);
+            }
+        });
+    }
+
+    public void addDepartment(Department department) {
+        depRepo.addDepartment(department, new DepartmentDS.SuccessfulCallback() {
+            @Override
+            public void success(String message) {
+                departView.showMessage(message);
+            }
+
+            @Override
+            public void unSuccessful(String message) {
+                departView.showMessage(message);
             }
         });
     }

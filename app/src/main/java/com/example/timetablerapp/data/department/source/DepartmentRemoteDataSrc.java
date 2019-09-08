@@ -3,10 +3,10 @@ package com.example.timetablerapp.data.department.source;
 import com.example.timetablerapp.data.department.DepartmentApi;
 import com.example.timetablerapp.data.department.DepartmentDS;
 import com.example.timetablerapp.data.department.model.Department;
+import com.example.timetablerapp.data.department.model.DepartmentRequest;
 import com.example.timetablerapp.data.department.model.DepartmentResponse;
+import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +26,7 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
         call.enqueue(new Callback<DepartmentResponse>() {
             @Override
             public void onResponse(Call<DepartmentResponse> call, Response<DepartmentResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     callBack.loadDepartmentsSuccessful(response.body().getList());
                 } else {
                     callBack.dataNotAvailable(response.message());
@@ -48,6 +48,30 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
     @Override
     public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
 
+    }
+
+    @Override
+    public void addDepartment(Department department, SuccessfulCallback callback) {
+        DepartmentRequest req = new DepartmentRequest(department);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(DepartmentApi.class)
+                .addDepartment("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unSuccessful(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unSuccessful("Error, " + t.getLocalizedMessage());
+            }
+        });
     }
 
     @Override

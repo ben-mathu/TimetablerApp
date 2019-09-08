@@ -55,6 +55,7 @@
     <string name="more">More</string>
     <string name="add_campus">Add Campus</string>
     <string name="add_faculty">Add Faculty</string>
+    <string name="add_department">Add Department</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

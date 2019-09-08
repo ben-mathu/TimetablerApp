@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditText
-        android:id="@+id/edit_campus_name"
+        android:id="@+id/edit_department_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
@@ -15,8 +15,9 @@
         android:padding="10dp"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.733"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_campus" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_faculty" />
 
     <Spinner
         android:id="@+id/spinner_campus"
@@ -24,9 +25,22 @@
         android:layout_height="40dp"
         android:backgroundTint="@color/colorAccent"
         android:textAlignment="viewStart"
-        app:layout_constraintBottom_toTopOf="@+id/edit_campus_name"
+        app:layout_constraintBottom_toTopOf="@+id/spinner_faculty"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="30dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"
+        app:layout_constraintBottom_toTopOf="@+id/edit_campus_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_campus" />
 </android.support.constraint.ConstraintLayout>
