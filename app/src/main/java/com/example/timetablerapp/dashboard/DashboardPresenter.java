@@ -5,6 +5,8 @@ import com.example.timetablerapp.dashboard.dialog.course.CourseView;
 import com.example.timetablerapp.dashboard.dialog.department.DepartView;
 import com.example.timetablerapp.dashboard.dialog.faculty.FacultyView;
 import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
+import com.example.timetablerapp.dashboard.dialog.program.ProgView;
+import com.example.timetablerapp.dashboard.dialog.program.ProgrammeFragment;
 import com.example.timetablerapp.dashboard.dialog.room.RoomView;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
@@ -37,6 +39,7 @@ import java.util.List;
  * 19/05/19 -bernard
  */
 public class DashboardPresenter {
+    private ProgView progView;
     private DepartView departView;
     private FacultyView facultyView;
     private CampusView campusView;
@@ -101,6 +104,18 @@ public class DashboardPresenter {
         this.facultyRepo = facultyRepo;
         this.depRepo = depRepo;
         this.campusRepo = campusRepo;
+    }
+
+    public DashboardPresenter(ProgView progView,
+                              CampusesRepository campusRepo,
+                              FacultiesRepository facultyRepo,
+                              DepartmentRepository depRepo,
+                              ProgrammesRepository progRepo) {
+        this.progView = progView;
+        this.campusRepo = campusRepo;
+        this.facultyRepo = facultyRepo;
+        this.depRepo = depRepo;
+        this.progRepo = progRepo;
     }
 
     public void getUnitsByLecturerId(String strId) {
@@ -251,12 +266,24 @@ public class DashboardPresenter {
         depRepo.getDepsByIdFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
-                courseView.setDepartments(departments);
+                if (courseView != null) {
+                    courseView.setDepartments(departments);
+                }
+
+                if (progView != null) {
+                    progView.setDepartments(departments);
+                }
             }
 
             @Override
             public void dataNotAvailable(String message) {
-                courseView.showMessage(message);
+                if (courseView != null) {
+                    courseView.showMessage(message);
+                }
+
+                if (progView != null) {
+                    progView.showMessage(message);
+                }
             }
         }, id);
     }
@@ -434,12 +461,24 @@ public class DashboardPresenter {
         facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
             public void loadingFacultiesSuccessful(List<Faculty> faculties) {
-                departView.setFaculties(faculties);
+                if (departView != null) {
+                    departView.setFaculties(faculties);
+                }
+
+                if (progView != null) {
+                    progView.setFaculties(faculties);
+                }
             }
 
             @Override
             public void dataNotAvailable(String message) {
-                departView.showMessage(message);
+                if (departView != null) {
+                    departView.showMessage(message);
+                }
+
+                if (departView != null) {
+                    progView.showMessage(message);
+                }
             }
         }, campusId);
     }
@@ -448,12 +487,24 @@ public class DashboardPresenter {
         campusRepo.getAllFromRemote(new CampusesDS.LoadCampusesCallBack() {
             @Override
             public void loadCampusesSuccessful(List<Campus> campuses) {
-                departView.setCampusList(campuses);
+                if (departView != null) {
+                    departView.setCampusList(campuses);
+                }
+
+                if (progView != null) {
+                    progView.setCampuses(campuses);
+                }
             }
 
             @Override
             public void dataNotAvailable(String message) {
-                departView.showMessage(message);
+                if (departView != null) {
+                    departView.showMessage(message);
+                }
+
+                if (progView != null) {
+                    progView.showMessage(message);
+                }
             }
         });
     }
@@ -468,6 +519,34 @@ public class DashboardPresenter {
             @Override
             public void unSuccessful(String message) {
                 departView.showMessage(message);
+            }
+        });
+    }
+
+    public void getAllProgrammes() {
+        progRepo.getAllProgrammes(new ProgrammeDS.LoadProgrammesCallBack() {
+            @Override
+            public void loadProgrammesSuccessfully(List<Programme> programmes) {
+                progView.setProgrammes(programmes);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                progView.showMessage(message);
+            }
+        });
+    }
+
+    public void addProgramme(Programme programme) {
+        progRepo.addProgramme(programme, new ProgrammeDS.SuccessfullySavedCallback() {
+            @Override
+            public void success(String message) {
+                progView.showMessage(message);
+            }
+
+            @Override
+            public void unSuccessful(String message) {
+                progView.showMessage(message);
             }
         });
     }

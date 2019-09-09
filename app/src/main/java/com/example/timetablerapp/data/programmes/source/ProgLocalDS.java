@@ -32,6 +32,16 @@ public class ProgLocalDS implements ProgrammeDS {
     }
 
     @Override
+    public void getAllProgrammes(LoadProgrammesCallBack callBack) {
+
+    }
+
+    @Override
+    public void addProgramme(Programme programme, SuccessfullySavedCallback callback) {
+
+    }
+
+    @Override
     public void update(Programme item) {
 
     }

@@ -114,4 +114,5 @@ public class Constants {
     public static final String TAG_FACULTY = "tag_faculty";
     public static final String TAG_DEPARTMENT = "tag_department";
     public static final String MORE = "tag_more";
+    public static final String TAG_PROG = "tag_prog";
 }

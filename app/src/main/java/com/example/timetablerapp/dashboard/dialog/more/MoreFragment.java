@@ -14,6 +14,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.dialog.campus.CampusesFragment;
 import com.example.timetablerapp.dashboard.dialog.department.DepartmentsFragment;
 import com.example.timetablerapp.dashboard.dialog.faculty.FacultiesFragment;
+import com.example.timetablerapp.dashboard.dialog.program.ProgrammeFragment;
 import com.example.timetablerapp.data.Constants;
 
 /**
@@ -24,6 +25,7 @@ public class MoreFragment extends Fragment {
     private Fragment fragment;
 
     private Button btnAddDep, btnAddFaculty, btnAddCampus;
+    private Button btnAddProgramme;
 
     @Nullable
     @Override
@@ -65,6 +67,19 @@ public class MoreFragment extends Fragment {
                 fragment = new FacultiesFragment();
                 fm.beginTransaction()
                         .add(R.id.fragment_container, fragment, Constants.TAG_FACULTY)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        btnAddProgramme = view.findViewById(R.id.button_add_programme);
+        btnAddProgramme.setOnClickListener(v -> {
+            fragment = fm.findFragmentByTag(Constants.TAG_PROG);
+
+            if (fragment == null) {
+                fragment = new ProgrammeFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, fragment, Constants.TAG_PROG)
                         .addToBackStack(null)
                         .commit();
             }

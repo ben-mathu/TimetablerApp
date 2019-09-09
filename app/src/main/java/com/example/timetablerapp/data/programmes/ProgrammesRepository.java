@@ -48,6 +48,36 @@ public class ProgrammesRepository implements ProgrammeDS {
     }
 
     @Override
+    public void getAllProgrammes(LoadProgrammesCallBack callBack) {
+        progRemoteDS.getAllProgrammes(new LoadProgrammesCallBack() {
+            @Override
+            public void loadProgrammesSuccessfully(List<Programme> programmes) {
+                callBack.loadProgrammesSuccessfully(programmes);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                callBack.dataNotAvailable(message);
+            }
+        });
+    }
+
+    @Override
+    public void addProgramme(Programme programme, SuccessfullySavedCallback callback) {
+        progRemoteDS.addProgramme(programme, new SuccessfullySavedCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccessful(String message) {
+                callback.unSuccessful(message);
+            }
+        });
+    }
+
+    @Override
     public void update(Programme item) {
 
     }

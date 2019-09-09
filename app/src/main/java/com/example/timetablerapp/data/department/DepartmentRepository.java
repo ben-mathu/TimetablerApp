@@ -58,7 +58,17 @@ public class DepartmentRepository implements DepartmentDS {
 
     @Override
     public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
+        departmentRemoteDataSrc.getAllFromRemote(new LoadDepartmentsCallBack() {
+            @Override
+            public void loadDepartmentsSuccessful(List<Department> departments) {
+                callBack.loadDepartmentsSuccessful(departments);
+            }
 
+            @Override
+            public void dataNotAvailable(String message) {
+                callBack.dataNotAvailable(message);
+            }
+        });
     }
 
     @Override

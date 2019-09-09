@@ -46,8 +46,27 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
     }
 
     @Override
-    public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
+    public void getAllFromRemote(LoadDepartmentsCallBack callback) {
+        Call<DepartmentResponse> call = RetrofitClient.getRetrofit()
+                .create(DepartmentApi.class)
+                .getAll();
 
+        call.enqueue(new Callback<DepartmentResponse>() {
+            @Override
+            public void onResponse(Call<DepartmentResponse> call, Response<DepartmentResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.loadDepartmentsSuccessful(response.body().getList());
+                } else {
+                    callback.dataNotAvailable(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DepartmentResponse> call, Throwable t) {
+                callback.dataNotAvailable("Error: " + t.getLocalizedMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override

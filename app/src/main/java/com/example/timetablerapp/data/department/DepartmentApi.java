@@ -25,4 +25,7 @@ public interface DepartmentApi {
     @PUT("add-department")
     Call<MessageReport> addDepartment(@Header("Content-Type") String contentType,
                                       @Body DepartmentRequest req);
+
+    @GET("departments")
+    Call<DepartmentResponse> getAll();
 }

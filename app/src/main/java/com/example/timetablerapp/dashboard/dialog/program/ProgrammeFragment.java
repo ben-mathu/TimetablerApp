@@ -1,4 +1,4 @@
-package com.example.timetablerapp.dashboard.dialog.department;
+package com.example.timetablerapp.dashboard.dialog.program;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,42 +20,49 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.course.CourseView;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.data.programmes.model.Programme;
+import com.example.timetablerapp.data.units.model.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
- * 06/09/19 -bernard
+ * 09/09/19 -bernard
  */
-public class DepartmentsFragment extends Fragment implements DepartView {
-    // Lists
-    private List<Department> list;
-    private List<Campus> campuses;
-    private List<Faculty> faculties;
+public class ProgrammeFragment extends Fragment implements ProgView {
+    // List
+    private List<Programme>  programmes;
+    private List<Department>  departments;
+    private List<Faculty>  faculties;
+    private List<Campus>  campuses;
 
-    // object dependencies
-    private DepartmentAdapter adapter;
+    //Classes
+    private ProgrammeAdapter adapter;
     private DashboardPresenter presenter;
     private Campus campus;
+    private Faculty faculty;
 
     // Widgets
-    private RecyclerView recyclerDepartment;
+    private RecyclerView recyclerProgrammes;
     private Spinner spinnerCampus;
     private Spinner spinnerFaculty;
+    private Spinner spinnerDepartment;
+    private Department department;
 
     @Override
     public void onStart() {
         super.onStart();
-
         presenter = new DashboardPresenter(this,
+                MainApplication.getCampusRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
-                MainApplication.getCampusRepo());
-        presenter.getDepartments();
+                MainApplication.getProgRepo());
+        presenter.getAllProgrammes();
     }
 
     @Nullable
@@ -64,8 +70,8 @@ public class DepartmentsFragment extends Fragment implements DepartView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
 
-        recyclerDepartment = view.findViewById(R.id.recycler_view);
-        recyclerDepartment.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerProgrammes = view.findViewById(R.id.recycler_view);
+        recyclerProgrammes.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         SearchView searchView = view.findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -76,7 +82,7 @@ public class DepartmentsFragment extends Fragment implements DepartView {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                List<Department> filteredList = filterList(list, s);
+                List<Programme> filteredList = filterList(programmes, s);
                 if (adapter != null) {
                     adapter.setList(filteredList);
                     adapter.notifyDataSetChanged();
@@ -85,9 +91,10 @@ public class DepartmentsFragment extends Fragment implements DepartView {
             }
         });
 
+        // create a dialog
         View dialogView = LayoutInflater.from(getActivity())
-                .inflate(R.layout.dialog_department, container, false);
-        EditText edtDepartmentName = dialogView.findViewById(R.id.edit_department_name);
+                .inflate(R.layout.dialog_programme, container, false);
+        EditText edtProgrammeName = dialogView.findViewById(R.id.edit_programme_name);
 
         spinnerCampus = dialogView.findViewById(R.id.spinner_campus);
         spinnerCampus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -111,28 +118,46 @@ public class DepartmentsFragment extends Fragment implements DepartView {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
 //                campusName = parent.getItemAtPosition(position).toString();
-//                campus = campuses.get(position);
+                faculty = faculties.get(position);
+                presenter.getDepartments(faculty.getFacultyId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 //                campusName= parent.getSelectedItem().toString();
-//                campus = campuses.get(parent.getSelectedItemPosition());
+                faculty = faculties.get(parent.getSelectedItemPosition());
+                presenter.getDepartments(faculty.getFacultyId());
+            }
+        });
+
+        spinnerDepartment = dialogView.findViewById(R.id.spinner_departments);
+        spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//                campusName = parent.getItemAtPosition(position).toString();
+//                department = departments.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+//                campusName= parent.getSelectedItem().toString();
+//                department = departments.get(parent.getSelectedItemPosition());
             }
         });
 
         Button btnAddCampus = view.findViewById(R.id.button_add_item);
-        btnAddCampus.setText(R.string.add_department);
+        btnAddCampus.setText(R.string.add_programme);
         btnAddCampus.setOnClickListener(v -> {
             presenter.getCampusesForDepartment();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs)
                     .setPositiveButton("Send", (dialogInterface, i) -> {
-                        Department department = new Department();
-                        department.setDepartmentId("");
-                        department.setDepartmentName(edtDepartmentName.getText().toString());
-                        department.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
-                        presenter.addDepartment(department);
+                        Programme programme = new Programme();
+                        programme.setProgrammeId("");
+                        programme.setProgrammeName(edtProgrammeName.getText().toString());
+                        programme.setDepartmentId(departments.get(spinnerDepartment.getSelectedItemPosition()).getDepartmentId());
+                        programme.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
+                        presenter.addProgramme(programme);
                     }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
             builder.setTitle("Add Department Dialog");
             builder.setView(dialogView);
@@ -147,17 +172,22 @@ public class DepartmentsFragment extends Fragment implements DepartView {
         return view;
     }
 
-    private List<Department> filterList(List<Department> list, String s) {
-        List<Department> items = new ArrayList<>();
+    private List<Programme> filterList(List<Programme> list, String s) {
+        List<Programme> items = new ArrayList<>();
 
         if (list != null) {
-            for (Department dep : list) {
-                if (dep.getDepartmentId().contains(s) || dep.getDepartmentName().contains(s)) {
-                    items.add(dep);
+            for (Programme prog : list) {
+                if (prog.getProgrammeId().contains(s) || prog.getProgrammeName().contains(s)) {
+                    items.add(prog);
                 }
             }
         }
         return items;
+    }
+
+    @Override
+    public void setCampuses(List<Campus> campuses) {
+        // left blank intentionally
     }
 
     @Override
@@ -168,38 +198,18 @@ public class DepartmentsFragment extends Fragment implements DepartView {
     @Override
     public void setFaculties(List<Faculty> faculties) {
         this.faculties = faculties;
-
-        List<String> facultyNames = new ArrayList<>();
-        for (Faculty item : faculties) {
-            facultyNames.add(item.getFacultyName());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
-                android.R.layout.simple_spinner_dropdown_item, facultyNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFaculty.setAdapter(arrayAdapter);
-    }
-
-    @Override
-    public void setCampusList(List<Campus> campuses) {
-        this.campuses = campuses;
-
-        List<String> campusNames = new ArrayList<>();
-        for (Campus item : campuses) {
-            campusNames.add(item.getCampusName());
-        }
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
-                android.R.layout.simple_spinner_dropdown_item, campusNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCampus.setAdapter(arrayAdapter);
     }
 
     @Override
     public void setDepartments(List<Department> departments) {
-        this.list = departments;
+        this.departments = departments;
+    }
 
-        adapter = new DepartmentAdapter(getActivity(), departments);
-        recyclerDepartment.setAdapter(adapter);
+    @Override
+    public void setProgrammes(List<Programme> programmes) {
+        this.programmes = programmes;
+
+        adapter = new ProgrammeAdapter(getActivity(), programmes);
+        recyclerProgrammes.setAdapter(adapter);
     }
 }

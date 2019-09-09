@@ -13,8 +13,17 @@ public interface ProgrammeDS extends DataSource<Programme> {
 
     void getFromLocalDb(LoadProgrammesCallBack callBack);
 
+    void getAllProgrammes(LoadProgrammesCallBack callBack);
+
+    void addProgramme(Programme programme, SuccessfullySavedCallback callback);
+
     interface LoadProgrammesCallBack {
         void loadProgrammesSuccessfully(List<Programme> programmes);
         void dataNotAvailable(String message);
+    }
+
+    interface SuccessfullySavedCallback {
+        void success(String message);
+        void unSuccessful(String message);
     }
 }
