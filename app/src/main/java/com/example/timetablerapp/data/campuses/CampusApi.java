@@ -20,4 +20,12 @@ public interface CampusApi {
     @PUT("add-campus")
     Call<MessageReport> addCampus(@Header("Content-Type") String contentType,
                                   @Body CampusRequest req);
+
+    @PUT("update-campus")
+    Call<MessageReport> updateCampus(@Header("Content-Type") String contentType,
+                                     @Body CampusRequest req);
+
+    @PUT("delete-campus")
+    Call<MessageReport> deleteCampus(@Header("Content-Type") String contentType,
+                                     @Body CampusRequest req);
 }

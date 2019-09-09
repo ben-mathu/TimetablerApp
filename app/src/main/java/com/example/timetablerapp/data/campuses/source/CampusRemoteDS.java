@@ -1,5 +1,7 @@
 package com.example.timetablerapp.data.campuses.source;
 
+import android.util.Log;
+
 import com.example.timetablerapp.data.campuses.CampusApi;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.model.Campus;
@@ -18,6 +20,8 @@ import retrofit2.Response;
  * 08/05/19 -bernard
  */
 public class CampusRemoteDS implements CampusesDS {
+    private static final String TAG = CampusRemoteDS.class.getSimpleName();
+
     @Override
     public void getAllFromRemote(LoadCampusesCallBack callBack) {
         Call<CampusesReponse> call = RetrofitClient.getRetrofit()
@@ -43,7 +47,7 @@ public class CampusRemoteDS implements CampusesDS {
     }
 
     @Override
-    public void addCampus(Campus campus, SuccessFullySavedCallback callback) {
+    public void addCampus(Campus campus, SuccessfullySavedCallback callback) {
         CampusRequest req = new CampusRequest(campus);
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(CampusApi.class)
@@ -62,6 +66,56 @@ public class CampusRemoteDS implements CampusesDS {
             @Override
             public void onFailure(Call<MessageReport> call, Throwable t) {
                 callback.unSuccess("An error has occurred, please contact administrator");
+            }
+        });
+    }
+
+    @Override
+    public void updateCampus(Campus campus, SuccessfullySavedCallback callback) {
+        CampusRequest req = new CampusRequest(campus);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(CampusApi.class)
+                .updateCampus("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unSuccess(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unSuccess("Error: " + t.getLocalizedMessage());
+                Log.e(TAG, "onFailure: ", t);
+            }
+        });
+    }
+
+    @Override
+    public void deleteRemote(Campus campus, SuccessfullySavedCallback callback) {
+        CampusRequest req = new CampusRequest(campus);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(CampusApi.class)
+                .deleteCampus("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unSuccess(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unSuccess("Error: " + t.getLocalizedMessage());
+                Log.e(TAG, "onFailure: ", t);
             }
         });
     }

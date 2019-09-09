@@ -20,10 +20,14 @@ public class CampusAdapter extends RecyclerView.Adapter<UtilViewHolder> {
 
     private List<Campus> list;
     private Context context;
+    private OnItemSelectedListener onItemSelectedListener;
 
-    public CampusAdapter(List<Campus> campuses, Context context) {
+    public CampusAdapter(List<Campus> campuses,
+                         Context context,
+                         OnItemSelectedListener onItemSelectedListener) {
         this.list = campuses;
         this.context = context;
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     @NonNull
@@ -37,6 +41,9 @@ public class CampusAdapter extends RecyclerView.Adapter<UtilViewHolder> {
     public void onBindViewHolder(@NonNull UtilViewHolder holder, int position) {
         holder.txtId.setText(list.get(position).getCampusId());
         holder.txtName.setText(list.get(position).getCampusName());
+        holder.itemView.setOnClickListener(view -> {
+            onItemSelectedListener.onItemSelected(list.get(position));
+        });
     }
 
     @Override
@@ -46,5 +53,9 @@ public class CampusAdapter extends RecyclerView.Adapter<UtilViewHolder> {
 
     public void setList(List<Campus> filteredList) {
         list = filteredList;
+    }
+
+    public interface OnItemSelectedListener {
+        void onItemSelected(Campus campus);
     }
 }

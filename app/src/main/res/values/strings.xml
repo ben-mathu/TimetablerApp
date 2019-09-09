@@ -51,13 +51,16 @@
     <string name="unit_name">Unit Name</string>
     <string name="is_common">Is Common</string>
     <string name="is_practical">Is Practical</string>
-    <string name="campus_name">Name</string>
+    <string name="campus_name">Campus Name</string>
     <string name="more">More</string>
     <string name="add_campus">Add Campus</string>
     <string name="add_faculty">Add Faculty</string>
     <string name="add_department">Add Department</string>
     <string name="programme_name">Programme Name</string>
     <string name="add_programme">Add Programme</string>
+    <string name="campus_id">Campus Id</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

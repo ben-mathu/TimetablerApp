@@ -27,7 +27,17 @@ public class CampusLocalDS implements CampusesDS {
     }
 
     @Override
-    public void addCampus(Campus campus, SuccessFullySavedCallback callback) {
+    public void addCampus(Campus campus, SuccessfullySavedCallback callback) {
+
+    }
+
+    @Override
+    public void updateCampus(Campus campus, SuccessfullySavedCallback callback) {
+
+    }
+
+    @Override
+    public void deleteRemote(Campus campus, SuccessfullySavedCallback callback) {
 
     }
 

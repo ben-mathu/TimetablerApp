@@ -3,8 +3,6 @@ package com.example.timetablerapp.data.campuses;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
 import com.example.timetablerapp.data.campuses.source.CampusRemoteDS;
-import com.example.timetablerapp.data.faculties.FacultyDS;
-import com.example.timetablerapp.login.LoginPresenter;
 
 import java.util.List;
 
@@ -44,8 +42,38 @@ public class CampusesRepository implements CampusesDS {
     }
 
     @Override
-    public void addCampus(Campus campus, SuccessFullySavedCallback callback) {
-        campusRemoteDS.addCampus(campus, new SuccessFullySavedCallback() {
+    public void addCampus(Campus campus, SuccessfullySavedCallback callback) {
+        campusRemoteDS.addCampus(campus, new SuccessfullySavedCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
+    public void updateCampus(Campus campus, SuccessfullySavedCallback callback) {
+        campusRemoteDS.updateCampus(campus, new SuccessfullySavedCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
+    public void deleteRemote(Campus campus, SuccessfullySavedCallback callback) {
+        campusRemoteDS.deleteRemote(campus, new SuccessfullySavedCallback() {
             @Override
             public void success(String message) {
                 callback.success(message);

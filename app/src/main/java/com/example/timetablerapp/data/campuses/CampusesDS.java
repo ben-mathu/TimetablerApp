@@ -2,7 +2,6 @@ package com.example.timetablerapp.data.campuses;
 
 import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.campuses.model.Campus;
-import com.example.timetablerapp.data.faculties.FacultyDS;
 
 import java.util.List;
 
@@ -12,14 +11,18 @@ import java.util.List;
 public interface CampusesDS extends DataSource<Campus> {
     void getAllFromRemote(LoadCampusesCallBack callBack);
 
-    void addCampus(Campus campus, SuccessFullySavedCallback callback);
+    void addCampus(Campus campus, SuccessfullySavedCallback callback);
+
+    void updateCampus(Campus campus, SuccessfullySavedCallback callback);
+
+    void deleteRemote(Campus campus, SuccessfullySavedCallback callback);
 
     interface LoadCampusesCallBack {
         void loadCampusesSuccessful(List<Campus> campuses);
         void dataNotAvailable(String message);
     }
 
-    interface SuccessFullySavedCallback {
+    interface SuccessfullySavedCallback {
         void success(String message);
         void unSuccess(String message);
     }

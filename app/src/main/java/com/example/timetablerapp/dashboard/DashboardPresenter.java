@@ -6,7 +6,6 @@ import com.example.timetablerapp.dashboard.dialog.department.DepartView;
 import com.example.timetablerapp.dashboard.dialog.faculty.FacultyView;
 import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
 import com.example.timetablerapp.dashboard.dialog.program.ProgView;
-import com.example.timetablerapp.dashboard.dialog.program.ProgrammeFragment;
 import com.example.timetablerapp.dashboard.dialog.room.RoomView;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
@@ -401,7 +400,7 @@ public class DashboardPresenter {
     }
 
     public void addCampus(Campus campus) {
-        campusRepo.addCampus(campus, new CampusesDS.SuccessFullySavedCallback() {
+        campusRepo.addCampus(campus, new CampusesDS.SuccessfullySavedCallback() {
             @Override
             public void success(String message) {
                 campusView.showMessage(message);
@@ -547,6 +546,34 @@ public class DashboardPresenter {
             @Override
             public void unSuccessful(String message) {
                 progView.showMessage(message);
+            }
+        });
+    }
+
+    public void updateCampus(Campus campus) {
+        campusRepo.updateCampus(campus, new CampusesDS.SuccessfullySavedCallback() {
+            @Override
+            public void success(String message) {
+                campusView.showMessage(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                campusView.showMessage(message);
+            }
+        });
+    }
+
+    public void deleteCampus(Campus campus) {
+        campusRepo.deleteRemote(campus, new CampusesDS.SuccessfullySavedCallback() {
+            @Override
+            public void success(String message) {
+                campusView.showMessage(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                campusView.showMessage(message);
             }
         });
     }
