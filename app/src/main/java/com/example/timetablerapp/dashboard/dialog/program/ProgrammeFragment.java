@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -187,7 +188,17 @@ public class ProgrammeFragment extends Fragment implements ProgView {
 
     @Override
     public void setCampuses(List<Campus> campuses) {
-        // left blank intentionally
+        this.campuses = campuses;
+        List<String> campusNames = new ArrayList<>();
+
+        for (Campus campus : campuses) {
+            campusNames.add(campus.getCampusName());
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, campusNames);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCampus.setAdapter(arrayAdapter);
     }
 
     @Override
@@ -198,11 +209,33 @@ public class ProgrammeFragment extends Fragment implements ProgView {
     @Override
     public void setFaculties(List<Faculty> faculties) {
         this.faculties = faculties;
+
+        List<String> facultyNames = new ArrayList<>();
+
+        for (Faculty faculty : faculties) {
+            facultyNames.add(faculty.getFacultyName());
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, facultyNames);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFaculty.setAdapter(arrayAdapter);
     }
 
     @Override
     public void setDepartments(List<Department> departments) {
         this.departments = departments;
+
+        List<String> departmentNames = new ArrayList<>();
+
+        for (Department department : departments) {
+            departmentNames.add(department.getDepartmentName());
+        }
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_dropdown_item, departmentNames);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerDepartment.setAdapter(arrayAdapter);
     }
 
     @Override
