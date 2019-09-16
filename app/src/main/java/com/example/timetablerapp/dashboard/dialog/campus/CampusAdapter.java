@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.dashboard.dialog.util.UtilViewHolder;
 import com.example.timetablerapp.data.campuses.model.Campus;
 
@@ -20,11 +21,11 @@ public class CampusAdapter extends RecyclerView.Adapter<UtilViewHolder> {
 
     private List<Campus> list;
     private Context context;
-    private OnItemSelectedListener onItemSelectedListener;
+    private OnItemSelectedListener<Campus> onItemSelectedListener;
 
     public CampusAdapter(List<Campus> campuses,
                          Context context,
-                         OnItemSelectedListener onItemSelectedListener) {
+                         OnItemSelectedListener<Campus> onItemSelectedListener) {
         this.list = campuses;
         this.context = context;
         this.onItemSelectedListener = onItemSelectedListener;
@@ -53,9 +54,5 @@ public class CampusAdapter extends RecyclerView.Adapter<UtilViewHolder> {
 
     public void setList(List<Campus> filteredList) {
         list = filteredList;
-    }
-
-    public interface OnItemSelectedListener {
-        void onItemSelected(Campus campus);
     }
 }

@@ -12,6 +12,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
 
 import org.w3c.dom.Text;
@@ -31,7 +33,7 @@ import java.util.List;
 /**
  * 06/09/19 -bernard
  */
-public class CampusesFragment extends Fragment implements CampusView, CampusAdapter.OnItemSelectedListener {
+public class CampusesFragment extends Fragment implements CampusView, OnItemSelectedListener<Campus> {
     private List<Campus> campuses;
     // Classes
     private CampusAdapter adapter;
@@ -94,8 +96,11 @@ public class CampusesFragment extends Fragment implements CampusView, CampusAdap
             builder.setTitle("Add Campus");
             builder.setView(dialogView);
             builder.setCancelable(false);
-            builder.create().show();
 
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
         });
         return view;
     }

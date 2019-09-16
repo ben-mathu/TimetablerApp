@@ -1,28 +1,32 @@
 package com.example.timetablerapp.dashboard.dialog.course;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
@@ -34,7 +38,7 @@ import java.util.List;
 /**
  * 02/09/19 -bernard
  */
-public class AddCourseFragment extends Fragment implements CourseView {
+public class AddCourseFragment extends Fragment implements CourseView, OnItemSelectedListener<Unit> {
 
     private List<Unit> list;
     private List<Faculty> faculties;
@@ -55,6 +59,8 @@ public class AddCourseFragment extends Fragment implements CourseView {
     private String departmentName;
     private Faculty faculty;
     private String facultyName;
+    private String positiveBtnText = "";
+    private AlertDialog dialog;
 
     @Override
     public void onStart() {
@@ -120,6 +126,7 @@ public class AddCourseFragment extends Fragment implements CourseView {
                 presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
             }
         });
+
         spinnerDepartment = dialogView.findViewById(R.id.spinner_departments);
         spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -189,7 +196,10 @@ public class AddCourseFragment extends Fragment implements CourseView {
                 ((ViewGroup) dialogView.getParent()).removeView(dialogView);
             }
 
-            builder.create().show();
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
         });
 
         return view;
@@ -211,7 +221,7 @@ public class AddCourseFragment extends Fragment implements CourseView {
     @Override
     public void setUnits(List<Unit> units) {
         this.list = units;
-        adapter = new CourseAdapter(getActivity(), units);
+        adapter = new CourseAdapter(getActivity(), units, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -257,5 +267,151 @@ public class AddCourseFragment extends Fragment implements CourseView {
                 android.R.layout.simple_spinner_dropdown_item, programmesNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerProgramme.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    public void onItemSelected(Unit item) {
+        faculty = getFacultyById(item.getFacultyId());
+        department = getDepartmentById(item.getDepartmentId());
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_course, null, false);
+
+        LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
+        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_course_edit_details);
+        // Before editing
+        TextView txtUnitId = view.findViewById(R.id.text_unit_id);
+        txtUnitId.setText(item.getId());
+        TextView txtUnitName = view.findViewById(R.id.text_unit_name);
+        txtUnitName.setText(item.getUnitName());
+        TextView txtFacultyName = view.findViewById(R.id.text_faculty);
+        txtFacultyName.setText(faculty.getFacultyName());
+        TextView txtDepartmentName = view.findViewById(R.id.text_department);
+        txtDepartmentName.setText(department.getDepartmentName());
+        TextView txtProgrammeName = view.findViewById(R.id.text_programme);
+        txtProgrammeName.setText(programme.getProgrammeName());
+        TextView txtPractical = view.findViewById(R.id.show_practical);
+        if (item.isPractical()) txtPractical.setText(R.string.practical);
+        TextView txtCommon = view.findViewById(R.id.show_common);
+        if (item.isCommon()) txtCommon.setText(R.string.common);
+
+        EditText edtUnitId = view.findViewById(R.id.edit_unit_id);
+        edtUnitId.setText(item.getId());
+        EditText edtUnitName = view.findViewById(R.id.edit_unit_name);
+        edtUnitName.setText(item.getUnitName());
+
+        spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
+        spinnerFaculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                facultyName = parent.getItemAtPosition(position).toString();
+                faculty = faculties.get(position);
+                presenter.getDepartments(faculties.get(position).getFacultyId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                facultyName = parent.getSelectedItem().toString();
+                faculty = faculties.get(parent.getSelectedItemPosition());
+                presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
+            }
+        });
+
+        spinnerDepartment = view.findViewById(R.id.change_spinner_departments);
+        spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                departmentName = parent.getItemAtPosition(position).toString();
+                department = departments.get(position);
+                presenter.getProgrammes(departments.get(position).getDepartmentId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                departmentName = parent.getSelectedItem().toString();
+                department = departments.get(parent.getSelectedItemPosition());
+                presenter.getProgrammes(departments.get(parent.getSelectedItemPosition()).getDepartmentId());
+            }
+        });
+
+        spinnerProgramme = view.findViewById(R.id.change_spinner_programme);
+        spinnerProgramme.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                programmeName = parent.getItemAtPosition(position).toString();
+                programme = programmes.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                programmeName = parent.getSelectedItem().toString();
+                programme = programmes.get(parent.getSelectedItemPosition());
+            }
+        });
+
+        Switch switchCommon = view.findViewById(R.id.change_switch_common);
+        if (item.isCommon()) {
+            switchCommon.setChecked(true);
+        } else {
+            switchCommon.setChecked(false);
+        }
+        Switch switchPractical = view.findViewById(R.id.change_switch_practical);
+        if (item.isPractical()) {
+            switchPractical.setChecked(true);
+        } else {
+            switchPractical.setChecked(false);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
+        builder.setView(view);
+        builder.setTitle("Edit Course");
+        positiveBtnText = "Edit";
+
+        builder.setPositiveButton(positiveBtnText, null);
+
+        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
+            presenter.deleteCourse(item);
+        });
+
+        dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
+            if (positiveBtnText.equalsIgnoreCase("edit")) {
+                llCourseEditDetails.setVisibility(View.VISIBLE);
+                llCourseDetails.setVisibility(View.GONE);
+
+                positiveBtnText = "Save";
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+            } else {
+                Unit unit = new Unit();
+                unit.setCommon(switchCommon.isChecked());
+                unit.setPractical(switchPractical.isChecked());
+                unit.setId(edtUnitId.getText().toString());
+                unit.setUnitName(edtUnitName.getText().toString());
+                unit.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
+                unit.setProgrammeId(programmes.get(spinnerProgramme.getSelectedItemPosition()).getProgrammeId());
+                unit.setDepartmentId(departments.get(spinnerDepartment.getSelectedItemPosition()).getDepartmentId());
+                presenter.updateCourse(unit);
+            }
+        });
+    }
+
+    private Department getDepartmentById(String departmentId) {
+        for (Department dep : departments) {
+            if (dep.getDepartmentId().equals(departmentId)) {
+                return dep;
+            }
+        }
+        return null;
+    }
+
+    private Faculty getFacultyById(String id) {
+        for (Faculty faculty : faculties) {
+            if (faculty.getFacultyId().equals(id)) {
+                return faculty;
+            }
+        }
+        return null;
     }
 }

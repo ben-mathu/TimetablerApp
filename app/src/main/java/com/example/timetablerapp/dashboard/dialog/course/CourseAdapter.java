@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
+import com.example.timetablerapp.dashboard.dialog.ScheduleRegistration;
 import com.example.timetablerapp.data.units.model.Unit;
 
 import java.util.List;
@@ -18,10 +20,12 @@ import java.util.List;
 public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
     private Context context;
     private List<Unit> list;
+    private OnItemSelectedListener<Unit> onItemSelectedListener;
 
-    public CourseAdapter(Context context, List<Unit> unitList) {
+    public CourseAdapter(Context context, List<Unit> unitList, OnItemSelectedListener<Unit> onItemSelectedListener) {
         this.context = context;
         list = unitList;
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     @NonNull
@@ -36,6 +40,13 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
         holder.txtId.setText(list.get(position).getId());
         String name = list.get(position).getUnitName();
         holder.txtName.setText(name);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     @Override

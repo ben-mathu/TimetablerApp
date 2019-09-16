@@ -61,6 +61,8 @@
     <string name="campus_id">Campus Id</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="practical">Practical</string>
+    <string name="common">Common</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

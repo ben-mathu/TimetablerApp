@@ -577,4 +577,32 @@ public class DashboardPresenter {
             }
         });
     }
+
+    public void deleteCourse(Unit item) {
+        unitsRepo.deleteCourse(item, new UnitDataSource.UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                courseView.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                courseView.showMessage(message);
+            }
+        });
+    }
+
+    public void updateCourse(Unit unit) {
+        unitsRepo.updateCourse(unit, new UnitDataSource.UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                courseView.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                courseView.showMessage(message);
+            }
+        });
+    }
 }

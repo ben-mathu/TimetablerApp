@@ -1,16 +1,17 @@
 package com.example.timetablerapp.dashboard.dialog.room;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -162,7 +163,10 @@ public class AddClassFragment extends Fragment implements RoomView {
                 ((ViewGroup) dialogView.getParent()).removeView(dialogView);
             }
 
-            builder.create().show();
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
         });
         return view;
     }

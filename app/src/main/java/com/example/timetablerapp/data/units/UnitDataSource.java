@@ -31,6 +31,9 @@ public interface UnitDataSource extends DataSource<Unit> {
 
     void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback);
 
+    void deleteCourse(Unit item, UnitsRegisteredCallback callback);
+
+    void updateCourse(Unit unit, UnitsRegisteredCallback callback);
 
 
     interface UnitsRegisteredCallback {

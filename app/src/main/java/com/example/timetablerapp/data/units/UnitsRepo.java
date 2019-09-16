@@ -208,6 +208,36 @@ public class UnitsRepo implements UnitDataSource {
         });
     }
 
+    @Override
+    public void deleteCourse(Unit item, UnitsRegisteredCallback callback) {
+        unitsRemoteDS.deleteCourse(item, new UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void updateCourse(Unit unit, UnitsRegisteredCallback callback) {
+        unitsRemoteDS.updateCourse(unit, new UnitsRegisteredCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     public void addCourse(Unit unit, String passcode, UnitsRegisteredCallback callback) {
         unitsRemoteDS.addCourse(unit, passcode, new UnitsRegisteredCallback() {
             @Override

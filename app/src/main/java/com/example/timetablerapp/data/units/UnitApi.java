@@ -64,4 +64,10 @@ public interface UnitApi {
     @POST("add-unit")
     Call<MessageReport> addCourse(@Header("Content-Type") String contentType,
                                   @Body UnitsRemoteDS.UnitReq unitReq);
+
+    @PUT("delete-unit")
+    Call<MessageReport> deleteCourse(@Header("Content-Type") String contentType, @Body UnitsRemoteDS.UnitReq req);
+
+    @PUT("update-course")
+    Call<MessageReport> updateCourse(@Header("Content-Type") String contentType, @Body UnitsRemoteDS.UnitReq req);
 }

@@ -11,6 +11,7 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -167,8 +168,11 @@ public class ProgrammeFragment extends Fragment implements ProgView {
             if (dialogView.getParent() != null) {
                 ((ViewGroup) dialogView.getParent()).removeView(dialogView);
             }
-            builder.create().show();
 
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            Window window = dialog.getWindow();
+            window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
         });
         return view;
     }

@@ -410,6 +410,56 @@ public class UnitsRemoteDS implements UnitDataSource {
         }
     }
 
+    @Override
+    public void deleteCourse(Unit item, UnitsRegisteredCallback callback) {
+        UnitReq req = new UnitReq(item, "");
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .deleteCourse("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unsuccessful("Error: " + t.getLocalizedMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void updateCourse(Unit unit, UnitsRegisteredCallback callback) {
+        UnitReq req = new UnitReq(unit, "");
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(UnitApi.class)
+                .updateCourse("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unsuccessful("Error: " + t.getLocalizedMessage());
+                t.printStackTrace();
+            }
+        });
+    }
+
     public void addCourse(Unit unit, String passCode, UnitsRegisteredCallback callback) {
         UnitReq unitReq = new UnitReq(unit, passCode);
         Call<MessageReport> call = RetrofitClient.getRetrofit()
@@ -420,7 +470,7 @@ public class UnitsRemoteDS implements UnitDataSource {
             @Override
             public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.successful("Successfully added unit");
+                    callback.successful(response.body().getMessage());
                 } else {
                     callback.unsuccessful("Please try again");
                 }

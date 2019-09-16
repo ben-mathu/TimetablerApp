@@ -73,4 +73,14 @@ public class UnitsLocalDS implements UnitDataSource {
     public void removeUnits(String userId, List<Unit> unitList, UnitsRegisteredCallback callback) {
 
     }
+
+    @Override
+    public void deleteCourse(Unit item, UnitsRegisteredCallback callback) {
+
+    }
+
+    @Override
+    public void updateCourse(Unit unit, UnitsRegisteredCallback callback) {
+
+    }
 }
