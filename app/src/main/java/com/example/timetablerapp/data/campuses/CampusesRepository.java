@@ -45,6 +45,11 @@ public class CampusesRepository implements CampusesDS {
     public void addCampus(Campus campus, SuccessfullySavedCallback callback) {
         campusRemoteDS.addCampus(campus, new SuccessfullySavedCallback() {
             @Override
+            public void successItem(Campus campus) {
+                callback.successItem(campus);
+            }
+
+            @Override
             public void success(String message) {
                 callback.success(message);
             }
@@ -60,6 +65,11 @@ public class CampusesRepository implements CampusesDS {
     public void updateCampus(Campus campus, SuccessfullySavedCallback callback) {
         campusRemoteDS.updateCampus(campus, new SuccessfullySavedCallback() {
             @Override
+            public void successItem(Campus campus) {
+                callback.successItem(campus);
+            }
+
+            @Override
             public void success(String message) {
                 callback.success(message);
             }
@@ -74,6 +84,11 @@ public class CampusesRepository implements CampusesDS {
     @Override
     public void deleteRemote(Campus campus, SuccessfullySavedCallback callback) {
         campusRemoteDS.deleteRemote(campus, new SuccessfullySavedCallback() {
+            @Override
+            public void successItem(Campus campus) {
+                callback.successItem(campus);
+            }
+
             @Override
             public void success(String message) {
                 callback.success(message);

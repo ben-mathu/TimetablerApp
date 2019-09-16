@@ -18,7 +18,7 @@ public interface CampusApi {
     Call<CampusesReponse> getAll();
 
     @PUT("add-campus")
-    Call<MessageReport> addCampus(@Header("Content-Type") String contentType,
+    Call<CampusRequest> addCampus(@Header("Content-Type") String contentType,
                                   @Body CampusRequest req);
 
     @PUT("update-campus")

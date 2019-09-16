@@ -11,4 +11,6 @@ public interface CampusView {
     void setList(List<Campus> campuses);
 
     void showMessage(String message);
+
+    void addCampus(Campus campus);
 }

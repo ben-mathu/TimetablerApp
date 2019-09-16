@@ -402,6 +402,11 @@ public class DashboardPresenter {
     public void addCampus(Campus campus) {
         campusRepo.addCampus(campus, new CampusesDS.SuccessfullySavedCallback() {
             @Override
+            public void successItem(Campus campus) {
+                campusView.addCampus(campus);
+            }
+
+            @Override
             public void success(String message) {
                 campusView.showMessage(message);
             }
@@ -553,6 +558,11 @@ public class DashboardPresenter {
     public void updateCampus(Campus campus) {
         campusRepo.updateCampus(campus, new CampusesDS.SuccessfullySavedCallback() {
             @Override
+            public void successItem(Campus campus) {
+                campusView.addCampus(campus);
+            }
+
+            @Override
             public void success(String message) {
                 campusView.showMessage(message);
             }
@@ -566,6 +576,11 @@ public class DashboardPresenter {
 
     public void deleteCampus(Campus campus) {
         campusRepo.deleteRemote(campus, new CampusesDS.SuccessfullySavedCallback() {
+            @Override
+            public void successItem(Campus campus) {
+                campusView.addCampus(campus);
+            }
+
             @Override
             public void success(String message) {
                 campusView.showMessage(message);

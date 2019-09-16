@@ -49,22 +49,22 @@ public class CampusRemoteDS implements CampusesDS {
     @Override
     public void addCampus(Campus campus, SuccessfullySavedCallback callback) {
         CampusRequest req = new CampusRequest(campus);
-        Call<MessageReport> call = RetrofitClient.getRetrofit()
+        Call<CampusRequest> call = RetrofitClient.getRetrofit()
                 .create(CampusApi.class)
                 .addCampus("application/json", req);
 
-        call.enqueue(new Callback<MessageReport>() {
+        call.enqueue(new Callback<CampusRequest>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(Call<CampusRequest> call, Response<CampusRequest> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.success(response.body().getMessage());
+                    callback.successItem(response.body().getCampus());
                 } else {
                     callback.unSuccess(response.message());
                 }
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(Call<CampusRequest> call, Throwable t) {
                 callback.unSuccess("An error has occurred, please contact administrator");
             }
         });

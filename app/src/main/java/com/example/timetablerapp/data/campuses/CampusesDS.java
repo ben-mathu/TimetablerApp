@@ -23,6 +23,7 @@ public interface CampusesDS extends DataSource<Campus> {
     }
 
     interface SuccessfullySavedCallback {
+        void successItem(Campus campus);
         void success(String message);
         void unSuccess(String message);
     }

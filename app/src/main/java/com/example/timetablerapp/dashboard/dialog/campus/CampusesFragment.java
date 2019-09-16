@@ -132,6 +132,21 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
     }
 
     @Override
+    public void addCampus(Campus campus) {
+        if (campuses == null) {
+            campuses = new ArrayList<>();
+        }
+        campuses.add(campus);
+
+        if (adapter == null) {
+            adapter = new CampusAdapter(campuses, getActivity(), this);
+        } else {
+            adapter.setList(campuses);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onItemSelected(Campus campus) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_campus, null, false);
         LinearLayout llCampusDetails = view.findViewById(R.id.ll_campus_details),
