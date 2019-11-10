@@ -24,6 +24,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,8 +118,8 @@ public class AddLecturerFragment extends Fragment implements LecturerView {
 
         if (list != null) {
             for (Lecturer lecturer : list) {
-                if (lecturer.getFirstName().contains(s) || lecturer.getMiddleName().contains(s)
-                        || lecturer.getLastName().contains(s) || lecturer.getId().contains(s)
+                if (CompareStrings.compare(lecturer.getFirstName(), s) || CompareStrings.compare(lecturer.getMiddleName(), s)
+                        || CompareStrings.compare(lecturer.getLastName(), s) || CompareStrings.compare(lecturer.getId(), s)
                 ) {
 
                     items.add(lecturer);

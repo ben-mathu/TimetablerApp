@@ -26,6 +26,7 @@ import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.hall.model.Hall;
 import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +177,7 @@ public class AddClassFragment extends Fragment implements RoomView {
 
         if (list != null) {
             for (Room room : list) {
-                if (room.getId().contains(s)) {
+                if (CompareStrings.compare(room.getId(), s)) {
                     items.add(room);
                 }
             }

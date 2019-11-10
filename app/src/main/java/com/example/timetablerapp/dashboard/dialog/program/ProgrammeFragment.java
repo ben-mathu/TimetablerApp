@@ -28,6 +28,7 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.units.model.Unit;
+import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -182,7 +183,7 @@ public class ProgrammeFragment extends Fragment implements ProgView {
 
         if (list != null) {
             for (Programme prog : list) {
-                if (prog.getProgrammeId().contains(s) || prog.getProgrammeName().contains(s)) {
+                if (CompareStrings.compare(prog.getDepartmentId(), s) || CompareStrings.compare(prog.getProgrammeName(), s)) {
                     items.add(prog);
                 }
             }

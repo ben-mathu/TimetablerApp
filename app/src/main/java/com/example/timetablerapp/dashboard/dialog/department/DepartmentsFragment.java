@@ -25,6 +25,7 @@ import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,7 +157,7 @@ public class DepartmentsFragment extends Fragment implements DepartView {
 
         if (list != null) {
             for (Department dep : list) {
-                if (dep.getDepartmentId().contains(s) || dep.getDepartmentName().contains(s)) {
+                if (CompareStrings.compare(dep.getDepartmentName(), s)) {
                     items.add(dep);
                 }
             }

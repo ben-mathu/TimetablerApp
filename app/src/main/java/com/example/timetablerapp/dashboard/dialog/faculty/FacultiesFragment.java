@@ -24,6 +24,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -136,7 +137,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
 
         if (list != null) {
             for (Faculty faculty : list) {
-                if (faculty.getCampusId().contains(s)) {
+                if (CompareStrings.compare(faculty.getFacultyName(), s)) {
                     items.add(faculty);
                 }
             }

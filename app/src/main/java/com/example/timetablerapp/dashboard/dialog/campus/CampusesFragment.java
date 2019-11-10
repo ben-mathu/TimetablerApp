@@ -24,6 +24,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
+import com.example.timetablerapp.util.CompareStrings;
 
 import org.w3c.dom.Text;
 
@@ -110,7 +111,7 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
 
         if (list != null) {
             for (Campus campus : list) {
-                if (campus.getCampusId().contains(s)) {
+                if (CompareStrings.compare(campus.getCampusName(), s)) {
                     items.add(campus);
                 }
             }

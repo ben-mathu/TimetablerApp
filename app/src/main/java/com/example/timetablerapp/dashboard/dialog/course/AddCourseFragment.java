@@ -31,6 +31,7 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.units.model.Unit;
+import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -213,7 +214,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
 
         if (list != null) {
             for (Unit unit : list) {
-                if (unit.getId().contains(s) || unit.getUnitName().contains(s)) {
+                if (CompareStrings.compare(unit.getId(), s) || CompareStrings.compare(unit.getUnitName(), s)) {
                     items.add(unit);
                 }
             }
