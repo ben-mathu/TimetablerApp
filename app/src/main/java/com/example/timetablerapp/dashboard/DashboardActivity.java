@@ -289,10 +289,8 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                         case R.id.more:
                             fragment = getSupportFragmentManager().findFragmentByTag(Constants.MORE);
 
-                            if (fragment != null && fragment.isVisible()) {
-                                getSupportFragmentManager().beginTransaction()
-                                        .remove(fragment)
-                                        .commit();
+                            if (fragment != null && fragment.isVisible() && getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                                onBackPressed();
                             }
 
                             if (fragment == null) {
