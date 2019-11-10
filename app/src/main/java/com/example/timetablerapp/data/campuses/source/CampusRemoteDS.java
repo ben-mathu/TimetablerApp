@@ -31,11 +31,11 @@ public class CampusRemoteDS implements CampusesDS {
         call.enqueue(new Callback<CampusesReponse>() {
             @Override
             public void onResponse(Call<CampusesReponse> call, Response<CampusesReponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     List<Campus> campuses = response.body().getCampuses();
                     callBack.loadCampusesSuccessful(campuses);
                 } else {
-                    callBack.dataNotAvailable(response.message());
+                    callBack.dataNotAvailable("Data not available.");
                 }
             }
 

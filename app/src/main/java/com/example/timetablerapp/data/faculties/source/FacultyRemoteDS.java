@@ -56,10 +56,10 @@ public class FacultyRemoteDS implements FacultyDS {
         call.enqueue(new Callback<FacultyResponse>() {
             @Override
             public void onResponse(Call<FacultyResponse> call, Response<FacultyResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     callBack.loadingFacultiesSuccessful(response.body().getList());
                 } else {
-                    callBack.dataNotAvailable(response.message());
+                    callBack.dataNotAvailable("Data not available.");
                 }
             }
 

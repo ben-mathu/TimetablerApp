@@ -115,7 +115,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
                         Faculty faculty = new Faculty("", edtFacultyName.getText().toString(), campuses.get(spinnerCampus.getSelectedItemPosition()).getCampusId());
                         presenter.addFaculty(faculty);
                     }).setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
-            builder.setTitle("Add Campus");
+            builder.setTitle("Add Faculty");
             builder.setView(dialogView);
             builder.setCancelable(false);
 

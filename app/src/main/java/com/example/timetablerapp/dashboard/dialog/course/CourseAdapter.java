@@ -44,7 +44,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onItemSelectedListener.onItemSelected(list.get(position));
             }
         });
     }

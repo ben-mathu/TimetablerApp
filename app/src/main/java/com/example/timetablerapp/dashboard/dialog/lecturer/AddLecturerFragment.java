@@ -131,10 +131,12 @@ public class AddLecturerFragment extends Fragment implements LecturerView {
 
     @Override
     public void setLecturers(List<Lecturer> list) {
-        if (!list.isEmpty()) {
-            this.list = list;
-            adapter = new LecturerAdapter(getActivity(), list);
-            recyclerView.setAdapter(adapter);
+        if (list != null) {
+            if (!list.isEmpty()) {
+                this.list = list;
+                adapter = new LecturerAdapter(getActivity(), list);
+                recyclerView.setAdapter(adapter);
+            }
         }
     }
 

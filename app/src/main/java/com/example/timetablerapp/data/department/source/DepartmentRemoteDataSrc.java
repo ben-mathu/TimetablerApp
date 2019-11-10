@@ -57,7 +57,7 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.loadDepartmentsSuccessful(response.body().getList());
                 } else {
-                    callback.dataNotAvailable(response.message());
+                    callback.dataNotAvailable("Data not available.");
                 }
             }
 

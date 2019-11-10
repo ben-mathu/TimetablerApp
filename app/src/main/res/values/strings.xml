@@ -63,6 +63,8 @@
     <string name="delete">Delete</string>
     <string name="practical">Practical</string>
     <string name="common">Common</string>
+    <string name="faculty_name">Faculty Name</string>
+    <string name="department_name">Department Name</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

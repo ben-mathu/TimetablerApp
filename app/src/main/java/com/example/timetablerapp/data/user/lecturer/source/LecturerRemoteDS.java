@@ -264,7 +264,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successfullyLoaded(response.body().getResponseList());
                 } else {
-                    callback.unsuccessful("Please refresh screen");
+                    callback.unsuccessful("Data not available, please contact administrator.");
                 }
             }
 

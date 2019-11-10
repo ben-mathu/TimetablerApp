@@ -205,6 +205,7 @@ public class DashboardPresenter {
     public void getLecturers() {
         lecturerRepo.getLecturers(new LecturerDS.LecturersLoadedCallback() {
             @Override
+
             public void successfullyLoaded(List<Lecturer> list) {
                 lecView.setLecturers(list);
             }
@@ -375,12 +376,24 @@ public class DashboardPresenter {
         depRepo.getAllFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
-                departView.setDepartments(departments);
+                if (departView != null) {
+                    departView.setDepartments(departments);
+                }
+
+                if (courseView != null) {
+                    courseView.setDepartments(departments);
+                }
             }
 
             @Override
             public void dataNotAvailable(String message) {
-                departView.showMessage(message);
+                if (departView != null) {
+                    departView.showMessage(message);
+                }
+
+                if (courseView != null) {
+                    courseView.showMessage(message);
+                }
             }
         });
     }

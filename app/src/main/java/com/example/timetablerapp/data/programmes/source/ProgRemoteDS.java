@@ -60,7 +60,7 @@ public class ProgRemoteDS implements ProgrammeDS {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.loadProgrammesSuccessfully(response.body().getProgrammes());
                 } else {
-                    callback.dataNotAvailable(response.message());
+                    callback.dataNotAvailable("Data not available.");
                 }
             }
 

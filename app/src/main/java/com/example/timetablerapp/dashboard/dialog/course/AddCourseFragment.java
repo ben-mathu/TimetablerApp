@@ -53,6 +53,9 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     private Button btnAddCourse;
     private RecyclerView recyclerView;
     private SearchView searchView;
+    private TextView txtFacultyName;
+    private TextView txtDepartmentName;
+
     private Programme programme;
     private String programmeName;
     private Department department;
@@ -233,46 +236,55 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     @Override
     public void setFaculties(List<Faculty> faculties) {
         this.faculties = faculties;
-        List<String> facultyNames = new ArrayList<>();
-        for (Faculty faculty : faculties) {
-            facultyNames.add(faculty.getFacultyName());
+
+        if (spinnerFaculty != null) {
+            List<String> facultyNames = new ArrayList<>();
+            for (Faculty faculty : faculties) {
+                facultyNames.add(faculty.getFacultyName());
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, facultyNames);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerFaculty.setAdapter(arrayAdapter);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, facultyNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFaculty.setAdapter(arrayAdapter);
     }
 
     @Override
     public void setDepartments(List<Department> departments) {
         this.departments = departments;
-        List<String> departmentNames = new ArrayList<>();
-        for (Department department : departments) {
-            departmentNames.add(department.getDepartmentName());
+
+        if (spinnerDepartment != null) {
+            List<String> departmentNames = new ArrayList<>();
+            for (Department department : departments) {
+                departmentNames.add(department.getDepartmentName());
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, departmentNames);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDepartment.setAdapter(arrayAdapter);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, departmentNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(arrayAdapter);
     }
 
     @Override
     public void setProgrammes(List<Programme> programmes) {
         this.programmes = programmes;
-        List<String> programmesNames = new ArrayList<>();
-        for (Programme programme : programmes) {
-            programmesNames.add(programme.getProgrammeName());
+
+        if (spinnerProgramme != null) {
+            List<String> programmesNames = new ArrayList<>();
+            for (Programme programme : programmes) {
+                programmesNames.add(programme.getProgrammeName());
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, programmesNames);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerProgramme.setAdapter(arrayAdapter);
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, programmesNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerProgramme.setAdapter(arrayAdapter);
     }
 
     @Override
     public void onItemSelected(Unit item) {
-        faculty = getFacultyById(item.getFacultyId());
-        department = getDepartmentById(item.getDepartmentId());
+        presenter.getFaculties();
+        presenter.getDepartments();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_course, null, false);
 
@@ -283,10 +295,13 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         txtUnitId.setText(item.getId());
         TextView txtUnitName = view.findViewById(R.id.text_unit_name);
         txtUnitName.setText(item.getUnitName());
-        TextView txtFacultyName = view.findViewById(R.id.text_faculty);
-        txtFacultyName.setText(faculty.getFacultyName());
-        TextView txtDepartmentName = view.findViewById(R.id.text_department);
-        txtDepartmentName.setText(department.getDepartmentName());
+
+        txtFacultyName = view.findViewById(R.id.text_faculty);
+        getFacultyById(item.getFacultyId());
+
+        txtDepartmentName = view.findViewById(R.id.text_department);
+        getDepartmentById(item.getDepartmentId());
+
         TextView txtProgrammeName = view.findViewById(R.id.text_programme);
         txtProgrammeName.setText(programme.getProgrammeName());
         TextView txtPractical = view.findViewById(R.id.show_practical);
@@ -354,6 +369,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         } else {
             switchCommon.setChecked(false);
         }
+
         Switch switchPractical = view.findViewById(R.id.change_switch_practical);
         if (item.isPractical()) {
             switchPractical.setChecked(true);
@@ -397,21 +413,23 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         });
     }
 
-    private Department getDepartmentById(String departmentId) {
-        for (Department dep : departments) {
-            if (dep.getDepartmentId().equals(departmentId)) {
-                return dep;
+    private void getDepartmentById(String departmentId) {
+        if (departments != null) {
+            for (Department dep : departments) {
+                if (dep.getDepartmentId().equals(departmentId)) {
+                    txtDepartmentName.setText(department.getDepartmentName());
+                }
             }
         }
-        return null;
     }
 
-    private Faculty getFacultyById(String id) {
-        for (Faculty faculty : faculties) {
-            if (faculty.getFacultyId().equals(id)) {
-                return faculty;
+    private void getFacultyById(String id) {
+        if (faculties != null) {
+            for (Faculty faculty : faculties) {
+                if (faculty.getFacultyId().equals(id)) {
+                    txtFacultyName.setText(faculty.getFacultyName());
+                }
             }
         }
-        return null;
     }
 }

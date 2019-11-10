@@ -16,10 +16,12 @@ import com.example.timetablerapp.data.units.model.UnitsRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.google.gson.annotations.SerializedName;
 
+import java.net.ConnectException;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 /**
@@ -160,17 +162,23 @@ public class UnitsRemoteDS implements UnitDataSource {
         call.enqueue(new Callback<TimetableResponse>() {
             @Override
             public void onResponse(Call<TimetableResponse> call, Response<TimetableResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getTimetableList());
                 } else {
-                    callback.unsuccessful("An error occurred, please contact the administrator.");
+                    callback.unsuccessful("Data not available, please contact the administrator.");
                 }
             }
 
             @Override
             public void onFailure(Call<TimetableResponse> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
-                callback.unsuccessful("An error occurred, please contact the administrator.");
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("An error occurred, please contact the administrator.");
+                } else if (t instanceof HttpException) {
+                    callback.unsuccessful("Check your connection and try again.");
+                } else {
+                    callback.unsuccessful("An error occurred, please contact the administrator.");
+                }
             }
         });
     }
@@ -187,13 +195,12 @@ public class UnitsRemoteDS implements UnitDataSource {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getTimetableList());
                 } else {
-                    callback.unsuccessful("An error occurred, please refresh");
+                    callback.unsuccessful("Data not available, please contact administrator");
                 }
             }
 
             @Override
             public void onFailure(Call<TimetableResponse> call, Throwable t) {
-                t.printStackTrace();
                 Log.e(TAG, "Error", t);
                 callback.unsuccessful("An error has occurred, please try again");
             }
@@ -209,10 +216,10 @@ public class UnitsRemoteDS implements UnitDataSource {
         call.enqueue(new Callback<TimetableResponse>() {
             @Override
             public void onResponse(Call<TimetableResponse> call, Response<TimetableResponse> response) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getTimetableList());
                 } else {
-                    callback.unsuccessful(response.message());
+                    callback.unsuccessful("Data not available.");
                 }
             }
 
