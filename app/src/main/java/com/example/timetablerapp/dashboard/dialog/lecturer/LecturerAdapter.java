@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 
 import java.util.List;
@@ -18,10 +19,12 @@ import java.util.List;
 public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder> {
     private List<Lecturer> list;
     private Context context;
+    private OnItemSelectedListener<Lecturer> onItemSelectedListener;
 
-    public LecturerAdapter(Context context, List<Lecturer> list) {
+    public LecturerAdapter(Context context, List<Lecturer> list, OnItemSelectedListener<Lecturer> onItemSelectedListener) {
         this.context = context;
         this.list = list;
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     @NonNull

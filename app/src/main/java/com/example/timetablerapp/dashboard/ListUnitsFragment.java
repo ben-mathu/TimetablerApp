@@ -51,7 +51,8 @@ public class ListUnitsFragment extends Fragment implements DashboardView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
+        presenter = new DashboardPresenter(MainApplication.getUnitRepo());
+        presenter.setView(this);
 
         role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 

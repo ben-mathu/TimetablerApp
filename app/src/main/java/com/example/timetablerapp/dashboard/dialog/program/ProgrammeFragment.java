@@ -22,12 +22,11 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
-import com.example.timetablerapp.dashboard.dialog.course.CourseView;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.model.Programme;
-import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
@@ -37,7 +36,7 @@ import java.util.Objects;
 /**
  * 09/09/19 -bernard
  */
-public class ProgrammeFragment extends Fragment implements ProgView {
+public class ProgrammeFragment extends Fragment implements ProgrammeView {
     // List
     private List<Programme>  programmes;
     private List<Department>  departments;
@@ -46,7 +45,7 @@ public class ProgrammeFragment extends Fragment implements ProgView {
 
     //Classes
     private ProgrammeAdapter adapter;
-    private DashboardPresenter presenter;
+    private ProgrammePresenter presenter;
     private Campus campus;
     private Faculty faculty;
 
@@ -60,11 +59,12 @@ public class ProgrammeFragment extends Fragment implements ProgView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new DashboardPresenter(this,
+        presenter = new ProgrammePresenter(
                 MainApplication.getCampusRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
                 MainApplication.getProgRepo());
+        presenter.setView(this);
         presenter.getAllProgrammes();
     }
 

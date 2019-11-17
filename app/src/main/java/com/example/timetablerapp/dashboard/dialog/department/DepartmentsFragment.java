@@ -41,8 +41,8 @@ public class DepartmentsFragment extends Fragment implements DepartView {
     private List<Faculty> faculties;
 
     // object dependencies
+    private DepartmentPresenter presenter;
     private DepartmentAdapter adapter;
-    private DashboardPresenter presenter;
     private Campus campus;
 
     // Widgets
@@ -54,10 +54,11 @@ public class DepartmentsFragment extends Fragment implements DepartView {
     public void onStart() {
         super.onStart();
 
-        presenter = new DashboardPresenter(this,
+        presenter = new DepartmentPresenter(
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
                 MainApplication.getCampusRepo());
+        presenter.setView(this);
         presenter.getDepartments();
     }
 

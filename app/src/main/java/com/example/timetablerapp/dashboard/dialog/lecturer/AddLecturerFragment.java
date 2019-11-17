@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
+import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.util.CompareStrings;
@@ -32,12 +34,12 @@ import java.util.List;
 /**
  * 01/09/19 -bernard
  */
-public class AddLecturerFragment extends Fragment implements LecturerView {
+public class AddLecturerFragment extends Fragment implements LecturerView, OnItemSelectedListener<Lecturer> {
 
     private List<Lecturer> list;
     private LecturerAdapter adapter;
 
-    private DashboardPresenter presenter;
+    private LecturerPresenter presenter;
     private Button btnCreateUser;
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -45,7 +47,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new DashboardPresenter(this, MainApplication.getLecturerRepo());
+        presenter = new LecturerPresenter(MainApplication.getLecturerRepo());
 
         presenter.getLecturers();
     }
@@ -135,7 +137,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView {
         if (list != null) {
             if (!list.isEmpty()) {
                 this.list = list;
-                adapter = new LecturerAdapter(getActivity(), list);
+                adapter = new LecturerAdapter(getActivity(), list, this);
                 recyclerView.setAdapter(adapter);
             }
         }
@@ -165,5 +167,13 @@ public class AddLecturerFragment extends Fragment implements LecturerView {
         } catch (ActivityNotFoundException e) {
             Toast.makeText(getActivity(), "No email clients installed.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onItemSelected(Lecturer item) {
+
+        // TODO: fix the view problem first
+//        presenter.getDepartments(item.getDepartmentId());
+//        presenter.getFaculties();
     }
 }

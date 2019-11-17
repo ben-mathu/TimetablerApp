@@ -104,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         super.onStart();
         isUnitRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
 
-        presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
+        presenter = new DashboardPresenter(MainApplication.getUnitRepo());
 
         isTimeAdded = MainApplication.getSharedPreferences().getBoolean(Constants.IS_TIME_ADDED, false);
 

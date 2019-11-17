@@ -48,9 +48,9 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
 
     private CourseAdapter adapter;
 
+    private CoursePresenter presenter;
     private AlertDialog.Builder builder;
     private Spinner spinnerFaculty, spinnerDepartment, spinnerProgramme;
-    private DashboardPresenter presenter;
     private Button btnAddCourse;
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -69,7 +69,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new DashboardPresenter(this,
+        presenter = new CoursePresenter(
                 MainApplication.getUnitRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
@@ -82,7 +82,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
 
-        presenter =  new DashboardPresenter(this,
+        presenter =  new CoursePresenter(
                 MainApplication.getUnitRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
@@ -287,6 +287,9 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         presenter.getFaculties();
         presenter.getDepartments();
 
+        // get program associated with course
+        programme = getProgramme(item);
+
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_course, null, false);
 
         LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
@@ -412,6 +415,22 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
                 presenter.updateCourse(unit);
             }
         });
+    }
+
+    /**
+     * Filters programmes depending on course selected
+     * @param item Course selected by the user
+     * @return programme with same programme id set in course object
+     *         returns null if the programme was not found.
+     * @see Programme
+     */
+    private Programme getProgramme(Unit item) {
+        for (Programme prog : programmes) {
+            if (item.getProgrammeId().equals(prog.getProgrammeId())) {
+                return prog;
+            }
+        }
+        return null;
     }
 
     private void getDepartmentById(String departmentId) {
