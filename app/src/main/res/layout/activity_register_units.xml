@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".register_units.RegisterUnitsActivity">
+    tools:context=".registerunits.RegisterUnitsActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_user_details"

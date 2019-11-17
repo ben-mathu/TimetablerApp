@@ -1,4 +1,4 @@
-package com.example.timetablerapp.register_units;
+package com.example.timetablerapp.registerunits;
 
 import android.app.Activity;
 import android.util.Log;

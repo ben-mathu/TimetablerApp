@@ -1,12 +1,11 @@
-package com.example.timetablerapp.show_units;
+package com.example.timetablerapp.showunits;
 
 import android.content.Context;
 
-import com.example.timetablerapp.data.units.UnitApi;
 import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.UnitsRepo;
 import com.example.timetablerapp.data.units.model.Unit;
-import com.example.timetablerapp.register_units.adapter_utils.UnitsAdapter;
+import com.example.timetablerapp.registerunits.adapter_utils.UnitsAdapter;
 
 import java.util.List;
 
