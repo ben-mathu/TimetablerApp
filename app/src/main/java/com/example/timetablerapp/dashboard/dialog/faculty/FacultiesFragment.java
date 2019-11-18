@@ -51,10 +51,9 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new FacultyPresenter(
+        presenter = new FacultyPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getCampusRepo());
-        presenter.setView(this);
         presenter.getFacultiesForFaculty();
     }
 
@@ -63,10 +62,9 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, null, false);
 
-        presenter = new FacultyPresenter(
+        presenter = new FacultyPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getCampusRepo());
-        presenter.setView(this);
 
         recyclerFaculty = view.findViewById(R.id.recycler_view);
         recyclerFaculty.setLayoutManager(new LinearLayoutManager(getActivity()));

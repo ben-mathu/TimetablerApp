@@ -54,11 +54,10 @@ public class DepartmentsFragment extends Fragment implements DepartView {
     public void onStart() {
         super.onStart();
 
-        presenter = new DepartmentPresenter(
+        presenter = new DepartmentPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
                 MainApplication.getCampusRepo());
-        presenter.setView(this);
         presenter.getDepartments();
     }
 

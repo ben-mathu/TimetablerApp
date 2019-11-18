@@ -1,7 +1,5 @@
 package com.example.timetablerapp.dashboard.dialog.room;
 
-import com.example.timetablerapp.Presenter;
-import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.faculties.FacultiesRepository;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.Faculty;
@@ -17,12 +15,13 @@ import java.util.List;
  *
  * @author <a href="https://github.com/ben-mathu">bernard</a>
  */
-public class RoomPresenter extends Presenter<RoomView> {
+public class RoomPresenter {
     private RoomView view;
     private HallRepo hallRepo;
     private FacultiesRepository facultyRepo;
 
-    public RoomPresenter(FacultiesRepository facultyRepo, HallRepo hallRepo) {
+    public RoomPresenter(RoomView view, FacultiesRepository facultyRepo, HallRepo hallRepo) {
+        this.view = view;
         this.facultyRepo = facultyRepo;
         this.hallRepo = hallRepo;
     }
@@ -81,10 +80,5 @@ public class RoomPresenter extends Presenter<RoomView> {
                 view.showMessage(message);
             }
         });
-    }
-
-    @Override
-    public void setView(RoomView item) {
-        this.view = item;
     }
 }

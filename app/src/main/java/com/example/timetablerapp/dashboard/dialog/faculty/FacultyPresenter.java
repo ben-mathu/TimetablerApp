@@ -1,6 +1,5 @@
 package com.example.timetablerapp.dashboard.dialog.faculty;
 
-import com.example.timetablerapp.Presenter;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
 import com.example.timetablerapp.data.campuses.model.Campus;
@@ -15,12 +14,13 @@ import java.util.List;
  *
  * @author <a href="https://github.com/ben-mathu">bernard</a>
  */
-public class FacultyPresenter extends Presenter<FacultyView> {
+public class FacultyPresenter {
     private FacultyView view;
     private CampusesRepository campusRepo;
     private FacultiesRepository facultyRepo;
 
-    public FacultyPresenter(FacultiesRepository facultyRepo, CampusesRepository campusRepo) {
+    public FacultyPresenter(FacultyView view, FacultiesRepository facultyRepo, CampusesRepository campusRepo) {
+        this.view = view;
         this.facultyRepo = facultyRepo;
         this.campusRepo = campusRepo;
     }
@@ -66,10 +66,5 @@ public class FacultyPresenter extends Presenter<FacultyView> {
                 view.showMessage(message);
             }
         });
-    }
-
-    @Override
-    public void setView(FacultyView item) {
-        this.view = item;
     }
 }

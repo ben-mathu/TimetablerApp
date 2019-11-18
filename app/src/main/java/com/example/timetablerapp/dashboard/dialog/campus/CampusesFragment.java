@@ -51,8 +51,7 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new CampusPresenter(MainApplication.getCampusRepo());
-        presenter.setView(this);
+        presenter = new CampusPresenter(this, MainApplication.getCampusRepo());
         presenter.getCampuses();
     }
 

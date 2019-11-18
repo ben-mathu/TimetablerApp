@@ -1,17 +1,5 @@
 package com.example.timetablerapp.dashboard;
 
-import com.example.timetablerapp.Presenter;
-import com.example.timetablerapp.data.campuses.CampusesDS;
-import com.example.timetablerapp.data.campuses.model.Campus;
-import com.example.timetablerapp.data.department.DepartmentDS;
-import com.example.timetablerapp.data.department.model.Department;
-import com.example.timetablerapp.data.faculties.FacultyDS;
-import com.example.timetablerapp.data.faculties.model.Faculty;
-import com.example.timetablerapp.data.hall.HallDS;
-import com.example.timetablerapp.data.hall.model.Hall;
-import com.example.timetablerapp.data.programmes.ProgrammeDS;
-import com.example.timetablerapp.data.programmes.model.Programme;
-import com.example.timetablerapp.data.room.Room;
 import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.UnitsRepo;
@@ -22,11 +10,12 @@ import java.util.List;
 /**
  * 19/05/19 -bernard
  */
-public class DashboardPresenter extends Presenter<DashboardView> {
+public class DashboardPresenter {
     private DashboardView view;
     private UnitsRepo unitsRepo;
 
-    public DashboardPresenter(UnitsRepo unitsRepo) {
+    public DashboardPresenter(DashboardView view, UnitsRepo unitsRepo) {
+        this.view = view;
         this.unitsRepo = unitsRepo;
     }
 
@@ -113,10 +102,5 @@ public class DashboardPresenter extends Presenter<DashboardView> {
                 view.showMessage(message);
             }
         });
-    }
-
-    @Override
-    public void setView(DashboardView item) {
-        this.view = item;
     }
 }

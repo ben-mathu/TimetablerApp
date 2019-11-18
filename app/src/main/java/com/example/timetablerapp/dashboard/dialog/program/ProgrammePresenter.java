@@ -1,6 +1,5 @@
 package com.example.timetablerapp.dashboard.dialog.program;
 
-import com.example.timetablerapp.Presenter;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
 import com.example.timetablerapp.data.campuses.model.Campus;
@@ -21,7 +20,7 @@ import java.util.List;
  *
  * @author <a href="https://github.com/ben-mathu">bernard</a>
  */
-public class ProgrammePresenter extends Presenter<ProgrammeView> {
+public class ProgrammePresenter {
 
     private final CampusesRepository campusRepo;
     private final FacultiesRepository facultyRepo;
@@ -29,7 +28,8 @@ public class ProgrammePresenter extends Presenter<ProgrammeView> {
     private DepartmentRepository depRepo;
     private final ProgrammesRepository programmesRepo;
 
-    public ProgrammePresenter(CampusesRepository campusRepo, FacultiesRepository facultyRepo, DepartmentRepository depRepo, ProgrammesRepository programmesRepo) {
+    public ProgrammePresenter(ProgrammeView view, CampusesRepository campusRepo, FacultiesRepository facultyRepo, DepartmentRepository depRepo, ProgrammesRepository programmesRepo) {
+        this.view = view;
         this.campusRepo = campusRepo;
         this.facultyRepo = facultyRepo;
         this.depRepo = depRepo;
@@ -104,10 +104,5 @@ public class ProgrammePresenter extends Presenter<ProgrammeView> {
                 view.showMessage(message);
             }
         }, campusId);
-    }
-
-    @Override
-    public void setView(ProgrammeView item) {
-        this.view = item;
     }
 }

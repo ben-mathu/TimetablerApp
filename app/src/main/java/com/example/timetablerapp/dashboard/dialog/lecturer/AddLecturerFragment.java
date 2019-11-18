@@ -47,7 +47,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new LecturerPresenter(MainApplication.getLecturerRepo());
+        presenter = new LecturerPresenter(this, MainApplication.getLecturerRepo());
 
         presenter.getLecturers();
     }

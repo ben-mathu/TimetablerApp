@@ -45,8 +45,7 @@ public class ShowTimetableFragment extends Fragment implements DashboardView {
         super.onStart();
 
         // Initialize presenter onStart
-        presenter = new DashboardPresenter(MainApplication.getUnitRepo());
-        presenter.setView(this);
+        presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
 
         role = MainApplication.getSharedPreferences()
                 .getString(Constants.ROLE, "");

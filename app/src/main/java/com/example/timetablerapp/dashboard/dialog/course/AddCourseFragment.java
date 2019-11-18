@@ -69,7 +69,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new CoursePresenter(
+        presenter = new CoursePresenter(this,
                 MainApplication.getUnitRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
@@ -82,7 +82,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
 
-        presenter =  new CoursePresenter(
+        presenter =  new CoursePresenter(this,
                 MainApplication.getUnitRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),

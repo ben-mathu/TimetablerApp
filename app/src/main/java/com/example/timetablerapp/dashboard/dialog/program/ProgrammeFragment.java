@@ -59,12 +59,11 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new ProgrammePresenter(
+        presenter = new ProgrammePresenter(this,
                 MainApplication.getCampusRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
                 MainApplication.getProgRepo());
-        presenter.setView(this);
         presenter.getAllProgrammes();
     }
 

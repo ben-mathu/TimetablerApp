@@ -1,6 +1,5 @@
 package com.example.timetablerapp.dashboard.dialog.lecturer;
 
-import com.example.timetablerapp.Presenter;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
@@ -13,11 +12,12 @@ import java.util.List;
  *
  * @author <a href="https://github.com/ben-mathu">bernard</a>
  */
-public class LecturerPresenter extends Presenter<LecturerView> {
+public class LecturerPresenter {
     private LecturerView view;
     private LecturerRepo lecturerRepo;
 
-    public LecturerPresenter(LecturerRepo lecturerRepo) {
+    public LecturerPresenter(LecturerView view, LecturerRepo lecturerRepo) {
+        this.view = view;
         this.lecturerRepo = lecturerRepo;
     }
 
@@ -48,10 +48,5 @@ public class LecturerPresenter extends Presenter<LecturerView> {
                 view.showMessage(message);
             }
         });
-    }
-
-    @Override
-    public void setView(LecturerView item) {
-        this.view = item;
     }
 }

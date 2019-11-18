@@ -56,10 +56,9 @@ public class AddClassFragment extends Fragment implements RoomView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new RoomPresenter(
+        presenter = new RoomPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getHallRepo());
-        presenter.setView(this);
         presenter.getRooms();
     }
 
@@ -67,10 +66,9 @@ public class AddClassFragment extends Fragment implements RoomView {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
-        presenter =  new RoomPresenter(
+        presenter =  new RoomPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getHallRepo());
-        presenter.setView(this);
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
