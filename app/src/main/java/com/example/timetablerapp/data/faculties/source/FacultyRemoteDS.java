@@ -96,6 +96,13 @@ public class FacultyRemoteDS implements FacultyDS {
     }
 
     @Override
+    public void getFacultyById(String facultyId, LoadFacultyCallback loadFacultyCallBack) {
+        Call<FacultyResponse> call = RetrofitClient.getRetrofit()
+                .create(FacultyApi.class)
+                .getFaculty(facultyId);
+    }
+
+    @Override
     public void update(Faculty item) {
 
     }

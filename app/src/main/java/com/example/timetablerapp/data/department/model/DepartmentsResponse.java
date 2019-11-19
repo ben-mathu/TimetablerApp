@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * 09/05/19 -bernard
  */
-public class DepartmentResponse {
+public class DepartmentsResponse {
     @SerializedName("departments")
     private List<Department> list;
 
-    public DepartmentResponse(List<Department> list) {
+    public DepartmentsResponse(List<Department> list) {
         this.list = list;
     }
 

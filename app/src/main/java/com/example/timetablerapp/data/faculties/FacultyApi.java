@@ -29,4 +29,7 @@ public interface FacultyApi {
     @PUT("add-faculty")
     Call<MessageReport> addFaculty(@Header("Content-Type") String contentType,
                                    @Body FacultyRequest req);
+
+    @GET("faculty")
+    Call<FacultyResponse> getFaculty(@Query(Constants.FACULTY_ID) String facultyId);
 }

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * 02/09/19 -bernard
  */
-public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder> {
+public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder>  {
     private List<Lecturer> list;
     private Context context;
     private OnItemSelectedListener<Lecturer> onItemSelectedListener;
@@ -39,6 +39,12 @@ public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder> {
         holder.txtId.setText(list.get(position).getId());
         String name = list.get(position).getFirstName() + " " + list.get(position).getMiddleName() + " " + list.get(position).getLastName();
         holder.txtName.setText(name);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemSelectedListener.onItemSelected(list.get(position));
+            }
+        });
     }
 
     @Override

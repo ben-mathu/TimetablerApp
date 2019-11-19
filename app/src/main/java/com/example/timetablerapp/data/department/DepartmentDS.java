@@ -18,6 +18,8 @@ public interface DepartmentDS extends DataSource<Department> {
 
     void addDepartment(Department department, SuccessfulCallback successfulCallback);
 
+    void getDepartmentById(String departmentId, LoadDepartmentCallback callback);
+
     interface LoadDepartmentsCallBack {
         void loadDepartmentsSuccessful(List<Department> departments);
         void dataNotAvailable(String message);
@@ -26,5 +28,10 @@ public interface DepartmentDS extends DataSource<Department> {
     interface SuccessfulCallback {
         void success(String message);
         void unSuccessful(String message);
+    }
+
+    interface LoadDepartmentCallback {
+        void loadDepartment(Department department);
+        void unsuccessful(String message);
     }
 }

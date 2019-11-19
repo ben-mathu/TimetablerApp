@@ -53,6 +53,8 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
                 callBack.dataNotAvailable("Department not found.");
             }
         }
+
+        cursor.close();
     }
 
     @Override
@@ -63,6 +65,30 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
     @Override
     public void addDepartment(Department department, SuccessfulCallback successfulCallback) {
 
+    }
+
+    @Override
+    public void getDepartmentById(String departmentId, LoadDepartmentCallback callback) {
+        String[] arrCol = new String[]{
+                TimetablerContract.Department.DEPARTMENT_ID,
+                TimetablerContract.Department.DEPARTMENT_NAME,
+                TimetablerContract.Department.FACULTY_ID};
+        Cursor cursor = database.query(TimetablerContract.Department.TABLE_NAME, arrCol, null, null, null,null, null);
+
+        try {
+            Department department = new Department();
+            if (cursor.moveToFirst()) {
+                department.setDepartmentId(cursor.getString(0));
+                department.setDepartmentName(cursor.getString(1));
+                department.setFacultyId(cursor.getString(2));
+            }
+
+            callback.loadDepartment(department);
+        } catch (NullPointerException e) {
+            callback.unsuccessful("There are no data entry.");
+        } finally {
+            cursor.close();
+        }
     }
 
     @Override

@@ -34,6 +34,7 @@ import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -65,6 +66,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     private String facultyName;
     private String positiveBtnText = "";
     private AlertDialog dialog;
+    private TextView txtProgrammeName;
 
     @Override
     public void onStart() {
@@ -286,6 +288,11 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     public void onItemSelected(Unit item) {
         presenter.getFaculties();
         presenter.getDepartments();
+        String departmentId = "";
+        for (Department dep : departments) {
+            departmentId = dep.getDepartmentId().equals(item.getDepartmentId()) ? dep.getDepartmentId() : "";
+        }
+        presenter.getProgrammes(departmentId);
 
         // get program associated with course
         programme = getProgramme(item);
@@ -294,7 +301,9 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
 
         LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
         LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_course_edit_details);
+
         // Before editing
+        // Display details in plain text.
         TextView txtUnitId = view.findViewById(R.id.text_unit_id);
         txtUnitId.setText(item.getId());
         TextView txtUnitName = view.findViewById(R.id.text_unit_name);
@@ -306,8 +315,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         txtDepartmentName = view.findViewById(R.id.text_department);
         getDepartmentById(item.getDepartmentId());
 
-        TextView txtProgrammeName = view.findViewById(R.id.text_programme);
-        txtProgrammeName.setText(programme.getProgrammeName());
+        txtProgrammeName = view.findViewById(R.id.text_programme);
+
         TextView txtPractical = view.findViewById(R.id.show_practical);
         if (item.isPractical()) txtPractical.setText(R.string.practical);
         TextView txtCommon = view.findViewById(R.id.show_common);
@@ -427,6 +436,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     private Programme getProgramme(Unit item) {
         for (Programme prog : programmes) {
             if (item.getProgrammeId().equals(prog.getProgrammeId())) {
+                txtProgrammeName.setText(prog.getProgrammeName());
                 return prog;
             }
         }

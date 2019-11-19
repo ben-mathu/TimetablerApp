@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.faculties.source;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -34,6 +35,31 @@ public class FacultyLocalDS implements FacultyDS {
     @Override
     public void addFaculty(Faculty faculty, SuccessFulCallback callback) {
 
+    }
+
+    @Override
+    public void getFacultyById(String facultyId, LoadFacultyCallback callback) {
+        String[] arrCol = new String[]{
+                TimetablerContract.Faculty.FACULTY_ID,
+                TimetablerContract.Faculty.FACULTY_NAME,
+                TimetablerContract.Faculty.CAMPUS_ID};
+
+        Cursor cursor = database.query(TimetablerContract.Faculty.TABLE_NAME,
+                arrCol,
+                TimetablerContract.Faculty.FACULTY_ID + "=?",
+                new String[]{facultyId}, null, null, null);
+
+        // Object to store faculty properties
+        Faculty faculty = new Faculty();
+        if (cursor.moveToFirst()) {
+            faculty.setFacultyId(cursor.getString(0));
+            faculty.setFacultyName(cursor.getString(1));
+            faculty.setCampusId(cursor.getString(2));
+
+            callback.successfullyLoadedFaculty(faculty);
+        } else {
+            callback.unsuccessful("No records, please log out then log back in.");
+        }
     }
 
     @Override

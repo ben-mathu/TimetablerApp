@@ -3,6 +3,7 @@ package com.example.timetablerapp.dashboard.dialog.lecturer;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,8 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
@@ -24,9 +31,12 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.department.model.Department;
+import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.util.CompareStrings;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +53,25 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
     private Button btnCreateUser;
     private RecyclerView recyclerView;
     private SearchView searchView;
+    private Faculty faculty;
+    private Department department;
+    private List<Faculty> faculties;
+    private Spinner spinnerFaculty;
+    private Spinner spinnerDepartment;
+    private List<Department> departments;
+    private String positiveBtnText;
+    private AlertDialog dialog;
+    private TextView txtFacultyName;
+    private TextView txtDepartmentName;
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new LecturerPresenter(this, MainApplication.getLecturerRepo());
+        presenter = new LecturerPresenter(
+                this,
+                MainApplication.getLecturerRepo(),
+                MainApplication.getFacultyRepo(),
+                MainApplication.getDepRepo());
 
         presenter.getLecturers();
     }
@@ -170,10 +194,172 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
     }
 
     @Override
-    public void onItemSelected(Lecturer item) {
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+        txtFacultyName.setText(faculty.getFacultyName());
+    }
 
-        // TODO: fix the view problem first
-//        presenter.getDepartments(item.getDepartmentId());
-//        presenter.getFaculties();
+    @Override
+    public void setDepartment(Department department) {
+        this.department = department;
+        txtDepartmentName.setText(department.getDepartmentName());
+    }
+
+    @Override
+    public void setFaculties(List<Faculty> faculties) {
+        this.faculties = faculties;
+        if (spinnerFaculty != null) {
+            List<String> facultyNames = new ArrayList<>();
+            for (Faculty faculty : faculties) {
+                facultyNames.add(faculty.getFacultyName());
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, facultyNames);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerFaculty.setAdapter(arrayAdapter);
+        }
+    }
+
+    @Override
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+
+        if (spinnerDepartment != null) {
+            List<String> departmentNames = new ArrayList<>();
+            for (Department department : departments) {
+                departmentNames.add(department.getDepartmentName());
+            }
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item, departmentNames);
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerDepartment.setAdapter(arrayAdapter);
+        }
+    }
+
+    @Override
+    public void onItemSelected(Lecturer lec) {
+        presenter.getDepartmentById(lec.getDepartmentId());
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_lecturer, null, false);
+
+        LinearLayout llLecturerDetails = view.findViewById(R.id.ll_lecturer_details);
+        LinearLayout llEditLecturerDetails = view.findViewById(R.id.ll_lecturer_edit_details);
+
+        // Before editing
+        // show lecturer details.
+        TextView txtLecturerid = view.findViewById(R.id.text_lecturer_id);
+        txtLecturerid.setText(lec.getId());
+        TextView txtFName = view.findViewById(R.id.text_f_name);
+        txtFName.setText(lec.getFirstName());
+
+        TextView txtMName = view.findViewById(R.id.text_m_name);
+        txtMName.setText(lec.getMiddleName());
+
+        TextView txtLName = view.findViewById(R.id.text_l_name);
+        txtLName.setText(lec.getLastName());
+
+        txtFacultyName = view.findViewById(R.id.text_faculty);
+
+
+        txtDepartmentName = view.findViewById(R.id.text_department);
+
+
+        TextView txtInSession = view.findViewById(R.id.show_in_session);
+        if (lec.isInSesson()) txtInSession.setText(R.string.in_session);
+        else txtInSession.setText("Not in session");
+
+        EditText edtLecId = view.findViewById(R.id.edit_lecturer_id);
+        edtLecId.setText(lec.getId());
+        EditText edtFName = view.findViewById(R.id.edit_f_name);
+        edtFName.setText(lec.getFirstName());
+
+        EditText edtMName = view.findViewById(R.id.edit_m_name);
+        edtMName.setText(lec.getMiddleName());
+
+        EditText edtLName = view.findViewById(R.id.edit_l_name);
+        edtLName.setText(lec.getLastName());
+
+        presenter.getFaculty(lec.getFacultyId());
+        presenter.getFaculties();
+        spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
+        spinnerFaculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private String facultyName;
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                facultyName = parent.getItemAtPosition(position).toString();
+                faculty = faculties.get(position);
+                presenter.getDepartments(faculties.get(position).getFacultyId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                facultyName = parent.getSelectedItem().toString();
+                faculty = faculties.get(parent.getSelectedItemPosition());
+                presenter.getDepartments(faculties.get(parent.getSelectedItemPosition()).getFacultyId());
+            }
+        });
+
+        spinnerDepartment = view.findViewById(R.id.change_spinner_departments);
+        spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            private String departmentName = "";
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+                departmentName = parent.getItemAtPosition(position).toString();
+                department = departments.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                departmentName = parent.getSelectedItem().toString();
+                department = departments.get(parent.getSelectedItemPosition());
+            }
+        });
+
+        Switch swInSession = view.findViewById(R.id.switch_in_session);
+        if (lec.isInSesson()) {
+            swInSession.setChecked(true);
+        } else {
+            swInSession.setChecked(false);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
+        builder.setView(view);
+        builder.setTitle("Edit Course");
+        positiveBtnText = "Edit";
+
+        builder.setPositiveButton(positiveBtnText, null);
+
+        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
+            presenter.deleteLecturer(lec);
+            dialogInterface.dismiss();
+        });
+
+        dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
+            if (positiveBtnText.equalsIgnoreCase("edit")) {
+                llEditLecturerDetails.setVisibility(View.VISIBLE);
+                llLecturerDetails.setVisibility(View.GONE);
+
+                positiveBtnText = "Save";
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+            } else {
+                Lecturer lecturer = new Lecturer();
+                lecturer.setInSesson(swInSession.isChecked());
+                lecturer.setId(edtLecId.getText().toString());
+                lecturer.setFirstName(edtFName.getText().toString());
+                lecturer.setMiddleName(edtMName.getText().toString());
+                lecturer.setLastName(edtLName.getText().toString());
+                lecturer.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
+                lecturer.setDepartmentId(departments.get(spinnerDepartment.getSelectedItemPosition()).getDepartmentId());
+                presenter.updateLecturer(lecturer);
+
+                dialog.dismiss();
+            }
+        });
     }
 }
