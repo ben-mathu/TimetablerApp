@@ -31,16 +31,19 @@ import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.google.gson.annotations.SerializedName;
 
 import java.net.ConnectException;
+import java.net.NoRouteToHostException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 /**
  * 08/05/19 -bernard
  */
-public class LecturerRemoteDS implements UserDataSource<Lecturer> {
+public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
     private static final String TAG = Lecturer.class.getSimpleName();
 
     private StudentLocalDS studentLocalDS;
@@ -308,6 +311,64 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer> {
                     callback.unSuccessful("Connection error, check network connections");
                 } else {
                     callback.unSuccessful("An error occurred, please try again or contact administrator");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteLecturer(Lecturer lecturer, SuccessCallback deleteCallback) {
+        LecturerRequest lecturerRequest = new LecturerRequest();
+        lecturerRequest.setLecturer(lecturer);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .deleteLecturer("application/json", lecturerRequest);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    deleteCallback.success(response.body().getMessage());
+                } else {
+                    deleteCallback.unsuccessful("Please try again or contact administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof HttpException || t instanceof NoRouteToHostException) {
+                    deleteCallback.unsuccessful("Please contact administrator to assist you.");
+                } else if (t instanceof ConnectException || t instanceof SocketTimeoutException) {
+                    deleteCallback.unsuccessful("Check your connection and try again");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void updateLecturer(Lecturer lecturer, SuccessCallback callback) {
+        LecturerRequest req = new LecturerRequest();
+        req.setLecturer(lecturer);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .updateLec("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again or contact administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof HttpException || t instanceof NoRouteToHostException) {
+                    callback.unsuccessful("Please contact administrator to assist you.");
+                } else if (t instanceof ConnectException || t instanceof SocketTimeoutException) {
+                    callback.unsuccessful("Check your connection and try again");
                 }
             }
         });

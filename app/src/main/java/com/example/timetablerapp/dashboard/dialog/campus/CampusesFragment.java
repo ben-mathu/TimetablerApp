@@ -38,7 +38,7 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
     private List<Campus> campuses;
     // Classes
     private CampusAdapter adapter;
-    private DashboardPresenter presenter;
+    private CampusPresenter presenter;
 
     // Widget
     private RecyclerView recyclerCampuses;
@@ -51,8 +51,7 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new DashboardPresenter(this,
-                MainApplication.getCampusRepo());
+        presenter = new CampusPresenter(this, MainApplication.getCampusRepo());
         presenter.getCampuses();
     }
 

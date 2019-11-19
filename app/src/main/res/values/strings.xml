@@ -65,6 +65,8 @@
     <string name="common">Common</string>
     <string name="faculty_name">Faculty Name</string>
     <string name="department_name">Department Name</string>
+    <string name="lecturer_id">Lecturer Id</string>
+    <string name="lecturer_name">Lecturer Name</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

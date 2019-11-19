@@ -1,7 +1,6 @@
 package com.example.timetablerapp.data.user.lecturer;
 
 import com.example.timetablerapp.data.user.UserDataSource;
-import com.example.timetablerapp.data.user.lecturer.model.LecRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerLocalDS;
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * 08/05/19 -bernard
  */
-public class LecturerRepo implements UserDataSource<Lecturer> {
+public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     private static LecturerRepo INSTANCE = null;
 
     private LecturerLocalDS lecturerLocalDS;
@@ -139,6 +138,38 @@ public class LecturerRepo implements UserDataSource<Lecturer> {
             @Override
             public void unSuccessful(String message) {
                 callback.unSuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void deleteLecturer(Lecturer lecturer, SuccessCallback callback) {
+        lecturerRemoteDS.deleteLecturer(lecturer, new SuccessCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void updateLecturer(Lecturer lecturer, SuccessCallback callback) {
+        lecturerRemoteDS.updateLecturer(lecturer, new SuccessCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+                update(lecturer);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                update(lecturer);
             }
         });
     }

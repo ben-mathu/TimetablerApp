@@ -1,4 +1,4 @@
-package com.example.timetablerapp.register_units;
+package com.example.timetablerapp.registerunits;
 
 import com.example.timetablerapp.data.units.model.Unit;
 

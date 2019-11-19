@@ -9,12 +9,13 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 
 /**
  * 08/05/19 -bernard
  */
-public class LecturerLocalDS implements UserDataSource<Lecturer> {
+public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     private static final String TAG = LecturerLocalDS.class.getSimpleName();
     private SQLiteDatabase database;
 
@@ -111,5 +112,15 @@ public class LecturerLocalDS implements UserDataSource<Lecturer> {
         if (countRow > 0) {
             Log.d(TAG, "save: Successfully recorded..." + countRow + "record(s)");
         }
+    }
+
+    @Override
+    public void deleteLecturer(Lecturer lecturer, SuccessCallback deleteCallback) {
+
+    }
+
+    @Override
+    public void updateLecturer(Lecturer lecturer, SuccessCallback callback) {
+
     }
 }

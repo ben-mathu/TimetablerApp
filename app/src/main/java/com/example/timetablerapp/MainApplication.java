@@ -155,4 +155,11 @@ public class MainApplication extends Application {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    @Override
+    public void onTerminate() {
+        databaseReadable.close();
+        databaseWritable.close();
+        super.onTerminate();
+    }
 }

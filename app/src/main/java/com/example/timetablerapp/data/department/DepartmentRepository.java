@@ -87,6 +87,36 @@ public class DepartmentRepository implements DepartmentDS {
     }
 
     @Override
+    public void getDepartmentById(String departmentId, LoadDepartmentCallback callback) {
+        departmentRemoteDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
+            @Override
+            public void loadDepartment(Department department) {
+                callback.loadDepartment(department);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                // get from local DS
+                getDepartment(departmentId, callback);
+            }
+        });
+    }
+
+    private void getDepartment(String departmentId, LoadDepartmentCallback callback) {
+        departmentLocalDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
+            @Override
+            public void loadDepartment(Department department) {
+                callback.loadDepartment(department);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
     public void update(Department item) {
 
     }

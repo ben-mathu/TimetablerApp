@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 09/09/19 -bernard
  */
-public interface ProgView {
+public interface ProgrammeView {
     void setProgrammes(List<Programme> programmes);
 
     void showMessage(String message);

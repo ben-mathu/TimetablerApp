@@ -17,7 +17,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.timetable.model.Timetable;
 import com.example.timetablerapp.data.units.model.Unit;
-import com.example.timetablerapp.register_units.adapter_utils.UnitsAdapter;
+import com.example.timetablerapp.registerunits.adapter_utils.UnitsAdapter;
 
 import java.util.List;
 

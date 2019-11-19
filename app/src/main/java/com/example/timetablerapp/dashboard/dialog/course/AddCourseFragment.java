@@ -34,6 +34,7 @@ import com.example.timetablerapp.data.units.model.Unit;
 import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -48,9 +49,9 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
 
     private CourseAdapter adapter;
 
+    private CoursePresenter presenter;
     private AlertDialog.Builder builder;
     private Spinner spinnerFaculty, spinnerDepartment, spinnerProgramme;
-    private DashboardPresenter presenter;
     private Button btnAddCourse;
     private RecyclerView recyclerView;
     private SearchView searchView;
@@ -65,11 +66,12 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     private String facultyName;
     private String positiveBtnText = "";
     private AlertDialog dialog;
+    private TextView txtProgrammeName;
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new DashboardPresenter(this,
+        presenter = new CoursePresenter(this,
                 MainApplication.getUnitRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
@@ -82,7 +84,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_courses, container, false);
 
-        presenter =  new DashboardPresenter(this,
+        presenter =  new CoursePresenter(this,
                 MainApplication.getUnitRepo(),
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
@@ -286,12 +288,22 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     public void onItemSelected(Unit item) {
         presenter.getFaculties();
         presenter.getDepartments();
+        String departmentId = "";
+        for (Department dep : departments) {
+            departmentId = dep.getDepartmentId().equals(item.getDepartmentId()) ? dep.getDepartmentId() : "";
+        }
+        presenter.getProgrammes(departmentId);
+
+        // get program associated with course
+        programme = getProgramme(item);
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_course, null, false);
 
         LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
         LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_course_edit_details);
+
         // Before editing
+        // Display details in plain text.
         TextView txtUnitId = view.findViewById(R.id.text_unit_id);
         txtUnitId.setText(item.getId());
         TextView txtUnitName = view.findViewById(R.id.text_unit_name);
@@ -303,8 +315,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         txtDepartmentName = view.findViewById(R.id.text_department);
         getDepartmentById(item.getDepartmentId());
 
-        TextView txtProgrammeName = view.findViewById(R.id.text_programme);
-        txtProgrammeName.setText(programme.getProgrammeName());
+        txtProgrammeName = view.findViewById(R.id.text_programme);
+
         TextView txtPractical = view.findViewById(R.id.show_practical);
         if (item.isPractical()) txtPractical.setText(R.string.practical);
         TextView txtCommon = view.findViewById(R.id.show_common);
@@ -412,6 +424,23 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
                 presenter.updateCourse(unit);
             }
         });
+    }
+
+    /**
+     * Filters programmes depending on course selected
+     * @param item Course selected by the user
+     * @return programme with same programme id set in course object
+     *         returns null if the programme was not found.
+     * @see Programme
+     */
+    private Programme getProgramme(Unit item) {
+        for (Programme prog : programmes) {
+            if (item.getProgrammeId().equals(prog.getProgrammeId())) {
+                txtProgrammeName.setText(prog.getProgrammeName());
+                return prog;
+            }
+        }
+        return null;
     }
 
     private void getDepartmentById(String departmentId) {

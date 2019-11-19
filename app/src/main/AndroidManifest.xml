@@ -29,7 +29,7 @@
         <activity android:name=".signup.SignUpActivity" />
         <activity android:name=".dashboard.DashboardActivity" />
 
-        <activity android:name=".register_units.RegisterUnitsActivity"
+        <activity android:name=".registerunits.RegisterUnitsActivity"
             android:theme="@style/AppThemeNoActionBar"/>
 
         <activity android:name=".dashboard.dialog.ScheduleTimerActivity" />
@@ -39,7 +39,7 @@
 
         <activity android:name=".dashboard.chat.OpenChatActivity" />
 
-        <activity android:name=".show_units.RegisteredUnitsActivity"
+        <activity android:name=".showunits.RegisteredUnitsActivity"
             android:theme="@style/AppThemeNoActionBar"/>
 
         <activity android:name=".settings.SettingsActivity"/>

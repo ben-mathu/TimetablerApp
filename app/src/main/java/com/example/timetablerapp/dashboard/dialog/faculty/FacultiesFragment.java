@@ -37,8 +37,8 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     private List<Campus> campuses;
 
     // Classes
+    private FacultyPresenter presenter;
     private FacultyAdapter adapter;
-    private DashboardPresenter presenter;
     private Campus campus;
 
     // Widgets
@@ -51,7 +51,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     @Override
     public void onStart() {
         super.onStart();
-        presenter = new DashboardPresenter(this,
+        presenter = new FacultyPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getCampusRepo());
         presenter.getFacultiesForFaculty();
@@ -62,7 +62,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_item, null, false);
 
-        presenter = new DashboardPresenter(this,
+        presenter = new FacultyPresenter(this,
                 MainApplication.getFacultyRepo(),
                 MainApplication.getCampusRepo());
 

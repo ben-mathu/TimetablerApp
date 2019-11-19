@@ -1,4 +1,4 @@
-package com.example.timetablerapp.register_units.adapter_utils;
+package com.example.timetablerapp.registerunits.adapter_utils;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

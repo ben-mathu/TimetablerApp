@@ -1,4 +1,4 @@
-package com.example.timetablerapp.show_units;
+package com.example.timetablerapp.registerunits;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,25 +17,25 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.units.model.Unit;
-import com.example.timetablerapp.register_units.adapter_utils.UnitsAdapter;
-import com.example.timetablerapp.dashboard.DashboardActivity;
+import com.example.timetablerapp.login.LoginActivity;
+import com.example.timetablerapp.registerunits.adapter_utils.UnitsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 22/08/19 -bernard
+ * 22/05/19 -bernard
  */
-public class RegisteredUnitsActivity extends AppCompatActivity implements RegisteredUnitsView {
-    private static final String TAG = RegisteredUnitsActivity.class.getSimpleName();
+public class RegisterUnitsActivity extends AppCompatActivity implements RegisterUnitView {
+    private static final String TAG = RegisterUnitsActivity.class.getSimpleName();
 
-    private RegisteredUnitsPresenter presenter;
-    private UnitsAdapter unitsAdapter;
+    private RegisterUnitsPresenter presenter;
+    private UnitsAdapter adapter;
     private List<Unit> unitList;
 
     private TextView txtUserId, txtUsername, txtUserType;
-    private Button btnRemoveUnits;
     private RecyclerView recyclerView;
+    private Button btnRegisterUnits;
 
     private String username;
     private String userType;
@@ -43,16 +44,16 @@ public class RegisteredUnitsActivity extends AppCompatActivity implements Regist
     @Override
     protected void onStart() {
         super.onStart();
-        presenter = new RegisteredUnitsPresenter(this, this, MainApplication.getUnitRepo());
+        presenter = new RegisterUnitsPresenter(this, this, MainApplication.getDepRepo(), MainApplication.getUnitRepo());
+
+        presenter.getDepartment();
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registered_units);
+        setContentView(R.layout.activity_register_units);
         Log.d(TAG, "onCreate");
-
-        presenter = new RegisteredUnitsPresenter(this, this, MainApplication.getUnitRepo());
 
         unitList = new ArrayList<>();
 
@@ -72,31 +73,30 @@ public class RegisteredUnitsActivity extends AppCompatActivity implements Regist
         recyclerView = findViewById(R.id.unit_to_register);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        btnRemoveUnits = findViewById(R.id.button_register_units);
-        btnRemoveUnits.setOnClickListener(view -> presenter.submitUnits(userId, unitList, unitsAdapter));
+        btnRegisterUnits = findViewById(R.id.button_register_units);
+        btnRegisterUnits.setOnClickListener(view -> presenter.submitUnits(userId, unitList));
+    }
 
-        boolean isScheduleSet = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
-        if (!isScheduleSet) {
-            btnRemoveUnits.setVisibility(View.GONE);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                startActivity(new Intent(this, LoginActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                break;
         }
-
-        presenter.getUnits(userId, userType);
-    }
-
-    @Override
-    public void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void startTimetableActivity() {
-        startActivity(new Intent(this, DashboardActivity.class));
-        finish();
+        return true;
     }
 
     @Override
     public void setUnits(List<Unit> units) {
-        unitsAdapter = new UnitsAdapter(units, new UnitsAdapter.OnItemCheckedListener() {
+        adapter = new UnitsAdapter(units, new UnitsAdapter.OnItemCheckedListener() {
             @Override
             public void onItemChecked(Unit unit) {
                 unitList.add(unit);
@@ -107,7 +107,16 @@ public class RegisteredUnitsActivity extends AppCompatActivity implements Regist
                 unitList.remove(unit);
             }
         });
+        recyclerView.setAdapter(adapter);
+    }
 
-        recyclerView.setAdapter(unitsAdapter);
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startTimetableActivity() {
+        finish();
     }
 }

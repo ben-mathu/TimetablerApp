@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 
 import java.util.List;
@@ -15,13 +16,15 @@ import java.util.List;
 /**
  * 02/09/19 -bernard
  */
-public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder> {
+public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder>  {
     private List<Lecturer> list;
     private Context context;
+    private OnItemSelectedListener<Lecturer> onItemSelectedListener;
 
-    public LecturerAdapter(Context context, List<Lecturer> list) {
+    public LecturerAdapter(Context context, List<Lecturer> list, OnItemSelectedListener<Lecturer> onItemSelectedListener) {
         this.context = context;
         this.list = list;
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     @NonNull
@@ -36,6 +39,12 @@ public class LecturerAdapter extends RecyclerView.Adapter<LecturerViewHolder> {
         holder.txtId.setText(list.get(position).getId());
         String name = list.get(position).getFirstName() + " " + list.get(position).getMiddleName() + " " + list.get(position).getLastName();
         holder.txtName.setText(name);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemSelectedListener.onItemSelected(list.get(position));
+            }
+        });
     }
 
     @Override

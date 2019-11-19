@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 /**
  * 08/05/19 -bernard
@@ -32,4 +33,12 @@ public interface LecturerApi {
     @POST("create-user")
     Call<LecturerRemoteDS.PackageResponse> createLecturer(@Header("Content-Type") String contentType,
                                                          @Body LecturerRemoteDS.PackageRequest req);
+
+    @PUT("delete-lecturer")
+    Call<MessageReport> deleteLecturer(@Header("Content-Type") String contentType,
+                                       @Body LecturerRequest lecturerRequest);
+
+    @PUT("update-lecturer")
+    Call<MessageReport> updateLec(@Header("Content-Type") String contentType,
+                                  @Body LecturerRequest req);
 }

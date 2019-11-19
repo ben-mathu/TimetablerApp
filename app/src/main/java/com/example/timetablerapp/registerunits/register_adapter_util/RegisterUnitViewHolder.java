@@ -1,4 +1,4 @@
-package com.example.timetablerapp.register_units.register_adapter_util;
+package com.example.timetablerapp.registerunits.register_adapter_util;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
