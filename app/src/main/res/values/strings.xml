@@ -67,6 +67,8 @@
     <string name="department_name">Department Name</string>
     <string name="lecturer_id">Lecturer Id</string>
     <string name="lecturer_name">Lecturer Name</string>
+    <string name="not_practical">Not practical</string>
+    <string name="not_common">Not a common unit</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

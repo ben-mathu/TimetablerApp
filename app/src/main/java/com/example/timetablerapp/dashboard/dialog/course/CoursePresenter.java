@@ -81,7 +81,7 @@ public class CoursePresenter {
         }, id);
     }
 
-    public void getProgrammes(String id) {
+    public void getProgrammes(String departmentId) {
         programmeRepo.getAllFromRemote(new ProgrammeDS.LoadProgrammesCallBack() {
             @Override
             public void loadProgrammesSuccessfully(List<Programme> programmes) {
@@ -92,7 +92,7 @@ public class CoursePresenter {
             public void dataNotAvailable(String message) {
                 view.showMessage(message);
             }
-        }, id);
+        }, departmentId);
     }
 
     public void addCourse(Unit unit, String passCode) {

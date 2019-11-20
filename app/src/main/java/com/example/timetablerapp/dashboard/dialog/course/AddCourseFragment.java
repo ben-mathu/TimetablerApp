@@ -67,6 +67,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     private String positiveBtnText = "";
     private AlertDialog dialog;
     private TextView txtProgrammeName;
+    private String departmentId;
+    private Unit unit;
 
     @Override
     public void onStart() {
@@ -250,11 +252,18 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerFaculty.setAdapter(arrayAdapter);
         }
+
+        getFacultyById(unit.getFacultyId());
     }
 
     @Override
     public void setDepartments(List<Department> departments) {
         this.departments = departments;
+        departmentId = "";
+        for (Department dep : departments) {
+            departmentId = dep.getDepartmentId().equals(unit.getDepartmentId()) ? dep.getDepartmentId() : "";
+        }
+        presenter.getProgrammes(departmentId);
 
         if (spinnerDepartment != null) {
             List<String> departmentNames = new ArrayList<>();
@@ -266,11 +275,16 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerDepartment.setAdapter(arrayAdapter);
         }
+
+        getDepartmentById(unit.getDepartmentId());
     }
 
     @Override
     public void setProgrammes(List<Programme> programmes) {
         this.programmes = programmes;
+
+        // get program associated with course
+        programme = getProgramme(unit);
 
         if (spinnerProgramme != null) {
             List<String> programmesNames = new ArrayList<>();
@@ -286,16 +300,10 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
 
     @Override
     public void onItemSelected(Unit item) {
+        this.unit = item;
         presenter.getFaculties();
         presenter.getDepartments();
-        String departmentId = "";
-        for (Department dep : departments) {
-            departmentId = dep.getDepartmentId().equals(item.getDepartmentId()) ? dep.getDepartmentId() : "";
-        }
-        presenter.getProgrammes(departmentId);
-
-        // get program associated with course
-        programme = getProgramme(item);
+        presenter.getProgrammes(item.getDepartmentId());
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_course, null, false);
 
@@ -310,17 +318,17 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         txtUnitName.setText(item.getUnitName());
 
         txtFacultyName = view.findViewById(R.id.text_faculty);
-        getFacultyById(item.getFacultyId());
 
         txtDepartmentName = view.findViewById(R.id.text_department);
-        getDepartmentById(item.getDepartmentId());
 
         txtProgrammeName = view.findViewById(R.id.text_programme);
 
         TextView txtPractical = view.findViewById(R.id.show_practical);
         if (item.isPractical()) txtPractical.setText(R.string.practical);
+        else txtPractical.setText(R.string.not_practical);
         TextView txtCommon = view.findViewById(R.id.show_common);
         if (item.isCommon()) txtCommon.setText(R.string.common);
+        else txtCommon.setText(R.string.not_common);
 
         EditText edtUnitId = view.findViewById(R.id.edit_unit_id);
         edtUnitId.setText(item.getId());
@@ -448,6 +456,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
             for (Department dep : departments) {
                 if (dep.getDepartmentId().equals(departmentId)) {
                     txtDepartmentName.setText(department.getDepartmentName());
+                    break;
                 }
             }
         }
@@ -458,6 +467,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
             for (Faculty faculty : faculties) {
                 if (faculty.getFacultyId().equals(id)) {
                     txtFacultyName.setText(faculty.getFacultyName());
+                    break;
                 }
             }
         }
