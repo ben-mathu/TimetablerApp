@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user;
 
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 
@@ -9,6 +10,8 @@ import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 public interface UserDataSource<T> extends DataSource<T> {
     void userSignUp(UserAuthCallback callBack, T obj, String pass);
     void authUser(UserDataSource.UserAuthCallback callBack, T obj);
+
+    void updateUsername(String name, String userId, String role, SuccessfulCallback callback);
 
     interface UserAuthCallback {
 

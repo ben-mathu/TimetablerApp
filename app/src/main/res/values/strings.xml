@@ -69,6 +69,7 @@
     <string name="lecturer_name">Lecturer Name</string>
     <string name="not_practical">Not practical</string>
     <string name="not_common">Not a common unit</string>
+    <string name="text_holder">You are modifying your username.\nUsernames are required to be all lowercase letters. You can include numbers.</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

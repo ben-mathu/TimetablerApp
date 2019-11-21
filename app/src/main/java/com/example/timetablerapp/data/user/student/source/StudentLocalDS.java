@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.student.model.Student;
@@ -28,6 +30,22 @@ public class StudentLocalDS implements UserDataSource<Student> {
     @Override
     public void authUser(UserAuthCallback callBack, Student obj) {
 
+    }
+
+    @Override
+    public void updateUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(Constants.USERNAME, name);
+
+        long countRow = database.update(TimetablerContract.Student.TABLE_NAME,
+                contentValues,
+                Constants.STUDENT_ID + "=?",
+                new String[]{userId});
+
+        if (countRow > 0)
+            callback.successful("Successfully updated username to " + name);
+        else callback.unsuccessful("Username " + name + " was not updated.");
     }
 
     @Override

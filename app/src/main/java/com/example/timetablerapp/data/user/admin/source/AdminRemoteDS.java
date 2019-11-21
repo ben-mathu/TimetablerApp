@@ -2,12 +2,16 @@ package com.example.timetablerapp.data.user.admin.source;
 
 import android.util.Log;
 
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.response.MessageReport;
+import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminApi;
 import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.admin.model.AdminRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+
+import java.net.ConnectException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -52,6 +56,35 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     @Override
     public void authUser(UserAuthCallback callBack, Admin obj) {
 
+    }
+
+    @Override
+    public void updateUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        RequestParams requestParams = new RequestParams(name, userId, role);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(AdminApi.class)
+                .updateUsername("application/json", requestParams);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please contact administrator for assistance.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("Check your internet connection and try again.");
+                } else {
+                    callback.unsuccessful("Please contact administrator, " + t.getLocalizedMessage());
+                }
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.student;
 
 
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
@@ -47,6 +48,37 @@ public class StudentRepository implements UserDataSource<Student> {
     @Override
     public void authUser(UserAuthCallback callBack, Student obj) {
 
+    }
+
+    @Override
+    public void updateUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        userDataSourceRemote.updateUsername(name, userId, role, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalUsername(name, userId, role, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.successful(message);
+                updateLocalUsername(name, userId, role, callback);
+            }
+        });
+    }
+
+    private void updateLocalUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        userDataSourceLocal.updateUsername(name, userId, role, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override

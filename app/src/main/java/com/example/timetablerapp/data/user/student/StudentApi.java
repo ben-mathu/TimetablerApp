@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.student;
 
 import com.example.timetablerapp.data.response.MessageReport;
+import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.ValidationRequest;
 import com.example.timetablerapp.data.user.student.model.StudentRequest;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
@@ -21,4 +22,8 @@ public interface StudentApi {
     @POST("validate-user")
     Call<StudentResponse> validateLec(@Header("Content-Type") String contentType,
                                       @Body ValidationRequest request);
+
+    @POST("update-username")
+    Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
+                                       @Body RequestParams requestParams);
 }

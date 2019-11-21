@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.lecturer;
 
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
@@ -58,6 +59,37 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
                 callBack.authNotSuccessful(message);
             }
         }, lecturer, "");
+    }
+
+    @Override
+    public void updateUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        lecturerRemoteDS.updateUsername(name, userId, role, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalUsername(name, userId, role, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.successful(message);
+                updateLocalUsername(name, userId, role, callback);
+            }
+        });
+    }
+
+    private void updateLocalUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        lecturerLocalDS.updateUsername(name, userId, role, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.example.timetablerapp.data.faculties.model.FacultyResponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
+import java.net.ConnectException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -96,10 +97,28 @@ public class FacultyRemoteDS implements FacultyDS {
     }
 
     @Override
-    public void getFacultyById(String facultyId, LoadFacultyCallback loadFacultyCallBack) {
-        Call<FacultyResponse> call = RetrofitClient.getRetrofit()
+    public void getFacultyById(String facultyId, LoadFacultyCallback callback) {
+        Call<FacultyRequest> call = RetrofitClient.getRetrofit()
                 .create(FacultyApi.class)
                 .getFaculty(facultyId);
+
+        call.enqueue(new Callback<FacultyRequest>() {
+            @Override
+            public void onResponse(Call<FacultyRequest> call, Response<FacultyRequest> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successfullyLoadedFaculty(response.body().getFaculty());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FacultyRequest> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("Check your connection and try again.");
+                } else {
+                    callback.unsuccessful("Please contact administrator.");
+                }
+            }
+        });
     }
 
     @Override

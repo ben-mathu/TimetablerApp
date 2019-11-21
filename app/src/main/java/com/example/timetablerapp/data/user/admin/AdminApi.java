@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.admin;
 
 import com.example.timetablerapp.data.response.MessageReport;
+import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.admin.model.AdminRequest;
 import com.example.timetablerapp.data.user.ValidationRequest;
 
@@ -18,4 +19,8 @@ public interface AdminApi {
 
     @POST("validate-user")
     Call<AdminRequest> validateLec(@Header("Content-Type") String s, @Body ValidationRequest request);
+
+    @POST("update-username")
+    Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
+                                       @Body RequestParams requestParams);
 }

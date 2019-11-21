@@ -1,7 +1,6 @@
 package com.example.timetablerapp.settings;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,47 +19,45 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.text.format.DateFormat;
-import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 23/08/19 -bernard
  */
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements SettingsView {
     private static final int ACTIVITY_RESULT = 101;
     private static final int ACTIVITY_CAM_RESULT = 102;
 
     Bitmap bitmap;
     AlertDialog.Builder builderImage;
 
+    private SettingsPresenter presenter;
+
     // android widgets
     private CircleImageView imgPicChange;
     private ImageView imgDisplayName;
     private TextView txtDisplayName;
+    private TextView txtUserId;
+    private TextView txtUserRole;
     private EditText edtNewPasswd;
     private ImageButton imgShowPasswd;
     private Button btnSave;
@@ -69,6 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
     private String userId = "";
     private String username = "";
     private String fileName = "";
+    private String userRole = "";
 
     @Override
     protected void onStart() {
@@ -87,6 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
         // get user id and username from shared preferences
         userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
         username = MainApplication.getSharedPreferences().getString(Constants.USERNAME, "");
+        userRole = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 
         fileName = userId + " " + username + ".png";
 
@@ -102,6 +101,10 @@ public class SettingsActivity extends AppCompatActivity {
         if (bitmap != null) {
             imgPicChange.setImageBitmap(bitmap);
         }
+
+        txtUserId.setText(userId);
+        txtUserRole.setText(userRole);
+        txtDisplayName.setText(username);
     }
 
     @Override
@@ -109,7 +112,15 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        presenter = new SettingsPresenter(this,
+                MainApplication.getAdminRepo(),
+                MainApplication.getLecturerRepo(),
+                MainApplication.getStudentRepository());
+
+        // define widgets
         txtDisplayName = findViewById(R.id.text_display_name);
+        txtUserId = findViewById(R.id.text_id);
+        txtUserRole = findViewById(R.id.text_role);
 
         LayoutInflater inflater = getLayoutInflater();
 
@@ -152,13 +163,18 @@ public class SettingsActivity extends AppCompatActivity {
             EditText editText = v2.findViewById(R.id.edit_display_name);
             editText.setText(txtDisplayName.getText());
 
-            AlertDialog.Builder builderName= new AlertDialog.Builder(SettingsActivity.this)
+            AlertDialog.Builder builderName= new AlertDialog.Builder(SettingsActivity.this, R.style.Theme_Dialogs)
                     .setView(v2)
                     .setCancelable(true)
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            txtDisplayName.setText(editText.getText());
+                            String name = editText.getText().toString();
+                            txtDisplayName.setText(name);
+                            MainApplication.getSharedPreferences().edit()
+                                    .putString(Constants.USERNAME, name)
+                                    .apply();
+                            presenter.updateUsername(name, userId, userRole);
                         }
                     })
                     .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -206,24 +222,20 @@ public class SettingsActivity extends AppCompatActivity {
             Cursor cursor = getContentResolver()
                     .query(imageUri, filePathColumn, null, null, null);
 
-            cursor.moveToFirst();
-            int index = cursor.getColumnIndex(filePathColumn[0]);
-            String imagePath = cursor.getString(index);
-            cursor.close();
-
-            // convert to bitmap to set the image in imageview
-            bitmap = BitmapFactory.decodeFile(imagePath);
-            imgPicChange.setImageBitmap(bitmap);
-
-            // save the image to a file
             try (FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE)) {
+                //move cursor to first index
+                cursor.moveToFirst();
+                int index = cursor.getColumnIndex(filePathColumn[0]);
+                String imagePath = cursor.getString(index);
+                cursor.close();
 
+                // convert to bitmap to set the image in imageview
+                bitmap = BitmapFactory.decodeFile(imagePath);
+                imgPicChange.setImageBitmap(bitmap);
+
+                // save the image to a file
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (NullPointerException | IOException e) {
                 e.printStackTrace();
             }
         } else if (ACTIVITY_CAM_RESULT == requestCode) { // only for camera pictures
@@ -234,8 +246,6 @@ public class SettingsActivity extends AppCompatActivity {
             try (FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE)) {
 
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -244,16 +254,15 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MainApplication.READ_EXTERNAL_STORAGE_REQUEST_CODE:
-                if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    onBackPressed();
-                }
-                break;
-            case MainApplication.WRITE_EXTERNAL_STORAGE_REQUEST_CODE:
-                if (grantResults.length <=0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    onBackPressed();
-                }
+        if (requestCode == MainApplication.READ_EXTERNAL_STORAGE_REQUEST_CODE) {
+            if (grantResults.length <= 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                onBackPressed();
+            }
         }
+    }
+
+    @Override
+    public void showMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 }

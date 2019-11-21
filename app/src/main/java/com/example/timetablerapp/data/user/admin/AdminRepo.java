@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.admin;
 
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.source.AdminLocalDS;
@@ -46,6 +47,37 @@ public class AdminRepo implements UserDataSource<Admin> {
     @Override
     public void authUser(UserAuthCallback callBack, Admin obj) {
 
+    }
+
+    @Override
+    public void updateUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        remoteDs.updateUsername(name, userId, role , new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalUsername(name, userId, role, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalUsername(name, userId, role, callback);
+            }
+        });
+    }
+
+    private void updateLocalUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        localDs.updateUsername(name, userId, role, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override

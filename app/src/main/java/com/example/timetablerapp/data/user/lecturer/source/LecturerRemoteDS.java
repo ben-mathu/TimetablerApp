@@ -3,12 +3,14 @@ package com.example.timetablerapp.data.user.lecturer.source;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
 import com.example.timetablerapp.data.department.source.DepartmentLocalDataSrc;
 import com.example.timetablerapp.data.faculties.source.FacultyLocalDS;
 import com.example.timetablerapp.data.programmes.source.ProgLocalDS;
 import com.example.timetablerapp.data.response.MessageReport;
+import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminApi;
 import com.example.timetablerapp.data.user.admin.model.Admin;
@@ -94,6 +96,36 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
     @Override
     public void authUser(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
 
+    }
+
+    @Override
+    public void updateUsername(String name, String userId, String role, SuccessfulCallback callback) {
+        RequestParams requestParams = new RequestParams(name, userId, role);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .updateUsername("application/json", requestParams);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    Log.d(TAG, "onResponse: " + response.message());
+                    callback.unsuccessful("Please contact administrator for assistance.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                Log.e(TAG, "onFailure: ", t);
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("Check your internet connection and try again.");
+                } else {
+                    callback.unsuccessful("Please contact administrator, " + t.getLocalizedMessage());
+                }
+            }
+        });
     }
 
     @Override

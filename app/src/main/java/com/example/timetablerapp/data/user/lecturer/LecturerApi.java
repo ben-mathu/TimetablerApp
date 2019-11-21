@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.lecturer;
 
 import com.example.timetablerapp.data.response.MessageReport;
+import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerRequest;
 import com.example.timetablerapp.data.user.ValidationRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
@@ -41,4 +42,8 @@ public interface LecturerApi {
     @PUT("update-lecturer")
     Call<MessageReport> updateLec(@Header("Content-Type") String contentType,
                                   @Body LecturerRequest req);
+
+    @POST("update-username")
+    Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
+                                       @Body RequestParams requestParams);
 }
