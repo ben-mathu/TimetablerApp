@@ -119,6 +119,35 @@ public class AdminRepo implements UserDataSource<Admin>{
         });
     }
 
+    @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        remoteDs.deleteAccount(userRole, userId, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                deleteAccountFromLocal(userRole, userId, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void deleteAccountFromLocal(String userRole, String userId, SuccessfulCallback callback) {
+        localDs.deleteAccount(userRole, userId, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     private void updateLocalUserDetails(Admin obj, SuccessfulCallback callback) {
         localDs.updateUserDetails(obj, new SuccessfulCallback() {
             @Override

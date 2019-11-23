@@ -179,6 +179,35 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
         });
     }
 
+    @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        lecturerRemoteDS.deleteAccount(userRole, userId, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                deleteAccountFromLocal(userRole, userId, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void deleteAccountFromLocal(String userRole, String userId, SuccessfulCallback callback) {
+        lecturerLocalDS.deleteAccount(userRole, userId, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     private void updateLocalUserDetails(Lecturer obj, SuccessfulCallback callback) {
         lecturerLocalDS.updateUserDetails(obj, new SuccessfulCallback() {
             @Override

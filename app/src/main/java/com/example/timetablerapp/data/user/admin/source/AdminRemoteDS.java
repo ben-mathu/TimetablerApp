@@ -184,6 +184,34 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        RequestParams req = new RequestParams("", userId, userRole);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(AdminApi.class)
+                .deleteAccount(Constants.APPLICATION_JSON, req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful(Constants.OTHER_ISSUE + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful(Constants.CHECK_CONNECTION);
+                } else {
+                    callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
+                }
+            }
+        });
+    }
+
+    @Override
     public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }

@@ -13,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 /**
  * 21/05/19 -bernard
@@ -30,7 +31,7 @@ public interface StudentApi {
     Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
                                        @Body RequestParams requestParams);
 
-    @GET("student")
+    @POST("student")
     Call<StudentResponse> getDetails(@Header("Content-Type") String contentType,
                                      @Body RequestParams req);
 
@@ -41,4 +42,8 @@ public interface StudentApi {
     @POST("update-user-details")
     Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
                                           @Body StudentRequest req);
+
+    @PUT("delete-account")
+    Call<MessageReport> deleteAccount(@Header(Constants.CONTENT_TYPE) String contentType,
+                                      @Body RequestParams req);
 }

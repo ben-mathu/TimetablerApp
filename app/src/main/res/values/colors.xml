@@ -14,4 +14,5 @@
     <color name="text_hint_color">#969595</color>
     <color name="transparent">#00043E54</color>
     <color name="primaryShade">#59022631</color>
+    <color name="red">#FF0000</color>
 </resources>

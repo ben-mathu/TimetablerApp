@@ -165,6 +165,35 @@ public class StudentRepository implements UserDataSource<Student> {
         });
     }
 
+    @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        userDataSourceRemote.deleteAccount(userRole, userId, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                deleteAccountFromLocal(userRole, userId, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void deleteAccountFromLocal(String userRole, String userId, SuccessfulCallback callback) {
+        userDataSourceLocal.deleteAccount(userRole, userId, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     private void updateLocalUserDetails(Student obj, SuccessfulCallback callback) {
         userDataSourceLocal.updateUserDetails(obj, new SuccessfulCallback() {
             @Override

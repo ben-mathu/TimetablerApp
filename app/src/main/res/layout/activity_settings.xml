@@ -40,8 +40,8 @@
                 android:padding="5dp"
                 android:layout_centerInParent="true"
                 android:background="@color/primaryShade"
+                android:contentDescription="@string/user_avatar"
                 android:elevation="3dp"
-                android:layout_weight="0.5"
                 android:src="@drawable/ic_edit"
                 android:layout_gravity="end"/>
         </RelativeLayout>
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Hello"/>
+                android:text="@string/placeholder3"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -70,13 +70,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.5"
-                    android:text="World"/>
+                    android:text="@string/placeholder3"/>
 
                 <ImageView
                     android:id="@+id/img_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:contentDescription="@string/edit_username"
                     android:src="@drawable/ic_edit"
                     android:layout_gravity="end"/>
             </LinearLayout>
@@ -86,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="life is crazy"/>
+                android:text="@string/life_is_crazy"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -128,6 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
                     android:layout_gravity="center"
+                    android:contentDescription="@string/show_current_password"
                     android:src="@drawable/ic_show_password"/>
             </LinearLayout>
 
@@ -159,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.7"
                     android:layout_gravity="center"
+                    android:contentDescription="@string/show_password"
                     android:src="@drawable/ic_show_password"/>
             </LinearLayout>
 
@@ -197,11 +200,13 @@
                     android:layout_height="wrap_content"
                     android:padding="5dp"
                     android:layout_weight="0.5"
+                    android:contentDescription="@string/edit_user_details"
                     android:src="@drawable/ic_edit"
                     android:layout_gravity="end"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_user_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_section_title"
@@ -346,6 +351,16 @@
                     android:background="@drawable/button_background_three"
                     android:text="@string/save_details"/>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/button_delete_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="40dp"
+                android:layout_below="@+id/ll_user_details"
+                android:background="@color/red"
+                android:text="@string/delete_account"
+                android:textSize="16sp"/>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

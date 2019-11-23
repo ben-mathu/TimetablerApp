@@ -129,6 +129,15 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        int count = database.delete(TABLE_NAME, LECTURER_ID + "=?", new String[]{userId});
+
+        Log.d(TAG, "deleteAccount: record count: " + count);
+
+        callback.successful(Constants.DELETED_ACCOUNT_MESSAGE);
+    }
+
+    @Override
     public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
         String passwd = getPassWd(role, username);
         if (passwd.equals(password)) {

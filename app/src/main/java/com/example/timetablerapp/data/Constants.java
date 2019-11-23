@@ -135,4 +135,6 @@ public class Constants {
     public static final String MESSAGE_SUCCESS = "Successfully updated.";
     public static final String CHECK_CONNECTION = "Check your connection, then try again.";
     public static final String OTHER_ISSUE = "Please contact the administrator to resolve the issue.\n";
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String DELETED_ACCOUNT_MESSAGE = "Account deleted successfully";
 }

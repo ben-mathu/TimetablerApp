@@ -3,6 +3,9 @@ package com.example.timetablerapp.data.user.lecturer.source;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.data.user.student.model.Student;
+import com.example.timetablerapp.data.user.student.model.StudentResponse;
+import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
 import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
@@ -26,10 +29,7 @@ import com.example.timetablerapp.data.user.ValidationRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponseList;
 import com.example.timetablerapp.data.user.student.StudentApi;
-import com.example.timetablerapp.data.user.student.model.Student;
-import com.example.timetablerapp.data.user.student.model.StudentResponse;
 import com.example.timetablerapp.data.user.student.model.UserResponse;
-import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.google.gson.annotations.SerializedName;
 
@@ -213,6 +213,34 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                     callback.unsuccessful(Constants.CHECK_CONNECTION);
                 else
                     callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
+            }
+        });
+    }
+
+    @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        RequestParams req = new RequestParams("", userId, userRole);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .deleteAccount(Constants.APPLICATION_JSON, req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful(Constants.OTHER_ISSUE + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful(Constants.CHECK_CONNECTION);
+                } else {
+                    callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
+                }
             }
         });
     }

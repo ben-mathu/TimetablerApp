@@ -150,6 +150,15 @@ public class StudentLocalDS implements UserDataSource<Student> {
     }
 
     @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        int count = database.delete(TABLE_NAME, STUDENT_ID + "=?", new String[]{userId});
+
+        Log.d(TAG, "deleteAccount: record count: " + count);
+
+        callback.successful(Constants.DELETED_ACCOUNT_MESSAGE);
+    }
+
+    @Override
     public void fetchSettingsFromRemote(FetchSettingsCallback callback) {
 
     }

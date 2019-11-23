@@ -232,4 +232,46 @@ public class SettingsPresenter {
             }
         }
     }
+
+    public void deleteAccount(String userRole, String userId) {
+        if (userRole.equalsIgnoreCase("admin"))
+            adminRepo.deleteAccount(userRole, userId, new SuccessfulCallback() {
+                @Override
+                public void successful(String message) {
+                    view.showMessage(message);
+                    view.logUserOut();
+                }
+
+                @Override
+                public void unsuccessful(String message) {
+                    view.showMessage(message);
+                }
+            });
+        else if (userRole.equalsIgnoreCase("student"))
+            studentRepo.deleteAccount(userRole, userId, new SuccessfulCallback() {
+                @Override
+                public void successful(String message) {
+                    view.showMessage(message);
+                    view.logUserOut();
+                }
+
+                @Override
+                public void unsuccessful(String message) {
+                    view.showMessage(message);
+                }
+            });
+        else if (userRole.equalsIgnoreCase("lecturer"))
+            lecturerRepo.deleteAccount(userRole, userId, new SuccessfulCallback() {
+                @Override
+                public void successful(String message) {
+                    view.showMessage(message);
+                    view.logUserOut();
+                }
+
+                @Override
+                public void unsuccessful(String message) {
+                    view.showMessage(message);
+                }
+            });
+    }
 }

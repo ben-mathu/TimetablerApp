@@ -60,4 +60,8 @@ public interface LecturerApi {
     @POST("update-user-details")
     Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
                                           @Body LecturerRequest req);
+
+    @PUT("delete-account")
+    Call<MessageReport> deleteAccount(@Header(Constants.CONTENT_TYPE) String contentType,
+                                      @Body RequestParams req);
 }

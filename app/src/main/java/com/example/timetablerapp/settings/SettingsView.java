@@ -20,4 +20,6 @@ public interface SettingsView {
     void setStudentDetails(StudentResponse student);
 
     void setLecturerDetails(LecturerResponse obj);
+
+    void logUserOut();
 }

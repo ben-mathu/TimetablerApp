@@ -111,6 +111,15 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
+    public void deleteAccount(String userRole, String userId, SuccessfulCallback callback) {
+        int count = database.delete(TABLE_NAME, ADMIN_ID + "=?", new String[]{userId});
+
+        Log.d(TAG, "deleteAccount: record count: " + count);
+
+        callback.successful(Constants.DELETED_ACCOUNT_MESSAGE);
+    }
+
+    @Override
     public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }

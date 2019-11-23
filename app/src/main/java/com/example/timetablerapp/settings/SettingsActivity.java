@@ -1,6 +1,7 @@
 package com.example.timetablerapp.settings;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,11 +42,13 @@ import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
+import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -128,11 +131,11 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         fileName = userId + " " + username + ".png";
 
         // get uri
-        Uri uri = Uri.parse("content://com.example.timetablerapp/" + fileName);
-        File file = new File(this.getFilesDir(), uri.getPath());
-        String filepath = file.getPath();
+//        Uri uri = Uri.parse("content://com.example.timetablerapp/" + fileName);
+//        File file = new File(this.getFilesDir(), Objects.requireNonNull(uri.getPath()));
+        String filepath;
 
-        filepath = this.getFilesDir().getPath().toString() + "/" +  fileName;
+        filepath = this.getFilesDir().getPath() + "/" +  fileName;
 
         bitmap = BitmapFactory.decodeFile(filepath);
 
@@ -167,6 +170,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
         imgPicChange = findViewById(R.id.circle_view);
         imgPicChange.setOnClickListener(view -> {
+            @SuppressLint("InflateParams")
             View v = inflater.inflate(R.layout.edit_image, null);
 
             ImageButton imgCamera = v.findViewById(R.id.image_take_pic);
@@ -187,18 +191,14 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             builderImage= new AlertDialog.Builder(SettingsActivity.this, R.style.Theme_Dialogs)
                     .setView(v)
                     .setTitle("Change Picture")
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
             builderImage.create().show();
         });
 
         imgDisplayName = findViewById(R.id.img_edit);
         imgDisplayName.setOnClickListener(view -> {
 
+            @SuppressLint("InflateParams")
             View v2 = inflater.inflate(R.layout.edit_display_name, null);
 
             EditText editText = v2.findViewById(R.id.edit_display_name);
@@ -207,23 +207,15 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             AlertDialog.Builder builderName= new AlertDialog.Builder(SettingsActivity.this, R.style.Theme_Dialogs)
                     .setView(v2)
                     .setCancelable(true)
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            String name = editText.getText().toString();
-                            txtDisplayName.setText(name);
-                            MainApplication.getSharedPreferences().edit()
-                                    .putString(Constants.USERNAME, name)
-                                    .apply();
-                            presenter.updateUsername(name, userId, userRole);
-                        }
+                    .setPositiveButton("Ok", (dialogInterface, i) -> {
+                        String name = editText.getText().toString();
+                        txtDisplayName.setText(name);
+                        MainApplication.getSharedPreferences().edit()
+                                .putString(Constants.USERNAME, name)
+                                .apply();
+                        presenter.updateUsername(name, userId, userRole);
                     })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    })
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                     .setTitle("Change Display Name");
 
             builderName.create().show();
@@ -277,16 +269,29 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         swInSession = findViewById(R.id.switch_in_session);
 
         btnSaveDetails = findViewById(R.id.button_save_details);
-        btnSaveDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (userRole.equalsIgnoreCase("admin"))
-                    presenter.updateAdmin(admin);
-                else if (userRole.equalsIgnoreCase("student"))
-                    presenter.updateStudent(student);
-                else
-                    presenter.updateLecturer(lecturer);
-            }
+        btnSaveDetails.setOnClickListener(view -> {
+            if (userRole.equalsIgnoreCase("admin"))
+                presenter.updateAdmin(admin);
+            else if (userRole.equalsIgnoreCase("student"))
+                presenter.updateStudent(student);
+            else
+                presenter.updateLecturer(lecturer);
+        });
+
+        Button btnDeleteAccount = findViewById(R.id.button_delete_account);
+        btnDeleteAccount.setOnClickListener(view -> {
+            AlertDialog.Builder builderName= new AlertDialog.Builder(SettingsActivity.this, R.style.Theme_Dialogs)
+                    .setMessage("You are about to delete your account are you sure\n" +
+                            "you want to do this.\n\n" +
+                            "Use the cancel button to cancel this dialog and use the proceed button to delete your account")
+                    .setCancelable(true)
+                    .setPositiveButton("Proceed", (dialogInterface, i) -> {
+                        presenter.deleteAccount(userRole, userId);
+                    })
+                    .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                    .setTitle("Change Display Name");
+
+            builderName.create().show();
         });
     }
 
@@ -304,11 +309,13 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
             // get the path of the image
             String[] filePathColumn= {MediaStore.Images.Media.DATA};
+            assert imageUri != null;
             Cursor cursor = getContentResolver()
                     .query(imageUri, filePathColumn, null, null, null);
 
             try (FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE)) {
                 //move cursor to first index
+                assert cursor != null;
                 cursor.moveToFirst();
                 int index = cursor.getColumnIndex(filePathColumn[0]);
                 String imagePath = cursor.getString(index);
@@ -325,7 +332,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             }
         } else if (ACTIVITY_CAM_RESULT == requestCode) { // only for camera pictures
             // get the bitmap from
-            bitmap = (Bitmap) data.getExtras().get("data");
+            bitmap = (Bitmap) Objects.requireNonNull(data.getExtras()).get("data");
             imgPicChange.setImageBitmap(bitmap);
 
             try (FileOutputStream outputStream = openFileOutput(fileName, Context.MODE_PRIVATE)) {
@@ -403,5 +410,16 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         edtYearofStudy.setVisibility(View.VISIBLE);
         edtDepartment.setText(department.getDepartmentName());
 
+    }
+
+    @Override
+    public void logUserOut() {
+        MainApplication.getSharedPreferences().edit()
+                .putString(Constants.USERNAME, "")
+                .putBoolean(Constants.IS_LOGGED_IN, false)
+                .putString(Constants.USER_ID, "")
+                .apply();
+
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }

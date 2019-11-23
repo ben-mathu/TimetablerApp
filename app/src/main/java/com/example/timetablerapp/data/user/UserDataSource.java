@@ -26,6 +26,8 @@ public interface UserDataSource<T> extends DataSource<T> {
 
     void updateUserDetails(T obj, SuccessfulCallback callback);
 
+    void deleteAccount(String userRole, String userId, SuccessfulCallback callback);
+
     interface UserAuthCallback {
 
         void userIsAuthSuccessful(String message);
