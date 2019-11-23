@@ -1,7 +1,7 @@
 package com.example.timetablerapp.data.user.student;
 
 
-import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.model.Student;

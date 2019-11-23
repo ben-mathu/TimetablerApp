@@ -1,6 +1,6 @@
 package com.example.timetablerapp.data.user.admin;
 
-import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.source.AdminLocalDS;

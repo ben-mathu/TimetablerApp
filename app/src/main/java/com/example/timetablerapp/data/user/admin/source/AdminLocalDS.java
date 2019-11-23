@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
@@ -20,7 +20,6 @@ import static com.example.timetablerapp.data.db.TimetablerContract.Admin.LAST_NA
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.MIDDLE_NAME;
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.PASSWORD;
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.TABLE_NAME;
-import static com.example.timetablerapp.data.db.TimetablerContract.Admin.USERNAME;
 
 /**
  * 22/05/19 -bernard

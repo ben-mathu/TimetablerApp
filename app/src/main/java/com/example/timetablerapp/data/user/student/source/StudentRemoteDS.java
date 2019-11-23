@@ -2,7 +2,7 @@ package com.example.timetablerapp.data.user.student.source;
 
 import android.util.Log;
 
-import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.RequestParams;

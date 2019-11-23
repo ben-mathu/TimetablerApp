@@ -1,6 +1,6 @@
 package com.example.timetablerapp.dashboard.dialog.lecturer;
 
-import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.department.DepartmentDS;
 import com.example.timetablerapp.data.department.DepartmentRepository;
 import com.example.timetablerapp.data.department.model.Department;

@@ -1,6 +1,6 @@
 package com.example.timetablerapp.settings;
 
-import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminRepo;
 import com.example.timetablerapp.data.user.admin.model.Admin;

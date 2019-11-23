@@ -1,4 +1,4 @@
-package com.example.timetablerapp;
+package com.example.timetablerapp.util;
 
 /**
  * 20/11/19
