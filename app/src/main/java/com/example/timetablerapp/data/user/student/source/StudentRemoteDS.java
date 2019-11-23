@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.user.student.source;
 import android.util.Log;
 
 import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.UserApi;
@@ -15,6 +16,8 @@ import com.example.timetablerapp.data.utils.security_utils.SaltReponse;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.model.StudentRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.net.ConnectException;
 
@@ -40,7 +43,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful()) {
                     callBack.userIsAuthSuccessful("Successfully registered.");
                 } else {
@@ -49,7 +52,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 callBack.authNotSuccessful("Error: " + t.getLocalizedMessage());
             }
         });
@@ -69,7 +72,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getMessage());
                 } else {
@@ -78,7 +81,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 if (t instanceof ConnectException) {
                     callback.unsuccessful("Check your internet connection and try again.");
@@ -101,8 +104,8 @@ public class StudentRemoteDS implements UserDataSource<Student> {
 
         call.enqueue(new Callback<SaltReponse>() {
             @Override
-            public void onResponse(Call<SaltReponse> call, Response<SaltReponse> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NotNull Call<SaltReponse> call, @NotNull Response<SaltReponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     String salt = response.body().getSalt();
                     callBack.successful(salt);
                 } else {
@@ -111,7 +114,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
             }
 
             @Override
-            public void onFailure(Call<SaltReponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<SaltReponse> call, @NotNull Throwable t) {
                 callBack.unsuccessful(t.getMessage());
                 t.printStackTrace();
             }
@@ -127,13 +130,13 @@ public class StudentRemoteDS implements UserDataSource<Student> {
 
         call.enqueue(new Callback<StudentResponse>() {
             @Override
-            public void onResponse(Call<StudentResponse> call, Response<StudentResponse> response) {
+            public void onResponse(@NotNull Call<StudentResponse> call, @NotNull Response<StudentResponse> response) {
                 if (response.isSuccessful() && response.body() != null)
                     callback.loadData(response.body());
             }
 
             @Override
-            public void onFailure(Call<StudentResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<StudentResponse> call, @NotNull Throwable t) {
                 if (t instanceof ConnectException)
                     callback.unsuccessful("Check your connection and try again.");
                 else
@@ -154,7 +157,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.success(response.body().getMessage());
                 } else {
@@ -163,7 +166,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: Error: " + t.getMessage(), t);
 
                 if (t instanceof ConnectException) {
@@ -171,6 +174,34 @@ public class StudentRemoteDS implements UserDataSource<Student> {
                 } else {
                     callback.unsuccessful("Please contact the administrator to resolve the problem: " + t.getLocalizedMessage());
                 }
+            }
+        });
+    }
+
+    @Override
+    public void updateUserDetails(Student obj, SuccessfulCallback callback) {
+        StudentRequest req = new StudentRequest();
+        req.setStudent(obj);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(StudentApi.class)
+                .updateUserDetails("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(Constants.MESSAGE_SUCCESS);
+                } else {
+                    callback.unsuccessful("Please try again, or contact the administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful(Constants.CHECK_CONNECTION);
+                else
+                    callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
             }
         });
     }

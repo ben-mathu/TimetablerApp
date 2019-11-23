@@ -130,4 +130,9 @@ public class Constants {
     public static final String MORE = "tag_more";
     public static final String TAG_PROG = "tag_prog";
     public static final String CONTENT_TYPE = "Content-Type";
+
+    // Message variables
+    public static final String MESSAGE_SUCCESS = "Successfully updated.";
+    public static final String CHECK_CONNECTION = "Check your connection, then try again.";
+    public static final String OTHER_ISSUE = "Please contact the administrator to resolve the issue.\n";
 }

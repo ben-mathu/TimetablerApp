@@ -20,7 +20,7 @@ public class StudentRepository implements UserDataSource<Student> {
     private StudentLocalDS userDataSourceLocal;
 
 
-    public StudentRepository(StudentRemoteDS userDataSourceRemote, StudentLocalDS userDataSourceLocal) {
+    private StudentRepository(StudentRemoteDS userDataSourceRemote, StudentLocalDS userDataSourceLocal) {
         this.userDataSourceLocal = userDataSourceLocal;
         this.userDataSourceRemote = userDataSourceRemote;
     }
@@ -146,6 +146,37 @@ public class StudentRepository implements UserDataSource<Student> {
                 changeLocalPassword(userId, role, hashedNewPasswd, callback);
             }
         }, hashedNewPasswd);
+    }
+
+    @Override
+    public void updateUserDetails(Student obj, SuccessfulCallback callback) {
+        userDataSourceRemote.updateUserDetails(obj, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalUserDetails(obj, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalUserDetails(obj, callback);
+            }
+        });
+    }
+
+    private void updateLocalUserDetails(Student obj, SuccessfulCallback callback) {
+        userDataSourceLocal.updateUserDetails(obj, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     private void changeLocalPassword(String userId, String role, String hashedNewPasswd, LecturerDS.SuccessCallback callback) {

@@ -60,6 +60,7 @@ object TimetablerContract {
         const val IN_SESSION = Constants.IN_SESSION
         const val DEPARTMENT_ID = Constants.DEPARTMENT_ID
         const val FACULTY_ID = Constants.FACULTY_ID
+        const val CAMPUS_ID = Constants.CAMPUS_ID
         const val EMAIL = Constants.EMAIL
     }
 
@@ -75,6 +76,7 @@ object TimetablerContract {
                     "${Lecturer.IN_SESSION} BOOLEAN," +
                     "${Lecturer.DEPARTMENT_ID} VARCHAR(10)," +
                     "${Lecturer.FACULTY_ID} VARCHAR(10)," +
+                    "${Lecturer.CAMPUS_ID} VARCHAR(10)," +
                     "${Lecturer.EMAIL} VARCHAR(32))"
 
     const val SQL_DELETE_LECTURER = "DROP TABLE IF EXISTS ${Lecturer.TABLE_NAME}"

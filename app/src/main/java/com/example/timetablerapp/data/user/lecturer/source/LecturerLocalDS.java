@@ -13,7 +13,9 @@ import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.CAMPUS_ID;
 import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.DEPARTMENT_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.EMAIL;
 import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.FACULTY_ID;
 import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.FIRST_NAME;
 import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.IN_SESSION;
@@ -97,6 +99,8 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
         if (cursor.isNull(0)) {
             callback.unsuccessful("Could not get your details, please logout, then log back in.");
         }
+
+        cursor.close();
     }
 
     @Override
@@ -110,6 +114,21 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
+    public void updateUserDetails(Lecturer obj, SuccessfulCallback callback) {
+        ContentValues values = new ContentValues();
+        values.put(FIRST_NAME, obj.getFirstName());
+        values.put(LAST_NAME, obj.getLastName());
+        values.put(MIDDLE_NAME, obj.getMiddleName());
+        values.put(CAMPUS_ID, obj.getCampusid());
+        values.put(IN_SESSION, obj.isInSession());
+        values.put(EMAIL, obj.getEmail());
+
+        int count = database.update(TABLE_NAME, values, LECTURER_ID + "=?", new String[]{obj.getId()});
+
+        Log.d(TAG, "updateUserDetails: records changed: " + count);
+    }
+
+    @Override
     public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
         String passwd = getPassWd(role, username);
         if (passwd.equals(password)) {
@@ -119,7 +138,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
         }
     }
 
-    public String getPassWd(String role, String username) {
+    private String getPassWd(String role, String username) {
         String tableName = "", colId = "";
         if (role.equalsIgnoreCase("lecturer")) {
             tableName = Constants.TABLE_LECTURERS;
@@ -145,6 +164,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
                             cursor.getString(cursor.getColumnIndex(colId))).apply();
         }
 
+        cursor.close();
         return passWd;
     }
 
@@ -181,7 +201,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
         values.put(TimetablerContract.Lecturer.LECTURER_ID, item.getId());
         values.put(TimetablerContract.Lecturer.DEPARTMENT_ID, item.getDepartmentId());
         values.put(TimetablerContract.Lecturer.FACULTY_ID, item.getFacultyId());
-        values.put(TimetablerContract.Lecturer.IN_SESSION, item.isInSesson());
+        values.put(TimetablerContract.Lecturer.IN_SESSION, item.isInSession());
 
         long countRow = database.insert(TimetablerContract.Lecturer.TABLE_NAME, null, values);
 
@@ -192,11 +212,16 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
 
     @Override
     public void deleteLecturer(Lecturer lecturer, SuccessCallback deleteCallback) {
+        ContentValues values = new ContentValues();
+        values.put(FIRST_NAME, lecturer.getFirstName());
+        values.put(LAST_NAME, lecturer.getLastName());
+        values.put(MIDDLE_NAME, lecturer.getMiddleName());
+        values.put(USERNAME, lecturer.getUsername());
+        values.put(IN_SESSION, lecturer.isInSession());
+        values.put(EMAIL, lecturer.getEmail());
 
-    }
+        int count = database.update(TABLE_NAME, values, LECTURER_ID + "=?", new String[]{lecturer.getId()});
 
-    @Override
-    public void updateLecturer(Lecturer lecturer, SuccessCallback callback) {
-
+        Log.d(TAG, "updateUserDetails: records changed: " + count);
     }
 }

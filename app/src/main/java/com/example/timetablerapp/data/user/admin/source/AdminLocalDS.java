@@ -14,8 +14,13 @@ import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.ADMIN_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.EMAIL;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.FIRST_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.LAST_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.MIDDLE_NAME;
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.PASSWORD;
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.TABLE_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.USERNAME;
 
 /**
  * 22/05/19 -bernard
@@ -80,6 +85,7 @@ public class AdminLocalDS implements UserDataSource<Admin> {
         if (cursor.isNull(0)) {
             callback.unsuccessful("Could not get your details, please logout, then log back in.");
         }
+        cursor.close();
     }
 
     @Override
@@ -90,6 +96,19 @@ public class AdminLocalDS implements UserDataSource<Admin> {
         int count = database.update(TABLE_NAME, values, ADMIN_ID + "=?", new String[]{userId});
 
         Log.d(TAG, "changePassword: table update output: " + count);
+    }
+
+    @Override
+    public void updateUserDetails(Admin obj, SuccessfulCallback callback) {
+        ContentValues values = new ContentValues();
+        values.put(FIRST_NAME, obj.getfName());
+        values.put(LAST_NAME, obj.getlName());
+        values.put(MIDDLE_NAME, obj.getmName());
+        values.put(EMAIL, obj.getEmail());
+
+        int count = database.update(TABLE_NAME, values, ADMIN_ID + "=?", new String[]{obj.getAdminId()});
+
+        Log.d(TAG, "updateUserDetails: records changed: " + count);
     }
 
     @Override

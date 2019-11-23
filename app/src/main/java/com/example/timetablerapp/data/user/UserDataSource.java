@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.user;
 import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.settings.model.DeadlineSettings;
+import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 
 /**
@@ -23,6 +24,8 @@ public interface UserDataSource<T> extends DataSource<T> {
     void getDetails(String userId, String userRole, LoadUserDetailsCallback callback);
 
     void changePassword(String userId, String role, LecturerDS.SuccessCallback callback, String hashedNewPasswd);
+
+    void updateUserDetails(T obj, SuccessfulCallback callback);
 
     interface UserAuthCallback {
 

@@ -21,7 +21,7 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     private LecturerLocalDS lecturerLocalDS;
     private LecturerRemoteDS lecturerRemoteDS;
 
-    public LecturerRepo(LecturerLocalDS lecturerLocalDS, LecturerRemoteDS lecturerRemoteDS) {
+    private LecturerRepo(LecturerLocalDS lecturerLocalDS, LecturerRemoteDS lecturerRemoteDS) {
         this.lecturerLocalDS = lecturerLocalDS;
         this.lecturerRemoteDS = lecturerRemoteDS;
     }
@@ -162,6 +162,37 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
         }, hashedNewPasswd);
     }
 
+    @Override
+    public void updateUserDetails(Lecturer obj, SuccessfulCallback callback) {
+        lecturerRemoteDS.updateUserDetails(obj, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalUserDetails(obj, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalUserDetails(obj, callback);
+            }
+        });
+    }
+
+    private void updateLocalUserDetails(Lecturer obj, SuccessfulCallback callback) {
+        lecturerLocalDS.updateUserDetails(obj, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     private void changeLocalPassword(String userId, String role, String hashedNewPasswd, SuccessCallback callback) {
         lecturerLocalDS.changePassword(userId, role, new SuccessCallback() {
             @Override
@@ -249,23 +280,6 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
             @Override
             public void unsuccessful(String message) {
                 callback.unsuccessful(message);
-            }
-        });
-    }
-
-    @Override
-    public void updateLecturer(Lecturer lecturer, SuccessCallback callback) {
-        lecturerRemoteDS.updateLecturer(lecturer, new SuccessCallback() {
-            @Override
-            public void success(String message) {
-                callback.success(message);
-                update(lecturer);
-            }
-
-            @Override
-            public void unsuccessful(String message) {
-                callback.unsuccessful(message);
-                update(lecturer);
             }
         });
     }

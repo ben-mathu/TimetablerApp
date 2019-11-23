@@ -75,6 +75,7 @@
     <string name="year_of_study">Year of Study</string>
     <string name="save_details">Save</string>
     <string name="current_password">Current Password</string>
+    <string name="not_in_session">Not in session</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

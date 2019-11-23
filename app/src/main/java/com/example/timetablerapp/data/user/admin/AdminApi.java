@@ -27,9 +27,15 @@ public interface AdminApi {
     Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
                                        @Body RequestParams requestParams);
 
-    @GET("admin-details")
-    Call<AdminDAO> getDetails(String contentType, RequestParams requestParams);
+    @POST("admin-details")
+    Call<AdminDAO> getDetails(@Header(Constants.CONTENT_TYPE) String contentType,
+                              @Body RequestParams requestParams);
 
     @POST("change-password")
-    Call<MessageReport> changePassword(@Header(Constants.CONTENT_TYPE) String contentType, @Body UserResponse req);
+    Call<MessageReport> changePassword(@Header(Constants.CONTENT_TYPE) String contentType,
+                                       @Body UserResponse req);
+
+    @POST("update-user-details")
+    Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
+                                          @Body AdminRequest req);
 }

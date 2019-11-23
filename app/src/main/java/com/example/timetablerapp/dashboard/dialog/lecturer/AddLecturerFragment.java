@@ -1,9 +1,9 @@
 package com.example.timetablerapp.dashboard.dialog.lecturer;
 
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.icu.text.LocaleDisplayNames;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
@@ -36,10 +35,9 @@ import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.util.CompareStrings;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 01/09/19 -bernard
@@ -104,28 +102,26 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
 
         btnCreateUser = view.findViewById(R.id.button_add_lecturer);
         btnCreateUser.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
+            AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs);
 
+            @SuppressLint("InflateParams")
             View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.lecturer_fields, null, false);
             EditText edtFName = dialogView.findViewById(R.id.edit_first_name),
                     edtMName = dialogView.findViewById(R.id.edit_middle_name),
                     edtLName = dialogView.findViewById(R.id.edit_last_name),
                     edtEmail = dialogView.findViewById(R.id.edit_email);
             builder.setView(dialogView);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (edtEmail.getText().toString().isEmpty()
-                            || edtFName.getText().toString().isEmpty()
-                            || edtLName.getText().toString().isEmpty()
-                            || edtMName.getText().toString().isEmpty()
-                    ) {
-                        showMessage("All the fields are required");
-                    } else {
-                        presenter.createLecturer(edtEmail.getText().toString(), edtFName.getText().toString(),
-                                edtLName.getText().toString(), edtMName.getText().toString()
-                        );
-                    }
+            builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                if (edtEmail.getText().toString().isEmpty()
+                        || edtFName.getText().toString().isEmpty()
+                        || edtLName.getText().toString().isEmpty()
+                        || edtMName.getText().toString().isEmpty()
+                ) {
+                    showMessage("All the fields are required");
+                } else {
+                    presenter.createLecturer(edtEmail.getText().toString(), edtFName.getText().toString(),
+                            edtLName.getText().toString(), edtMName.getText().toString()
+                    );
                 }
             });
 
@@ -134,7 +130,9 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
             dialog.show();
 
             Window window = dialog.getWindow();
-            window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
+            if (window != null) {
+                window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
+            }
         });
         return view;
     }
@@ -213,7 +211,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
             for (Faculty faculty : faculties) {
                 facultyNames.add(faculty.getFacultyName());
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                     android.R.layout.simple_spinner_dropdown_item, facultyNames);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerFaculty.setAdapter(arrayAdapter);
@@ -229,7 +227,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
             for (Department department : departments) {
                 departmentNames.add(department.getDepartmentName());
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                     android.R.layout.simple_spinner_dropdown_item, departmentNames);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinnerDepartment.setAdapter(arrayAdapter);
@@ -240,6 +238,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
     public void onItemSelected(Lecturer lec) {
         presenter.getDepartmentById(lec.getDepartmentId());
 
+        @SuppressLint("InflateParams")
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_lecturer, null, false);
 
         LinearLayout llLecturerDetails = view.findViewById(R.id.ll_lecturer_details);
@@ -265,8 +264,8 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
 
 
         TextView txtInSession = view.findViewById(R.id.show_in_session);
-        if (lec.isInSesson()) txtInSession.setText(R.string.in_session);
-        else txtInSession.setText("Not in session");
+        if (lec.isInSession()) txtInSession.setText(R.string.in_session);
+        else txtInSession.setText(R.string.not_in_session);
 
         EditText edtLecId = view.findViewById(R.id.edit_lecturer_id);
         edtLecId.setText(lec.getId());
@@ -318,13 +317,13 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
         });
 
         Switch swInSession = view.findViewById(R.id.switch_in_session);
-        if (lec.isInSesson()) {
+        if (lec.isInSession()) {
             swInSession.setChecked(true);
         } else {
             swInSession.setChecked(false);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()),R.style.Theme_Dialogs);
         builder.setView(view);
         builder.setTitle("Edit Course");
         positiveBtnText = "Edit";

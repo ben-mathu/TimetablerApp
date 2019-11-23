@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.admin.source;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.example.timetablerapp.SuccessfulCallback;
@@ -14,6 +15,8 @@ import com.example.timetablerapp.data.user.admin.model.AdminRequest;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.model.UserResponse;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.net.ConnectException;
 
@@ -40,8 +43,8 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NonNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     callBack.userIsAuthSuccessful(response.body().getMessage());
                 } else {
                     callBack.authNotSuccessful("An error has occurred, please try again");
@@ -49,7 +52,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 callBack.authNotSuccessful("An error has occurred");
                 Log.e(TAG, "onFailure: ", t);
                 t.printStackTrace();
@@ -71,7 +74,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getMessage());
                 } else {
@@ -80,7 +83,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 if (t instanceof ConnectException) {
                     callback.unsuccessful("Check your internet connection and try again.");
@@ -100,14 +103,14 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
 
         call.enqueue(new Callback<AdminDAO>() {
             @Override
-            public void onResponse(Call<AdminDAO> call, Response<AdminDAO> response) {
+            public void onResponse(@NotNull Call<AdminDAO> call, @NotNull Response<AdminDAO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.loadData(response.body().getAdmin());
                 }
             }
 
             @Override
-            public void onFailure(Call<AdminDAO> call, Throwable t) {
+            public void onFailure(@NotNull Call<AdminDAO> call, @NotNull Throwable t) {
                 if (t instanceof ConnectException) {
                     callback.unsuccessful("Check your internet settings and try again.");
                 } else {
@@ -130,7 +133,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.success(response.body().getMessage());
                 } else {
@@ -139,7 +142,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: Error: " + t.getMessage(), t);
 
                 if (t instanceof ConnectException) {
@@ -147,6 +150,35 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
                 } else {
                     callback.unsuccessful("Please contact the administrator to resolve the problem: " + t.getLocalizedMessage());
                 }
+            }
+        });
+    }
+
+    @Override
+    public void updateUserDetails(Admin obj, SuccessfulCallback callback) {
+        AdminRequest req = new AdminRequest();
+        req.setAdmin(obj);
+        req.setDbPassword("benard");
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(AdminApi.class)
+                .updateUserDetails("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(Constants.MESSAGE_SUCCESS);
+                } else {
+                    callback.unsuccessful("Please try again, or contact the administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful(Constants.CHECK_CONNECTION);
+                else
+                    callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
             }
         });
     }

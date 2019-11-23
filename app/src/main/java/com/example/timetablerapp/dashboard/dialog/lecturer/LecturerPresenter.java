@@ -1,5 +1,6 @@
 package com.example.timetablerapp.dashboard.dialog.lecturer;
 
+import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.department.DepartmentDS;
 import com.example.timetablerapp.data.department.DepartmentRepository;
 import com.example.timetablerapp.data.department.model.Department;
@@ -24,17 +25,17 @@ public class LecturerPresenter {
     private FacultiesRepository facultiesRepo;
     private DepartmentRepository departmentRepo;
 
-    public LecturerPresenter(LecturerView view,
-                             LecturerRepo lecturerRepo,
-                             FacultiesRepository facultiesRepo,
-                             DepartmentRepository departmentRepo) {
+    LecturerPresenter(LecturerView view,
+                      LecturerRepo lecturerRepo,
+                      FacultiesRepository facultiesRepo,
+                      DepartmentRepository departmentRepo) {
         this.view = view;
         this.lecturerRepo = lecturerRepo;
         this.facultiesRepo = facultiesRepo;
         this.departmentRepo = departmentRepo;
     }
 
-    public void getLecturers() {
+    void getLecturers() {
         lecturerRepo.getLecturers(new LecturerDS.LecturersLoadedCallback() {
             @Override
             public void successfullyLoaded(List<Lecturer> list) {
@@ -48,7 +49,7 @@ public class LecturerPresenter {
         });
     }
 
-    public void createLecturer(String email, String fname, String mname, String lname) {
+    void createLecturer(String email, String fname, String mname, String lname) {
         lecturerRepo.createLecturer(email, fname, mname, lname, new LecturerDS.CreatingLecturerCallback() {
             @Override
             public void successfullyCreated(LecResponse response) {
@@ -63,7 +64,7 @@ public class LecturerPresenter {
         });
     }
 
-    public void getFaculty(String facultyId) {
+    void getFaculty(String facultyId) {
         facultiesRepo.getFacultyById(facultyId, new FacultyDS.LoadFacultyCallback() {
             @Override
             public void successfullyLoadedFaculty(Faculty faculty) {
@@ -77,7 +78,7 @@ public class LecturerPresenter {
         });
     }
 
-    public void getDepartmentById(String departmentId) {
+    void getDepartmentById(String departmentId) {
         departmentRepo.getDepartmentById(departmentId, new DepartmentDS.LoadDepartmentCallback() {
             @Override
             public void loadDepartment(Department department) {
@@ -119,7 +120,7 @@ public class LecturerPresenter {
         }, facultyId);
     }
 
-    public void deleteLecturer(Lecturer item) {
+    void deleteLecturer(Lecturer item) {
         lecturerRepo.deleteLecturer(item, new LecturerDS.SuccessCallback() {
 
             @Override
@@ -134,10 +135,10 @@ public class LecturerPresenter {
         });
     }
 
-    public void updateLecturer(Lecturer lecturer) {
-        lecturerRepo.updateLecturer(lecturer, new LecturerDS.SuccessCallback() {
+    void updateLecturer(Lecturer lecturer) {
+        lecturerRepo.updateUserDetails(lecturer, new SuccessfulCallback() {
             @Override
-            public void success(String message) {
+            public void successful(String message) {
                 view.showMessage(message);
             }
 

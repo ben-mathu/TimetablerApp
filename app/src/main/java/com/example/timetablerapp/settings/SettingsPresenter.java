@@ -32,10 +32,10 @@ public class SettingsPresenter {
     private String hashedPasswd = "";
     private String hashedNewPasswd = "";
 
-    public SettingsPresenter(SettingsView view,
-                             AdminRepo adminRepo,
-                             LecturerRepo lecturerRepo,
-                             StudentRepository studentRepo) {
+    SettingsPresenter(SettingsView view,
+                      AdminRepo adminRepo,
+                      LecturerRepo lecturerRepo,
+                      StudentRepository studentRepo) {
         this.view = view;
         this.adminRepo = adminRepo;
         this.lecturerRepo = lecturerRepo;
@@ -86,7 +86,7 @@ public class SettingsPresenter {
         }
     }
 
-    public void setUserDetails(String userId, String userRole) {
+    void setUserDetails(String userId, String userRole) {
         if (userRole.equalsIgnoreCase("admin")) {
             adminRepo.getDetails(userId, userRole, new UserDataSource.LoadUserDetailsCallback<Admin>() {
                 @Override
@@ -127,16 +127,46 @@ public class SettingsPresenter {
         }
     }
 
-    public void updateAdmin(Admin admin) {
+    void updateAdmin(Admin admin) {
+        adminRepo.updateUserDetails(admin, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
     }
 
-    public void updateStudent(Student student) {
+    void updateStudent(Student student) {
+        studentRepo.updateUserDetails(student, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
     }
 
-    public void updateLecturer(Lecturer lecturer) {
+    void updateLecturer(Lecturer lecturer) {
+        lecturerRepo.updateUserDetails(lecturer, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
     }
 
     public void changePassword(String passwd, String newPasswd, String userId, String userRole, String currentPasswd) {

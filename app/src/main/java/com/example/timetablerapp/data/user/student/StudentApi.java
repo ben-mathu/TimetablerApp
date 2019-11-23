@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.student;
 
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.ValidationRequest;
@@ -36,4 +37,8 @@ public interface StudentApi {
     @POST("change-password")
     Call<MessageReport> changePassword(@Header("Content-Type") String contentType,
                                        @Body UserResponse req);
+
+    @POST("update-user-details")
+    Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
+                                          @Body StudentRequest req);
 }

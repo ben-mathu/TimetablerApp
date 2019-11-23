@@ -19,7 +19,7 @@ public class AdminRepo implements UserDataSource<Admin>{
     private final AdminLocalDS localDs;
     private final AdminRemoteDS remoteDs;
 
-    public AdminRepo(AdminLocalDS localDs, AdminRemoteDS remoteDs) {
+    private AdminRepo(AdminLocalDS localDs, AdminRemoteDS remoteDs) {
         this.localDs = localDs;
         this.remoteDs = remoteDs;
     }
@@ -100,6 +100,37 @@ public class AdminRepo implements UserDataSource<Admin>{
                 changeLocalPassword(userId, role, hashedNewPasswd, callback);
             }
         }, hashedNewPasswd);
+    }
+
+    @Override
+    public void updateUserDetails(Admin obj, SuccessfulCallback callback) {
+        remoteDs.updateUserDetails(obj, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalUserDetails(obj, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalUserDetails(obj, callback);
+            }
+        });
+    }
+
+    private void updateLocalUserDetails(Admin obj, SuccessfulCallback callback) {
+        localDs.updateUserDetails(obj, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     private void changeLocalPassword(String userId, String role, String hashedNewPasswd, LecturerDS.SuccessCallback callback) {

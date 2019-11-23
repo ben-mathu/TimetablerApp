@@ -16,6 +16,7 @@ import com.example.timetablerapp.data.user.student.model.Student;
 import static com.example.timetablerapp.data.db.TimetablerContract.Student.ADMISSION_DATE;
 import static com.example.timetablerapp.data.db.TimetablerContract.Student.CAMPUS_ID;
 import static com.example.timetablerapp.data.db.TimetablerContract.Student.DEPARTMENT_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.EMAIL;
 import static com.example.timetablerapp.data.db.TimetablerContract.Student.FACULTY_ID;
 import static com.example.timetablerapp.data.db.TimetablerContract.Student.FIRST_NAME;
 import static com.example.timetablerapp.data.db.TimetablerContract.Student.IN_SESSION;
@@ -119,6 +120,8 @@ public class StudentLocalDS implements UserDataSource<Student> {
         if (cursor.isNull(0)) {
             callback.unsuccessful("Could not get your details, please logout, then log back in.");
         }
+
+        cursor.close();
     }
 
     @Override
@@ -129,6 +132,21 @@ public class StudentLocalDS implements UserDataSource<Student> {
         int count = database.update(TABLE_NAME, values, STUDENT_ID + "=?", new String[]{userId});
 
         Log.d(TAG, "changePassword: table update output: " + count);
+    }
+
+    @Override
+    public void updateUserDetails(Student obj, SuccessfulCallback callback) {
+        ContentValues values = new ContentValues();
+        values.put(FIRST_NAME, obj.getFname());
+        values.put(LAST_NAME, obj.getLname());
+        values.put(MIDDLE_NAME, obj.getMname());
+        values.put(CAMPUS_ID, obj.getCampusId());
+        values.put(IN_SESSION, obj.isInSession());
+        values.put(EMAIL, obj.getEmail());
+
+        int count = database.update(TABLE_NAME, values, STUDENT_ID + "=?", new String[]{obj.getStudentId()});
+
+        Log.d(TAG, "updateUserDetails: records changed: " + count);
     }
 
     @Override

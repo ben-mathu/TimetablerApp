@@ -33,6 +33,8 @@ import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
 import java.net.SocketTimeoutException;
@@ -79,8 +81,8 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
                     callBack.userIsAuthSuccessful(response.body().getMessage());
                 } else {
                     callBack.authNotSuccessful(response.message());
@@ -88,7 +90,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 callBack.authNotSuccessful(t.getMessage());
             }
         });
@@ -108,7 +110,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getMessage());
                 } else {
@@ -118,7 +120,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 if (t instanceof ConnectException) {
                     callback.unsuccessful("Check your internet connection and try again.");
@@ -138,13 +140,13 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<LecturerResponse>() {
             @Override
-            public void onResponse(Call<LecturerResponse> call, Response<LecturerResponse> response) {
+            public void onResponse(@NotNull Call<LecturerResponse> call, @NotNull Response<LecturerResponse> response) {
                 if (response.isSuccessful() && response.body() != null)
                     callback.loadData(response.body());
             }
 
             @Override
-            public void onFailure(Call<LecturerResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<LecturerResponse> call, @NotNull Throwable t) {
                 if (t instanceof ConnectException)
                     callback.unsuccessful("Check your connection and try again.");
                 else
@@ -166,7 +168,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.success(response.body().getMessage());
                 } else {
@@ -175,7 +177,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: Error: " + t.getMessage(), t);
 
                 if (t instanceof ConnectException) {
@@ -183,6 +185,34 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                 } else {
                     callback.unsuccessful("Please contact the administrator to resolve the problem: " + t.getLocalizedMessage());
                 }
+            }
+        });
+    }
+
+    @Override
+    public void updateUserDetails(Lecturer obj, SuccessfulCallback callback) {
+        LecturerRequest req = new LecturerRequest();
+        req.setLecturer(obj);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .updateUserDetails("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(Constants.MESSAGE_SUCCESS);
+                } else {
+                    callback.unsuccessful("Please try again, or contact the administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful(Constants.CHECK_CONNECTION);
+                else
+                    callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
             }
         });
     }
@@ -202,8 +232,8 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
             call.enqueue(new Callback<AdminRequest>() {
                 @Override
-                public void onResponse(Call<AdminRequest> call, Response<AdminRequest> response) {
-                    if (response.isSuccessful()) {
+                public void onResponse(@NotNull Call<AdminRequest> call, @NotNull Response<AdminRequest> response) {
+                    if (response.isSuccessful() && response.body() != null) {
                         Admin admin = response.body().getAdmin();
 
                         if (admin.getPassword() != null) {
@@ -225,7 +255,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                 }
 
                 @Override
-                public void onFailure(Call<AdminRequest> call, Throwable t) {
+                public void onFailure(@NotNull Call<AdminRequest> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: Error" + t.getLocalizedMessage() + "\n", t);
                     callback.authNotSuccessful("Authentication not successful. Please contact the administrator.");
                 }
@@ -237,13 +267,8 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
             call.enqueue(new Callback<StudentResponse>() {
                 @Override
-                public void onResponse(Call<StudentResponse> call, Response<StudentResponse> response) {
-                    if (response.isSuccessful() &&
-                            response.body().getStudent() != null &&
-                            response.body().getCampus() != null &&
-                            response.body().getProgramme() != null &&
-                            response.body().getFaculty() != null &&
-                            response.body().getDepartment() != null) {
+                public void onResponse(@NotNull Call<StudentResponse> call, @NotNull Response<StudentResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
                         Student student = response.body().getStudent();
 
                         if (student.getPassword() != null) {
@@ -271,7 +296,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                 }
 
                 @Override
-                public void onFailure(Call<StudentResponse> call, Throwable t) {
+                public void onFailure(@NotNull Call<StudentResponse> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: Error" + t.getLocalizedMessage() + "\n", t);
                     callback.authNotSuccessful("Authentication not successful. Please contact the administrator.");
                 }
@@ -283,11 +308,8 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
             call.enqueue(new Callback<LecturerResponse>() {
                 @Override
-                public void onResponse(Call<LecturerResponse> call, Response<LecturerResponse> response) {
-                    if (response.isSuccessful() &&
-                            response.body().getLecturer() != null &&
-                            response.body().getFaculty() != null &&
-                            response.body().getDepartment() != null) {
+                public void onResponse(@NotNull Call<LecturerResponse> call, @NotNull Response<LecturerResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
                         Lecturer lecturer = response.body().getLecturer();
 
                         if (lecturer.getPassword() != null) {
@@ -314,7 +336,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                 }
 
                 @Override
-                public void onFailure(Call<LecturerResponse> call, Throwable t) {
+                public void onFailure(@NotNull Call<LecturerResponse> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: Error" + t.getLocalizedMessage() + "\n", t);
                     callback.authNotSuccessful("Authentication not successful. Please contact the administrator.");
                 }
@@ -354,7 +376,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<LecturerResponseList>() {
             @Override
-            public void onResponse(Call<LecturerResponseList> call, Response<LecturerResponseList> response) {
+            public void onResponse(@NotNull Call<LecturerResponseList> call, @NotNull Response<LecturerResponseList> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successfullyLoaded(response.body().getResponseList());
                 } else {
@@ -363,7 +385,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             }
 
             @Override
-            public void onFailure(Call<LecturerResponseList> call, Throwable t) {
+            public void onFailure(@NotNull Call<LecturerResponseList> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 callback.unsuccessful("An error occurred, please contact administrator.");
             }
@@ -385,7 +407,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<PackageResponse>() {
             @Override
-            public void onResponse(Call<PackageResponse> call, Response<PackageResponse> response) {
+            public void onResponse(@NotNull Call<PackageResponse> call, @NotNull Response<PackageResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successfullyCreated(response.body().getLecRequest());
                 } else {
@@ -394,7 +416,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             }
 
             @Override
-            public void onFailure(Call<PackageResponse> call, Throwable t) {
+            public void onFailure(@NotNull Call<PackageResponse> call, @NotNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 if (t instanceof UnknownHostException) {
                     callback.unSuccessful("Connection error, check network connections");
@@ -417,7 +439,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
-            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     deleteCallback.success(response.body().getMessage());
                 } else {
@@ -426,7 +448,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             }
 
             @Override
-            public void onFailure(Call<MessageReport> call, Throwable t) {
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
                 if (t instanceof HttpException || t instanceof NoRouteToHostException) {
                     deleteCallback.unsuccessful("Please contact administrator to assist you.");
                 } else if (t instanceof ConnectException || t instanceof SocketTimeoutException) {
@@ -436,7 +458,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
         });
     }
 
-    @Override
+    /*@Override
     public void updateLecturer(Lecturer lecturer, SuccessCallback callback) {
         LecturerRequest req = new LecturerRequest();
         req.setLecturer(lecturer);
@@ -463,7 +485,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                 }
             }
         });
-    }
+    }*/
 
     public class PackageRequest {
         @SerializedName("package")
@@ -473,7 +495,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             return lecRequest;
         }
 
-        public void setLecRequest(LecRequest lecRequest) {
+        void setLecRequest(LecRequest lecRequest) {
             this.lecRequest = lecRequest;
         }
     }
@@ -482,7 +504,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
         @SerializedName("package")
         private LecResponse lecRequest;
 
-        public LecResponse getLecRequest() {
+        LecResponse getLecRequest() {
             return lecRequest;
         }
 
