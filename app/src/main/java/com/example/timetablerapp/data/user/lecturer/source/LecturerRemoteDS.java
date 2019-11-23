@@ -28,6 +28,7 @@ import com.example.timetablerapp.data.user.lecturer.model.LecturerResponseList;
 import com.example.timetablerapp.data.user.student.StudentApi;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
+import com.example.timetablerapp.data.user.student.model.UserResponse;
 import com.example.timetablerapp.data.user.student.source.StudentLocalDS;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.google.gson.annotations.SerializedName;
@@ -123,6 +124,64 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                     callback.unsuccessful("Check your internet connection and try again.");
                 } else {
                     callback.unsuccessful("Please contact administrator, " + t.getLocalizedMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        RequestParams req = new RequestParams("", userId, userRole);
+        Call<LecturerResponse> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .getDetails("application/json", req);
+
+        call.enqueue(new Callback<LecturerResponse>() {
+            @Override
+            public void onResponse(Call<LecturerResponse> call, Response<LecturerResponse> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    callback.loadData(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<LecturerResponse> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful("Check your connection and try again.");
+                else
+                    callback.unsuccessful("Please contact the admin to resolve the issue.");
+            }
+        });
+    }
+
+    @Override
+    public void changePassword(String userId, String role, SuccessCallback callback, String hashedNewPasswd) {
+        UserResponse req = new UserResponse();
+        req.setPassword(hashedNewPasswd);
+        req.setUserId(userId);
+        req.setRole(role);
+
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(LecturerApi.class)
+                .changePassword("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please contact the administrator");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error: " + t.getMessage(), t);
+
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("Check you internet connection settings, then try again.");
+                } else {
+                    callback.unsuccessful("Please contact the administrator to resolve the problem: " + t.getLocalizedMessage());
                 }
             }
         });

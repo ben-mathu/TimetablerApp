@@ -70,6 +70,11 @@
     <string name="not_practical">Not practical</string>
     <string name="not_common">Not a common unit</string>
     <string name="text_holder">You are modifying your username.\nUsernames are required to be all lowercase letters. You can include numbers.</string>
+    <string name="user_details">User Details</string>
+    <string name="full_name">Full Name</string>
+    <string name="year_of_study">Year of Study</string>
+    <string name="save_details">Save</string>
+    <string name="current_password">Current Password</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

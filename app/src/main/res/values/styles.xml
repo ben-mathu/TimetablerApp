@@ -21,7 +21,7 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
         <item name="android:textColorHint">@color/my_kind_of_grey</item>
-        <item name="android:editTextBackground">@drawable/edit_background</item>
+        <item name="android:editTextBackground">@drawable/focused_edittext</item>
     </style>
 
     <style name="Theme_TimePicker" parent="Theme.AppCompat.Light.Dialog">

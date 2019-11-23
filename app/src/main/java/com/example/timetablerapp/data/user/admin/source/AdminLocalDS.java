@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.admin.source;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -10,6 +11,11 @@ import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.model.Admin;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
+
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.ADMIN_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.PASSWORD;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.TABLE_NAME;
 
 /**
  * 22/05/19 -bernard
@@ -48,6 +54,45 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        String[] arrCol = new String[]{TimetablerContract.Admin.ADMIN_ID,
+                TimetablerContract.Admin.FIRST_NAME,
+                TimetablerContract.Admin.MIDDLE_NAME,
+                TimetablerContract.Admin.LAST_NAME,
+                TimetablerContract.Admin.USERNAME,
+                TimetablerContract.Admin.PASSWORD};
+        Cursor cursor = database.query(TimetablerContract.Admin.TABLE_NAME,
+                arrCol,
+                TimetablerContract.Admin.ADMIN_ID,
+                new String[]{userId}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            Admin admin = new Admin();
+            admin.setAdminId(cursor.getString(0));
+            admin.setfName(cursor.getString(1));
+            admin.setlName(cursor.getString(2));
+            admin.setmName(cursor.getString(3));
+            admin.setUsername(cursor.getString(4));
+            admin.setPassword(cursor.getString(5));
+            callback.loadData(admin);
+        }
+
+        if (cursor.isNull(0)) {
+            callback.unsuccessful("Could not get your details, please logout, then log back in.");
+        }
+    }
+
+    @Override
+    public void changePassword(String userId, String role, LecturerDS.SuccessCallback callback, String hashedNewPasswd) {
+        ContentValues values = new ContentValues();
+        values.put(PASSWORD, hashedNewPasswd);
+
+        int count = database.update(TABLE_NAME, values, ADMIN_ID + "=?", new String[]{userId});
+
+        Log.d(TAG, "changePassword: table update output: " + count);
+    }
+
+    @Override
     public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
 
     }
@@ -82,7 +127,7 @@ public class AdminLocalDS implements UserDataSource<Admin> {
         values.put(TimetablerContract.Admin.MIDDLE_NAME, item.getmName());
         values.put(TimetablerContract.Admin.USERNAME, item.getUsername());
         values.put(TimetablerContract.Admin.PASSWORD, item.getPassword());
-        values.put(TimetablerContract.Admin.LECTURER_ID, item.getAdminId());
+        values.put(TimetablerContract.Admin.ADMIN_ID, item.getAdminId());
 
         long countRow = database.insert(TimetablerContract.Admin.TABLE_NAME, null, values);
 

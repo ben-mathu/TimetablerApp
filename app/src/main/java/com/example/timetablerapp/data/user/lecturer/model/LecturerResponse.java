@@ -16,8 +16,6 @@ public class LecturerResponse {
     private Faculty faculty;
     @SerializedName(Constants.TABLE_DEPARTMENTS)
     private Department department;
-    @SerializedName(Constants.TABLE_PROGRAMMES)
-    private Programme programme;
 
     public Lecturer getLecturer() {
         return lecturer;
@@ -41,13 +39,5 @@ public class LecturerResponse {
 
     public void setDepartment(Department department) {
         this.department = department;
-    }
-
-    public Programme getProgramme() {
-        return programme;
-    }
-
-    public void setProgramme(Programme programme) {
-        this.programme = programme;
     }
 }

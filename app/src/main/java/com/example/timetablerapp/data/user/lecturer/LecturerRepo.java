@@ -4,8 +4,11 @@ import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerLocalDS;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerRemoteDS;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -124,6 +127,67 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     @Override
     public void sendUserRole(GetSaltCallBack callBack, String role) {
 
+    }
+
+    @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        lecturerRemoteDS.getDetails(userId, userRole, new LoadUserDetailsCallback<LecturerResponse>() {
+            @Override
+            public void loadData(@NotNull LecturerResponse obj) {
+                callback.loadData(obj);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                getFromLocalDS(userId, userRole, callback);
+            }
+        });
+    }
+
+    @Override
+    public void changePassword(String userId, String role, SuccessCallback callback, String hashedNewPasswd) {
+        lecturerRemoteDS.changePassword(userId, role, new SuccessCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+                changeLocalPassword(userId, role, hashedNewPasswd, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                changeLocalPassword(userId, role, hashedNewPasswd, callback);
+            }
+        }, hashedNewPasswd);
+    }
+
+    private void changeLocalPassword(String userId, String role, String hashedNewPasswd, SuccessCallback callback) {
+        lecturerLocalDS.changePassword(userId, role, new SuccessCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        }, hashedNewPasswd);
+    }
+
+    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback callback) {
+        lecturerLocalDS.getDetails(userId, userRole, new LoadUserDetailsCallback<Lecturer>() {
+            @Override
+            public void loadData(@NotNull Lecturer obj) {
+                callback.loadData(obj);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override

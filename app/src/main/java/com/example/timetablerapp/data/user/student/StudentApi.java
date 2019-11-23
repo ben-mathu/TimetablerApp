@@ -5,9 +5,11 @@ import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.ValidationRequest;
 import com.example.timetablerapp.data.user.student.model.StudentRequest;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
+import com.example.timetablerapp.data.user.student.model.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 
@@ -26,4 +28,12 @@ public interface StudentApi {
     @POST("update-username")
     Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
                                        @Body RequestParams requestParams);
+
+    @GET("student")
+    Call<StudentResponse> getDetails(@Header("Content-Type") String contentType,
+                                     @Body RequestParams req);
+
+    @POST("change-password")
+    Call<MessageReport> changePassword(@Header("Content-Type") String contentType,
+                                       @Body UserResponse req);
 }

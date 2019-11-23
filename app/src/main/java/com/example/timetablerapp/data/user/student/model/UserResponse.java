@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UserResponse {
 
+    @SerializedName("user_id")
+    private String userId;
     @SerializedName("username")
     private String username;
     @SerializedName("password")
@@ -14,7 +16,8 @@ public class UserResponse {
     @SerializedName("role")
     private String role;
 
-    public UserResponse(String username, String password, String role) {
+    public UserResponse(String userId, String username, String password, String role) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -45,5 +48,13 @@ public class UserResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

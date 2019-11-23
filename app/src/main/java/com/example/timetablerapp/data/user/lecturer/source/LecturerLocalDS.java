@@ -13,6 +13,17 @@ import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.DEPARTMENT_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.FACULTY_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.FIRST_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.IN_SESSION;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.LAST_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.LECTURER_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.MIDDLE_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.PASSWORD;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.TABLE_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.USERNAME;
+
 /**
  * 08/05/19 -bernard
  */
@@ -48,6 +59,54 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
         if (countRow > 0)
             callback.successful("Successfully updated username to " + name);
         else callback.unsuccessful("Username " + name + " was not updated.");
+    }
+
+    @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        String[] arrCol = new String[]{
+                LECTURER_ID,
+                FIRST_NAME,
+                LAST_NAME,
+                MIDDLE_NAME,
+                USERNAME,
+                PASSWORD,
+                IN_SESSION,
+                DEPARTMENT_ID,
+                FACULTY_ID,
+        };
+
+        Cursor cursor = database.query(TimetablerContract.Lecturer.TABLE_NAME,
+                arrCol,
+                TimetablerContract.Lecturer.LECTURER_ID + "=?",
+                new String[]{userId}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            Lecturer lecturer = new Lecturer();
+            lecturer.setFirstName(cursor.getString(1));
+            lecturer.setLastName(cursor.getString(2));
+            lecturer.setMiddleName(cursor.getString(3));
+            lecturer.setUsername(cursor.getString(4));
+            lecturer.setPassword(cursor.getString(5));
+            lecturer.setInSesson(cursor.getInt(6) == 1);
+            lecturer.setDepartmentId(cursor.getString(7));
+            lecturer.setFacultyId(cursor.getString(8));
+            lecturer.setEmail(cursor.getString(9));
+            callback.loadData(lecturer);
+        }
+
+        if (cursor.isNull(0)) {
+            callback.unsuccessful("Could not get your details, please logout, then log back in.");
+        }
+    }
+
+    @Override
+    public void changePassword(String userId, String role, SuccessCallback callback, String hashedNewPasswd) {
+        ContentValues values = new ContentValues();
+        values.put(PASSWORD, hashedNewPasswd);
+
+        int count = database.update(TABLE_NAME, values, LECTURER_ID + "=?", new String[]{userId});
+
+        Log.d(TAG, "changePassword: table update output: " + count);
     }
 
     @Override

@@ -5,11 +5,14 @@ import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.source.AdminLocalDS;
 import com.example.timetablerapp.data.user.admin.source.AdminRemoteDS;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 22/05/19 -bernard
  */
-public class AdminRepo implements UserDataSource<Admin> {
+public class AdminRepo implements UserDataSource<Admin>{
     private static final String TAG = AdminRepo.class.getSimpleName();
 
     private static AdminRepo INSTANCE;
@@ -62,6 +65,67 @@ public class AdminRepo implements UserDataSource<Admin> {
             public void unsuccessful(String message) {
                 callback.unsuccessful(message);
                 updateLocalUsername(name, userId, role, callback);
+            }
+        });
+    }
+
+    @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        remoteDs.getDetails(userId, userRole, new LoadUserDetailsCallback<Admin>() {
+            @Override
+            public void loadData(@NotNull Admin obj) {
+                callback.loadData(obj);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                getFromLocalDS(userId, userRole, callback);
+            }
+        });
+    }
+
+    @Override
+    public void changePassword(String userId, String role, LecturerDS.SuccessCallback callback, String hashedNewPasswd) {
+        remoteDs.changePassword(userId, role, new LecturerDS.SuccessCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+                changeLocalPassword(userId, role, hashedNewPasswd, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                changeLocalPassword(userId, role, hashedNewPasswd, callback);
+            }
+        }, hashedNewPasswd);
+    }
+
+    private void changeLocalPassword(String userId, String role, String hashedNewPasswd, LecturerDS.SuccessCallback callback) {
+        localDs.changePassword(userId, role, new LecturerDS.SuccessCallback() {
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        }, hashedNewPasswd);
+    }
+
+    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback callback) {
+        localDs.getDetails(userId, userRole, new LoadUserDetailsCallback<Admin>() {
+            @Override
+            public void loadData(@NotNull Admin obj) {
+                callback.loadData(obj);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.lecturer;
 
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerRequest;
@@ -7,6 +8,7 @@ import com.example.timetablerapp.data.user.ValidationRequest;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponseList;
 import com.example.timetablerapp.data.user.lecturer.source.LecturerRemoteDS;
+import com.example.timetablerapp.data.user.student.model.UserResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -46,4 +48,12 @@ public interface LecturerApi {
     @POST("update-username")
     Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
                                        @Body RequestParams requestParams);
+
+    @GET("lecturer")
+    Call<LecturerResponse> getDetails(@Header("Content-Type") String contentType,
+                                     @Body RequestParams req);
+
+    @POST("change-password")
+    Call<MessageReport> changePassword(@Header(Constants.CONTENT_TYPE) String contentType,
+                                       @Body UserResponse req);
 }

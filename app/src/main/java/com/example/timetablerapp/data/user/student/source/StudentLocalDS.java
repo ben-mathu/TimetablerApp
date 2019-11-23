@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.student.source;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -9,7 +10,23 @@ import com.example.timetablerapp.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.student.model.Student;
+
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.ADMISSION_DATE;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.CAMPUS_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.DEPARTMENT_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.FACULTY_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.FIRST_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.IN_SESSION;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.LAST_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.MIDDLE_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.PASSWORD;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.PROGRAMME_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.STUDENT_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.TABLE_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.USERNAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Student.YEAR_OF_STUDY;
 
 /**
  * 06/05/19 -bernard
@@ -56,6 +73,62 @@ public class StudentLocalDS implements UserDataSource<Student> {
     @Override
     public void sendUserRole(GetSaltCallBack callBack, String role) {
 
+    }
+
+    @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        String[] arrCol = new String[]{
+                STUDENT_ID,
+                FIRST_NAME,
+                LAST_NAME,
+                MIDDLE_NAME,
+                USERNAME,
+                PASSWORD,
+                YEAR_OF_STUDY,
+                PROGRAMME_ID,
+                DEPARTMENT_ID,
+                CAMPUS_ID,
+                FACULTY_ID,
+                ADMISSION_DATE,
+                IN_SESSION,
+        };
+
+        Cursor cursor = database.query(TABLE_NAME,
+                arrCol,
+                STUDENT_ID + "=?",
+                new String[]{userId}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            Student student = new Student();
+            student.setFname(cursor.getString(1));
+            student.setMname(cursor.getString(2));
+            student.setLname(cursor.getString(3));
+            student.setUsername(cursor.getString(4));
+            student.setPassword(cursor.getString(5));
+            student.setYearOfStudy(String.valueOf(cursor.getInt(6)));
+            student.setProgrammeId(cursor.getString(7));
+            student.setDepartmentId(cursor.getString(8));
+            student.setCampusId(cursor.getString(9));
+            student.setFacultyId(cursor.getString(10));
+            student.setAdmissionDate(cursor.getString(11));
+            student.setInSession(cursor.getInt(12) == 1);
+            student.setEmail(cursor.getString(13));
+            callback.loadData(student);
+        }
+
+        if (cursor.isNull(0)) {
+            callback.unsuccessful("Could not get your details, please logout, then log back in.");
+        }
+    }
+
+    @Override
+    public void changePassword(String userId, String role, LecturerDS.SuccessCallback callback, String hashedNewPasswd) {
+        ContentValues values = new ContentValues();
+        values.put(PASSWORD, hashedNewPasswd);
+
+        int count = database.update(TABLE_NAME, values, STUDENT_ID + "=?", new String[]{userId});
+
+        Log.d(TAG, "changePassword: table update output: " + count);
     }
 
     @Override

@@ -25,16 +25,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.campuses.model.Campus;
+import com.example.timetablerapp.data.department.model.Department;
+import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.data.programmes.model.Programme;
+import com.example.timetablerapp.data.user.admin.model.Admin;
+import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
+import com.example.timetablerapp.data.user.student.model.Student;
+import com.example.timetablerapp.data.user.student.model.StudentResponse;
 import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -50,27 +59,56 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     Bitmap bitmap;
     AlertDialog.Builder builderImage;
 
+    private Student student;
+    private Faculty faculty;
+    private Department department;
+    private Programme programme;
+    private Campus campus;
+    private Admin admin;
+
     private SettingsPresenter presenter;
 
     // android widgets
     private CircleImageView imgPicChange;
     private ImageView imgDisplayName;
+    private ImageView editDetails;
     private TextView txtDisplayName;
     private TextView txtUserId;
     private TextView txtUserRole;
     private EditText edtNewPasswd;
+    private EditText edtFullName;
+    private EditText edtFaculty;
+    private EditText edtEmail;
+    private EditText edtDepartment;
+    private EditText edtProgramme;
+    private EditText edtYearofStudy;
+    private EditText edtCampus;
+    private EditText edtCurrentPasswd;
+    private Switch swInSession;
     private ImageButton imgShowPasswd;
+    private ImageButton imgShowCurrentPasswd;
     private Button btnSave;
+    private Button btnSaveDetails;
 
     // Literals
     private String userId = "";
     private String username = "";
     private String fileName = "";
     private String userRole = "";
+    private Lecturer lecturer;
+    private String newPasswd;
+    private String currentPasswd;
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (presenter != null) {
+            presenter = new SettingsPresenter(this,
+                    MainApplication.getAdminRepo(),
+                    MainApplication.getLecturerRepo(),
+                    MainApplication.getStudentRepository());
+        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -105,6 +143,9 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         txtUserId.setText(userId);
         txtUserRole.setText(userRole);
         txtDisplayName.setText(username);
+
+        // user details section
+        presenter.setUserDetails(userId, userRole);
     }
 
     @Override
@@ -188,6 +229,20 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             builderName.create().show();
         });
 
+        // Change passwords
+        // Current Password
+        edtCurrentPasswd = findViewById(R.id.edit_current_password);
+
+        imgShowCurrentPasswd = findViewById(R.id.image_show_current_password);
+        imgShowCurrentPasswd.setOnClickListener(view -> {
+            if (edtCurrentPasswd.getInputType() == InputType.TYPE_CLASS_TEXT) {
+                edtCurrentPasswd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            } else if (edtCurrentPasswd.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
+                edtCurrentPasswd.setInputType(InputType.TYPE_CLASS_TEXT);
+            }
+        });
+
+        // New password
         edtNewPasswd = findViewById(R.id.edit_new_password);
 
         imgShowPasswd = findViewById(R.id.image_show_password);
@@ -201,7 +256,37 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
         btnSave = findViewById(R.id.button_save_password);
         btnSave.setOnClickListener(view -> {
-            // TODO : Add presenter to update user profiles
+            if (userRole.equalsIgnoreCase("admin"))
+                presenter.changePassword(admin.getPassword(), newPasswd, userId, userRole, currentPasswd);
+            else if (userRole.equalsIgnoreCase("student")) {
+                presenter.changePassword(admin.getPassword(), newPasswd, userId,userRole,currentPasswd);
+            } else if (userRole.equalsIgnoreCase("lecturer")) {
+                presenter.changePassword(lecturer.getPassword(), newPasswd, userId, userRole, currentPasswd);
+            }
+        });
+
+        // Edit details section
+        edtFullName = findViewById(R.id.edit_user_full_name);
+        edtEmail = findViewById(R.id.edit_email);
+        edtCampus = findViewById(R.id.edit_campus);
+        edtFaculty = findViewById(R.id.edit_faculty);
+        edtDepartment = findViewById(R.id.edit_department);
+        edtProgramme = findViewById(R.id.edit_programme);
+        edtYearofStudy = findViewById(R.id.edit_year_of_study);
+
+        swInSession = findViewById(R.id.switch_in_session);
+
+        btnSaveDetails = findViewById(R.id.button_save_details);
+        btnSaveDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (userRole.equalsIgnoreCase("admin"))
+                    presenter.updateAdmin(admin);
+                else if (userRole.equalsIgnoreCase("student"))
+                    presenter.updateStudent(student);
+                else
+                    presenter.updateLecturer(lecturer);
+            }
         });
     }
 
@@ -264,5 +349,59 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setAdminDetails(Admin admin) {
+        String fullName = admin.getfName() + admin.getmName() + admin.getlName();
+        edtFullName.setText(fullName);
+
+    }
+
+    @Override
+    public void setStudentDetails(StudentResponse response) {
+        student = response.getStudent();
+        faculty = response.getFaculty();
+        department = response.getDepartment();
+        programme = response.getProgramme();
+        campus = response.getCampus();
+
+        String fullName = student.getFname() + " " + student.getMname() + " " + student.getLname();
+        edtFullName.setText(fullName);
+        edtEmail.setText(student.getEmail());
+        edtCampus.setText(campus.getCampusName());
+
+        edtFaculty.setVisibility(View.VISIBLE);
+        edtFaculty.setText(faculty.getFacultyName());
+
+        edtDepartment.setVisibility(View.VISIBLE);
+        edtDepartment.setText(department.getDepartmentName());
+
+        edtProgramme.setVisibility(View.VISIBLE);
+        edtProgramme.setText(programme.getProgrammeName());
+
+        edtYearofStudy.setVisibility(View.VISIBLE);
+        edtYearofStudy.setText(student.getYearOfStudy());
+
+        edtYearofStudy.setVisibility(View.VISIBLE);
+        swInSession.setChecked(student.isInSession());
+    }
+
+    @Override
+    public void setLecturerDetails(LecturerResponse obj) {
+        lecturer = obj.getLecturer();
+        faculty = obj.getFaculty();
+        department = obj.getDepartment();
+
+        String fullName = lecturer.getFirstName() + " " + lecturer.getMiddleName() + " " + lecturer.getLastName();
+        edtFullName.setText(fullName);
+        edtEmail.setText(lecturer.getEmail());
+
+        edtYearofStudy.setVisibility(View.VISIBLE);
+        edtFaculty.setText(faculty.getFacultyName());
+
+        edtYearofStudy.setVisibility(View.VISIBLE);
+        edtDepartment.setText(department.getDepartmentName());
+
     }
 }

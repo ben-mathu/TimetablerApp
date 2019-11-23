@@ -3,12 +3,16 @@ package com.example.timetablerapp.data.user.admin.source;
 import android.util.Log;
 
 import com.example.timetablerapp.SuccessfulCallback;
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.user.RequestParams;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminApi;
+import com.example.timetablerapp.data.user.admin.AdminDAO;
 import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.admin.model.AdminRequest;
+import com.example.timetablerapp.data.user.lecturer.LecturerDS;
+import com.example.timetablerapp.data.user.student.model.UserResponse;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 
 import java.net.ConnectException;
@@ -82,6 +86,66 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
                     callback.unsuccessful("Check your internet connection and try again.");
                 } else {
                     callback.unsuccessful("Please contact administrator, " + t.getLocalizedMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+        RequestParams requestParams = new RequestParams("", userId, userRole);
+        Call<AdminDAO> call = RetrofitClient.getRetrofit()
+                .create(AdminApi.class)
+                .getDetails("application/json", requestParams);
+
+        call.enqueue(new Callback<AdminDAO>() {
+            @Override
+            public void onResponse(Call<AdminDAO> call, Response<AdminDAO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.loadData(response.body().getAdmin());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdminDAO> call, Throwable t) {
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("Check your internet settings and try again.");
+                } else {
+                    callback.unsuccessful("Please contact the administrator.");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void changePassword(String userId, String role, LecturerDS.SuccessCallback callback, String hashedNewPasswd) {
+        UserResponse req = new UserResponse();
+        req.setPassword(hashedNewPasswd);
+        req.setUserId(userId);
+        req.setRole(role);
+
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(AdminApi.class)
+                .changePassword("application/json", req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.success(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please contact the administrator");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                Log.e(TAG, "onFailure: Error: " + t.getMessage(), t);
+
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful("Check you internet connection settings, then try again.");
+                } else {
+                    callback.unsuccessful("Please contact the administrator to resolve the problem: " + t.getLocalizedMessage());
                 }
             }
         });
