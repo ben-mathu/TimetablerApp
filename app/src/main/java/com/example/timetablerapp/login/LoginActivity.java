@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // disable automatic keyboard pop-up when activity starts
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         // Initialize LoginPresenter

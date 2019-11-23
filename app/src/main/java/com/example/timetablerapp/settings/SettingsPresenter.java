@@ -1,5 +1,8 @@
 package com.example.timetablerapp.settings;
 
+import com.example.timetablerapp.data.campuses.CampusesDS;
+import com.example.timetablerapp.data.campuses.CampusesRepository;
+import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminRepo;
@@ -15,6 +18,7 @@ import com.example.timetablerapp.data.user.student.model.StudentResponse;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import static com.example.timetablerapp.data.encryption.Hashing.createHash;
 
@@ -31,15 +35,17 @@ public class SettingsPresenter {
 
     private String hashedPasswd = "";
     private String hashedNewPasswd = "";
+    private CampusesRepository campusesRepo;
 
     SettingsPresenter(SettingsView view,
                       AdminRepo adminRepo,
                       LecturerRepo lecturerRepo,
-                      StudentRepository studentRepo) {
+                      StudentRepository studentRepo, CampusesRepository campusesRepo) {
         this.view = view;
         this.adminRepo = adminRepo;
         this.lecturerRepo = lecturerRepo;
         this.studentRepo = studentRepo;
+        this.campusesRepo = campusesRepo;
     }
 
     public void updateUsername(String name, String userId, String role) {

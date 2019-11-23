@@ -84,6 +84,8 @@
     <string name="show_current_password">Show_current_password</string>
     <string name="show_password">Show password</string>
     <string name="edit_user_details">Edit user details</string>
+    <string name="reset_user_details">Reset user details</string>
+    <string name="instructions"><![CDATA[Ensure that your name follows this form: FirstName<space>MiddlerName<space>LastName.]]></string>
 
     <string-array name="roles">
         <item>Lecturer</item>

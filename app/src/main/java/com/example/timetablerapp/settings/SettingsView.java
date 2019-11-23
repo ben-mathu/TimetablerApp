@@ -6,6 +6,8 @@ import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
 
+import java.util.List;
+
 /**
  * 20/11/19
  *

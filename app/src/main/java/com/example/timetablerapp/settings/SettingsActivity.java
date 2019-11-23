@@ -3,7 +3,6 @@ package com.example.timetablerapp.settings;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,13 +18,17 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +48,6 @@ import com.example.timetablerapp.data.user.student.model.StudentResponse;
 import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
@@ -74,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     // android widgets
     private CircleImageView imgPicChange;
     private ImageView imgDisplayName;
-    private ImageView editDetails;
+    private ImageView imgEditDetails;
     private TextView txtDisplayName;
     private TextView txtUserId;
     private TextView txtUserRole;
@@ -92,6 +94,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     private ImageButton imgShowCurrentPasswd;
     private Button btnSave;
     private Button btnSaveDetails;
+    private Spinner spnCampus;
 
     // Literals
     private String userId = "";
@@ -101,6 +104,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     private Lecturer lecturer;
     private String newPasswd;
     private String currentPasswd;
+    private ImageView imgResetDetails;
 
     @Override
     protected void onStart() {
@@ -110,7 +114,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             presenter = new SettingsPresenter(this,
                     MainApplication.getAdminRepo(),
                     MainApplication.getLecturerRepo(),
-                    MainApplication.getStudentRepository());
+                    MainApplication.getStudentRepository(),
+                    MainApplication.getCampusRepo());
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -156,10 +161,14 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        // disable automatic keyboard pop-up when activity starts
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
         presenter = new SettingsPresenter(this,
                 MainApplication.getAdminRepo(),
                 MainApplication.getLecturerRepo(),
-                MainApplication.getStudentRepository());
+                MainApplication.getStudentRepository(),
+                MainApplication.getCampusRepo());
 
         // define widgets
         txtDisplayName = findViewById(R.id.text_display_name);
@@ -257,16 +266,67 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             }
         });
 
+        imgEditDetails = findViewById(R.id.img_pic_details);
+        imgEditDetails.setOnClickListener(view -> {
+            edtFullName.setEnabled(true);
+            edtFullName.setFocusable(true);
+            edtEmail.setEnabled(true);
+        });
+
+        imgResetDetails = findViewById(R.id.img_reset_details);
+        imgResetDetails.setOnClickListener(view -> {
+            presenter.setUserDetails(userId, userRole);
+        });
+
         // Edit details section
+
+        // enable the save button when user starts typing
         edtFullName = findViewById(R.id.edit_user_full_name);
+        edtFullName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
+                enableButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                enableButton();
+            }
+        });
+
         edtEmail = findViewById(R.id.edit_email);
+        edtEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int count, int after) {
+                disableButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                enableButton();
+            }
+        });
+
         edtCampus = findViewById(R.id.edit_campus);
+
         edtFaculty = findViewById(R.id.edit_faculty);
         edtDepartment = findViewById(R.id.edit_department);
         edtProgramme = findViewById(R.id.edit_programme);
         edtYearofStudy = findViewById(R.id.edit_year_of_study);
 
         swInSession = findViewById(R.id.switch_in_session);
+        swInSession.setOnCheckedChangeListener((compoundButton, b) -> {
+            btnSaveDetails.setEnabled(true);
+            btnSaveDetails.setBackground(getResources().getDrawable(R.drawable.button_background_three));
+        });
 
         btnSaveDetails = findViewById(R.id.button_save_details);
         btnSaveDetails.setOnClickListener(view -> {
@@ -360,13 +420,18 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
     @Override
     public void setAdminDetails(Admin admin) {
+        disableButton();
+
         String fullName = admin.getfName() + admin.getmName() + admin.getlName();
         edtFullName.setText(fullName);
 
+        edtEmail.setText(admin.getEmail());
     }
 
     @Override
     public void setStudentDetails(StudentResponse response) {
+        disableButton();
+
         student = response.getStudent();
         faculty = response.getFaculty();
         department = response.getDepartment();
@@ -390,13 +455,16 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         edtYearofStudy.setVisibility(View.VISIBLE);
         edtYearofStudy.setText(student.getYearOfStudy());
 
-        edtYearofStudy.setVisibility(View.VISIBLE);
+        swInSession.setVisibility(View.VISIBLE);
         swInSession.setChecked(student.isInSession());
     }
 
     @Override
     public void setLecturerDetails(LecturerResponse obj) {
+        disableButton();
+
         lecturer = obj.getLecturer();
+        campus = obj.getCampus();
         faculty = obj.getFaculty();
         department = obj.getDepartment();
 
@@ -404,12 +472,30 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         edtFullName.setText(fullName);
         edtEmail.setText(lecturer.getEmail());
 
-        edtYearofStudy.setVisibility(View.VISIBLE);
+        edtCampus.setVisibility(View.VISIBLE);
+        edtCampus.setText(campus.getCampusName());
+
+        edtFaculty.setVisibility(View.VISIBLE);
         edtFaculty.setText(faculty.getFacultyName());
 
-        edtYearofStudy.setVisibility(View.VISIBLE);
+        edtDepartment.setVisibility(View.VISIBLE);
         edtDepartment.setText(department.getDepartmentName());
 
+    }
+
+    public void enableButton() {
+        btnSaveDetails.setEnabled(true);
+        btnSaveDetails.setTextColor(getResources().getColor(R.color.white));
+        btnSaveDetails.setBackground(getResources().getDrawable(R.drawable.button_background_three));
+    }
+
+    /**
+     * disable button when resetting or when settings activity is coming to view.
+     */
+    public void disableButton() {
+        btnSaveDetails.setEnabled(false);
+        btnSaveDetails.setTextColor(getResources().getColor(R.color.my_kind_of_grey));
+        btnSaveDetails.setBackground(getResources().getDrawable(R.drawable.button_background_disabled));
     }
 
     @Override

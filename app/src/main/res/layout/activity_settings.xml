@@ -190,7 +190,7 @@
                     android:id="@+id/text_user_details"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="4.5"
+                    android:layout_weight="4"
                     android:text="@string/user_details"
                     android:textStyle="italic"/>
 
@@ -202,6 +202,16 @@
                     android:layout_weight="0.5"
                     android:contentDescription="@string/edit_user_details"
                     android:src="@drawable/ic_edit"
+                    android:layout_gravity="end"/>
+
+                <ImageView
+                    android:id="@+id/img_reset_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:layout_weight="0.5"
+                    android:contentDescription="@string/reset_user_details"
+                    android:src="@drawable/ic_reset"
                     android:layout_gravity="end"/>
             </LinearLayout>
 
@@ -226,6 +236,17 @@
                     android:hint="@string/full_name"
                     android:enabled="false"
                     android:inputType="textPersonName"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:textSize="18sp"
+                    android:text="@string/instructions"
+                    android:textStyle="italic"
+                    android:textAlignment="center"/>
 
                 <EditText
                     android:id="@+id/edit_email"
@@ -348,8 +369,10 @@
                     android:layout_marginStart="70dp"
                     android:layout_marginEnd="70dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/button_background_three"
-                    android:text="@string/save_details"/>
+                    android:enabled="false"
+                    android:background="@drawable/button_background_disabled"
+                    android:text="@string/save_details"
+                    android:textColor="@color/my_kind_of_grey"/>
             </LinearLayout>
 
             <Button
