@@ -126,7 +126,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
         RequestParams req = new RequestParams("", userId, userRole);
         Call<StudentResponse> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)
-                .getDetails("application/json", req);
+                .getDetails("application/json", userId, userRole);
 
         call.enqueue(new Callback<StudentResponse>() {
             @Override
@@ -151,9 +151,10 @@ public class StudentRemoteDS implements UserDataSource<Student> {
         req.setPassword(hashedNewPasswd);
         req.setUserId(userId);
         req.setRole(role);
+
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)
-                .changePassword("application/json", req);
+                .changePassword("application/json", userId, role, hashedNewPasswd);
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
@@ -184,7 +185,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
         req.setStudent(obj);
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)
-                .updateUserDetails("application/json", req);
+                .updateUserDetails("application/json", req, obj.getStudentId(), "student");
 
         call.enqueue(new Callback<MessageReport>() {
             @Override

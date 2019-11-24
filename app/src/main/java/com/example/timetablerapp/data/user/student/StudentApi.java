@@ -14,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 /**
  * 21/05/19 -bernard
@@ -31,17 +32,22 @@ public interface StudentApi {
     Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
                                        @Body RequestParams requestParams);
 
-    @POST("student")
+    @GET("user-details")
     Call<StudentResponse> getDetails(@Header("Content-Type") String contentType,
-                                     @Body RequestParams req);
+                                     @Query(Constants.USER_ID) String userId,
+                                     @Query(Constants.ROLE) String role);
 
     @POST("change-password")
     Call<MessageReport> changePassword(@Header("Content-Type") String contentType,
-                                       @Body UserResponse req);
+                                       @Query(Constants.USER_ID) String userId,
+                                       @Query(Constants.ROLE) String role,
+                                       @Query(Constants.PASSWORD) String passwd);
 
-    @POST("update-user-details")
+    @PUT("update-user-details")
     Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
-                                          @Body StudentRequest req);
+                                          @Body StudentRequest req,
+                                          @Query(Constants.USER_ID) String userId,
+                                          @Query(Constants.ROLE) String userRole);
 
     @PUT("delete-account")
     Call<MessageReport> deleteAccount(@Header(Constants.CONTENT_TYPE) String contentType,

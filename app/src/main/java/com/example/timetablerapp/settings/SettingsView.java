@@ -23,5 +23,8 @@ public interface SettingsView {
 
     void setLecturerDetails(LecturerResponse obj);
 
+    /**
+     * Logout the user when deleting the account or pressing the logout button
+     */
     void logUserOut();
 }
