@@ -16,6 +16,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 /**
  * 08/05/19 -bernard
@@ -59,7 +60,9 @@ public interface LecturerApi {
 
     @POST("update-lecturer")
     Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
-                                          @Body LecturerRequest req);
+                                          @Body LecturerRequest req,
+                                          @Query(Constants.USER_ID) String userId,
+                                          @Query(Constants.ROLE) String role);
 
     @PUT("delete-account")
     Call<MessageReport> deleteAccount(@Header(Constants.CONTENT_TYPE) String contentType,

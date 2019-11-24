@@ -161,7 +161,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
         req.setDbPassword("benard");
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(AdminApi.class)
-                .updateUserDetails("application/json", req);
+                .updateUserDetails("application/json", req, obj.getAdminId(), "admin");
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
