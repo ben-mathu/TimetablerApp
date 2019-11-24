@@ -233,7 +233,7 @@ public class SettingsPresenter {
     }
 
     public void changePassword(String passwd, String newPasswd, String userId, String userRole, String currentPasswd) {
-        if (currentPasswd.length() < 8) {
+        if (newPasswd.length() < 8) {
             view.showMessage("Password must be at least 8 characters long.");
             return;
         }

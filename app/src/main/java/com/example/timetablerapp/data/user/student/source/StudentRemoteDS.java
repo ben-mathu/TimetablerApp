@@ -126,7 +126,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
         RequestParams req = new RequestParams("", userId, userRole);
         Call<StudentResponse> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)
-                .getDetails("application/json", userId, userRole);
+                .getDetails(userId, userRole);
 
         call.enqueue(new Callback<StudentResponse>() {
             @Override

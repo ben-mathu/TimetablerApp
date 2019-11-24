@@ -257,6 +257,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
         btnSave = findViewById(R.id.button_save_password);
         btnSave.setOnClickListener(view -> {
+            currentPasswd = edtCurrentPasswd.getText().toString();
+            newPasswd = edtNewPasswd.getText().toString();
             if (userRole.equalsIgnoreCase("admin"))
                 presenter.changePassword(admin.getPassword(), newPasswd, userId, userRole, currentPasswd);
             else if (userRole.equalsIgnoreCase("student")) {
@@ -417,13 +419,25 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+        edtFullName.setEnabled(false);
+        edtEmail.setEnabled(false);
+
+        btnSaveDetails.setBackground(getResources().getDrawable(R.drawable.button_background_disabled));
+        btnSaveDetails.setTextColor(getResources().getColor(R.color.my_kind_of_grey));
+
+        if (message.matches("success")) {
+            edtNewPasswd.setText("");
+            edtCurrentPasswd.setText("");
+        }
     }
 
     @Override
     public void setAdminDetails(Admin admin) {
         disableButton();
+        this.admin = admin;
 
-        String fullName = admin.getfName() + admin.getmName() + admin.getlName();
+        String fullName = admin.getfName() + " " + admin.getmName() + " " + admin.getlName();
         edtFullName.setText(fullName);
 
         edtEmail.setText(admin.getEmail());

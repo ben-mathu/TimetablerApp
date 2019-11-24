@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.student.model;
 
+import com.example.timetablerapp.data.Constants;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -7,13 +8,13 @@ import com.google.gson.annotations.SerializedName;
  */
 public class UserResponse {
 
-    @SerializedName("user_id")
+    @SerializedName(Constants.USER_ID)
     private String userId;
-    @SerializedName("username")
+    @SerializedName(Constants.USERNAME)
     private String username;
-    @SerializedName("password")
+    @SerializedName(Constants.PASSWORD)
     private String password;
-    @SerializedName("role")
+    @SerializedName(Constants.ROLE)
     private String role;
 
     public UserResponse(String userId, String username, String password, String role) {

@@ -50,9 +50,9 @@ public interface LecturerApi {
     Call<MessageReport> updateUsername(@Header("Content-Type") String contentType,
                                        @Body RequestParams requestParams);
 
-    @GET("lecturer")
-    Call<LecturerResponse> getDetails(@Header("Content-Type") String contentType,
-                                     @Body RequestParams req);
+    @GET("user-details")
+    Call<LecturerResponse> getDetails(@Query(Constants.USER_ID) String userId,
+                                      @Query(Constants.ROLE) String role);
 
     @POST("change-password")
     Call<MessageReport> changePassword(@Header(Constants.CONTENT_TYPE) String contentType,

@@ -136,7 +136,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
         RequestParams req = new RequestParams("", userId, userRole);
         Call<LecturerResponse> call = RetrofitClient.getRetrofit()
                 .create(LecturerApi.class)
-                .getDetails("application/json", req);
+                .getDetails(userId, userRole);
 
         call.enqueue(new Callback<LecturerResponse>() {
             @Override

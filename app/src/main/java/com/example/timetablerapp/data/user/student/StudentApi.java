@@ -33,8 +33,7 @@ public interface StudentApi {
                                        @Body RequestParams requestParams);
 
     @GET("user-details")
-    Call<StudentResponse> getDetails(@Header("Content-Type") String contentType,
-                                     @Query(Constants.USER_ID) String userId,
+    Call<StudentResponse> getDetails(@Query(Constants.USER_ID) String userId,
                                      @Query(Constants.ROLE) String role);
 
     @POST("change-password")

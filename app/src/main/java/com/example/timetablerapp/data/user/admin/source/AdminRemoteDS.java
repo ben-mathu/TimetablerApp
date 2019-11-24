@@ -99,7 +99,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
         RequestParams requestParams = new RequestParams("", userId, userRole);
         Call<AdminDAO> call = RetrofitClient.getRetrofit()
                 .create(AdminApi.class)
-                .getDetails("application/json", requestParams);
+                .getDetails(userId, userRole);
 
         call.enqueue(new Callback<AdminDAO>() {
             @Override
@@ -159,6 +159,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
         AdminRequest req = new AdminRequest();
         req.setAdmin(obj);
         req.setDbPassword("benard");
+
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(AdminApi.class)
                 .updateUserDetails("application/json", req, obj.getAdminId(), "admin");
