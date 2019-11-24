@@ -51,5 +51,6 @@ public interface StudentApi {
 
     @PUT("delete-account")
     Call<MessageReport> deleteAccount(@Header(Constants.CONTENT_TYPE) String contentType,
-                                      @Body RequestParams req);
+                                      @Query(Constants.USER_ID) String userId,
+                                      @Query(Constants.ROLE) String role);
 }

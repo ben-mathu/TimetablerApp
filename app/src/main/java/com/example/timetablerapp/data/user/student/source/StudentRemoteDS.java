@@ -212,7 +212,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
         RequestParams req = new RequestParams("", userId, userRole);
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)
-                .deleteAccount(Constants.APPLICATION_JSON, req);
+                .deleteAccount(Constants.APPLICATION_JSON, userId, userRole);
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
