@@ -50,7 +50,7 @@ public class AdminLocalDS implements UserDataSource<Admin> {
 
         long countRow = database.update(TimetablerContract.Admin.TABLE_NAME,
                 contentValues,
-                Constants.LECTURER_ID + "=?",
+                Constants.ADMIN_ID + "=?",
                 new String[]{userId});
 
         if (countRow > 0)
