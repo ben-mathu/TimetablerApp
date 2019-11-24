@@ -47,11 +47,9 @@ import com.example.timetablerapp.data.user.student.model.Student;
 import com.example.timetablerapp.data.user.student.model.StudentResponse;
 import com.example.timetablerapp.login.LoginActivity;
 import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
-import com.example.timetablerapp.util.SerializeName;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -116,8 +114,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             presenter = new SettingsPresenter(this,
                     MainApplication.getAdminRepo(),
                     MainApplication.getLecturerRepo(),
-                    MainApplication.getStudentRepository(),
-                    MainApplication.getCampusRepo());
+                    MainApplication.getStudentRepository()
+            );
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -169,8 +167,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         presenter = new SettingsPresenter(this,
                 MainApplication.getAdminRepo(),
                 MainApplication.getLecturerRepo(),
-                MainApplication.getStudentRepository(),
-                MainApplication.getCampusRepo());
+                MainApplication.getStudentRepository()
+        );
 
         // define widgets
         txtDisplayName = findViewById(R.id.text_display_name);
@@ -331,34 +329,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
 
         btnSaveDetails = findViewById(R.id.button_save_details);
         btnSaveDetails.setOnClickListener(view -> {
-            List<String> names;
-            if (userRole.equalsIgnoreCase("admin")) {
-                names = SerializeName.serializeName(edtFullName.getText().toString());
-                admin.setfName(names.get(0));
-                admin.setmName(names.get(1));
-                admin.setlName(names.get(3));
-
-                admin.setEmail(edtEmail.getText().toString());
-                presenter.updateAdmin(admin);
-            } else if (userRole.equalsIgnoreCase("student")) {
-                names = SerializeName.serializeName(edtFullName.getText().toString());
-                student.setFname(names.get(0));
-                student.setMname(names.get(1));
-                student.setLname(names.get(2));
-
-                student.setEmail(edtEmail.getText().toString());
-                student.setInSession(swInSession.isChecked());
-                presenter.updateStudent(student);
-            } else if (userRole.equalsIgnoreCase("lecturer")){
-                names = SerializeName.serializeName(edtFullName.getText().toString());
-                lecturer.setFirstName(names.get(0));
-                lecturer.setMiddleName(names.get(1));
-                lecturer.setLastName(names.get(2));
-
-                lecturer.setEmail(edtEmail.getText().toString());
-                lecturer.setInSesson(swInSession.isChecked());
-                presenter.updateLecturer(lecturer);
-            }
+            presenter.updateUser(edtFullName.getText().toString(), edtEmail.getText().toString(), userRole, userId, swInSession.isChecked());
         });
 
         Button btnDeleteAccount = findViewById(R.id.button_delete_account);

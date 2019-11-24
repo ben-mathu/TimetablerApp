@@ -1,15 +1,13 @@
 package com.example.timetablerapp.settings;
 
-import com.example.timetablerapp.data.campuses.CampusesDS;
-import com.example.timetablerapp.data.campuses.CampusesRepository;
-import com.example.timetablerapp.data.campuses.model.Campus;
+import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.util.PerformWordChecks;
 import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.admin.AdminRepo;
 import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
-import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.data.user.student.StudentRepository;
 import com.example.timetablerapp.data.user.student.model.Student;
@@ -35,17 +33,18 @@ public class SettingsPresenter {
 
     private String hashedPasswd = "";
     private String hashedNewPasswd = "";
-    private CampusesRepository campusesRepo;
+    private Admin admin = new Admin();
+    private Student student = new Student();
+    private Lecturer lecturer = new Lecturer();
 
     SettingsPresenter(SettingsView view,
                       AdminRepo adminRepo,
                       LecturerRepo lecturerRepo,
-                      StudentRepository studentRepo, CampusesRepository campusesRepo) {
+                      StudentRepository studentRepo) {
         this.view = view;
         this.adminRepo = adminRepo;
         this.lecturerRepo = lecturerRepo;
         this.studentRepo = studentRepo;
-        this.campusesRepo = campusesRepo;
     }
 
     public void updateUsername(String name, String userId, String role) {
@@ -97,6 +96,7 @@ public class SettingsPresenter {
             adminRepo.getDetails(userId, userRole, new UserDataSource.LoadUserDetailsCallback<Admin>() {
                 @Override
                 public void loadData(@NotNull Admin obj) {
+                    admin = obj;
                     view.setAdminDetails(obj);
                 }
 
@@ -110,6 +110,7 @@ public class SettingsPresenter {
 
                 @Override
                 public void loadData(@NotNull StudentResponse obj) {
+                    student = obj.getStudent();
                     view.setStudentDetails(obj);
                 }
 
@@ -122,6 +123,7 @@ public class SettingsPresenter {
             lecturerRepo.getDetails(userId, userRole, new UserDataSource.LoadUserDetailsCallback<LecturerResponse>() {
                 @Override
                 public void loadData(@NotNull LecturerResponse obj) {
+                    lecturer = obj.getLecturer();
                     view.setLecturerDetails(obj);
                 }
 
@@ -133,46 +135,101 @@ public class SettingsPresenter {
         }
     }
 
-    void updateAdmin(Admin admin) {
-        adminRepo.updateUserDetails(admin, new SuccessfulCallback() {
-            @Override
-            public void successful(String message) {
-                view.showMessage(message);
+    void updateUser(String fullName, String email, String role, String userId, boolean inSession) {
+        List<String> names;
+
+        // Check email validity
+        if  (!PerformWordChecks.checkEmailValidity(email)) {
+            view.showMessage("Your email is invalid.");
+            return;
+        }
+
+        if (role.equalsIgnoreCase("admin")) {
+            names = PerformWordChecks.serializeName(fullName);
+            if (names.isEmpty()) {
+                view.showMessage("Your name is invalid.");
+                return;
             }
 
-            @Override
-            public void unsuccessful(String message) {
-                view.showMessage(message);
+            admin.setfName(names.get(0));
+            if (names.size() > 2) {
+                admin.setmName(names.get(1));
+                admin.setlName(names.get(2));
+            } else {
+                admin.setlName(names.get(1));
             }
-        });
-    }
+            admin.setEmail(email);
 
-    void updateStudent(Student student) {
-        studentRepo.updateUserDetails(student, new SuccessfulCallback() {
-            @Override
-            public void successful(String message) {
-                view.showMessage(message);
+            adminRepo.updateUserDetails(admin, new SuccessfulCallback() {
+                @Override
+                public void successful(String message) {
+                    view.showMessage(message);
+                }
+
+                @Override
+                public void unsuccessful(String message) {
+                    view.showMessage(message);
+                }
+            });
+        } else if (role.equalsIgnoreCase("student")) {
+            names = PerformWordChecks.serializeName(fullName);
+            if (names.isEmpty()) {
+                view.showMessage("Your name is invalid.");
+                return;
             }
 
-            @Override
-            public void unsuccessful(String message) {
-                view.showMessage(message);
-            }
-        });
-    }
-
-    void updateLecturer(Lecturer lecturer) {
-        lecturerRepo.updateUserDetails(lecturer, new SuccessfulCallback() {
-            @Override
-            public void successful(String message) {
-                view.showMessage(message);
+            student.setFname(names.get(0));
+            if (names.size() > 2) {
+                student.setMname(names.get(1));
+                student.setLname(names.get(2));
+            } else {
+                admin.setlName(names.get(1));
             }
 
-            @Override
-            public void unsuccessful(String message) {
-                view.showMessage(message);
+            student.setEmail(email);
+            student.setInSession(inSession);
+
+            studentRepo.updateUserDetails(student, new SuccessfulCallback() {
+                @Override
+                public void successful(String message) {
+                    view.showMessage(message);
+                }
+
+                @Override
+                public void unsuccessful(String message) {
+                    view.showMessage(message);
+                }
+            });
+        } else if (role.equalsIgnoreCase("lecturer")){
+            names = PerformWordChecks.serializeName(fullName);
+            if (names.isEmpty()) {
+                view.showMessage("Your name is invalid.");
+                return;
             }
-        });
+
+            lecturer.setFirstName(names.get(0));
+            if (names.size() > 2) {
+                lecturer.setMiddleName(names.get(1));
+                lecturer.setLastName(names.get(2));
+            } else {
+                lecturer.setLastName(names.get(1));
+            }
+
+            lecturer.setEmail(email);
+            lecturer.setInSesson(inSession);
+
+            lecturerRepo.updateUserDetails(lecturer, new SuccessfulCallback() {
+                @Override
+                public void successful(String message) {
+                    view.showMessage(message);
+                }
+
+                @Override
+                public void unsuccessful(String message) {
+                    view.showMessage(message);
+                }
+            });
+        }
     }
 
     public void changePassword(String passwd, String newPasswd, String userId, String userRole, String currentPasswd) {

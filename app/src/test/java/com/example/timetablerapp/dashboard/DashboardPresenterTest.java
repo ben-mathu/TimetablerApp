@@ -2,6 +2,7 @@ package com.example.timetablerapp.dashboard;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.dashboard.dialog.lecturer.LecturerView;
+import com.example.timetablerapp.data.units.UnitsRepo;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 
@@ -20,21 +21,21 @@ import static org.mockito.Mockito.verify;
 public class DashboardPresenterTest {
 
     @Mock
-    private LecturerRepo lecturerRepo;
+    private UnitsRepo unitsRepo;
     @Mock
-    private LecturerView view;
+    private DashboardView view;
     private DashboardPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
-        presenter = new DashboardPresenter(view, lecturerRepo);
-        lecturerRepo = MainApplication.getLecturerRepo();
+        presenter = new DashboardPresenter(view, unitsRepo);
+        unitsRepo = MainApplication.getUnitRepo();
     }
 
     @Test
     public void getLecturers_ListIsEmpty_ShowMessageError() {
         final LecturerDS.LecturersLoadedCallback callback = mock(LecturerDS.LecturersLoadedCallback.class);
-        presenter.getLecturers();
+        presenter.getUnitsByStudentId("jsjrw22");
 
         verify(callback, only()).unsuccessful(ArgumentMatchers.any());
     }
