@@ -85,4 +85,18 @@ public class DepartmentPresenter {
             }
         });
     }
+
+    public void getFaculties() {
+        facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
+            @Override
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
+
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+
+            }
+        });
+    }
 }

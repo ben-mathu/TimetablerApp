@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
@@ -34,7 +35,7 @@ import java.util.Objects;
 /**
  * 06/09/19 -bernard
  */
-public class DepartmentsFragment extends Fragment implements DepartView {
+public class DepartmentsFragment extends Fragment implements DepartView, OnItemSelectedListener<Department> {
     // Lists
     private List<Department> list;
     private List<Campus> campuses;
@@ -204,7 +205,12 @@ public class DepartmentsFragment extends Fragment implements DepartView {
     public void setDepartments(List<Department> departments) {
         this.list = departments;
 
-        adapter = new DepartmentAdapter(getActivity(), departments);
+        adapter = new DepartmentAdapter(getActivity(), this, departments);
         recyclerDepartment.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemSelected(Department item) {
+
     }
 }

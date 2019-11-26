@@ -432,6 +432,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
                 presenter.updateCourse(unit);
             }
         });
+
+        adapter.notifyDataSetChanged();
     }
 
     /**
@@ -455,7 +457,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         if (departments != null) {
             for (Department dep : departments) {
                 if (dep.getDepartmentId().equals(departmentId)) {
-                    txtDepartmentName.setText(department.getDepartmentName());
+                    txtDepartmentName.setText(dep.getDepartmentName());
                     break;
                 }
             }
