@@ -2,7 +2,7 @@ package com.example.timetablerapp.data.hall;
 
 import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.hall.model.Hall;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.room.model.Room;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface HallDS extends DataSource<Hall> {
     void getRooms(RoomsLoadedCallback callback);
+    void getHall(String hall_id, LoadHallCallback callback);
 
     interface HallLoadedCallback {
         void loadingHallsSuccessful(List<Hall> halls);
@@ -25,5 +26,10 @@ public interface HallDS extends DataSource<Hall> {
     interface Success {
         void success(String message);
         void unsuccess(String message);
+    }
+
+    interface LoadHallCallback {
+        void loadHall(Hall hall);
+        void unsuccessful(String message);
     }
 }

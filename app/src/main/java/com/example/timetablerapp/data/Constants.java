@@ -1,5 +1,7 @@
 package com.example.timetablerapp.data;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * All parameters put here are used in the entire project,
  * this file keeps environment variables for the project.
@@ -88,6 +90,9 @@ public class Constants {
 
     public static final String EMAIL = "email";
 
+    // Room
+    public static final String TABLE_ROOM = "classes";
+    public static final String ROOM_ID = "class_id";
     /**
      * Other parameters
      */
@@ -137,4 +142,5 @@ public class Constants {
     public static final String OTHER_ISSUE = "Please contact the administrator to resolve the issue.\n";
     public static final String APPLICATION_JSON = "application/json";
     public static final String DELETED_ACCOUNT_MESSAGE = "Account deleted successfully";
+
 }

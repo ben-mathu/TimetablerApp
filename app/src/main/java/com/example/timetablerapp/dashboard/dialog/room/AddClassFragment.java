@@ -16,25 +16,29 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
+import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.hall.model.Hall;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.room.model.Room;
 import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 01/09/19 -bernard
  */
-public class AddClassFragment extends Fragment implements RoomView {
+public class AddClassFragment extends Fragment implements RoomView, OnItemSelectedListener<Room> {
     private List<Room> list;
     private List<Faculty> faculties;
     private List<Hall> halls;
@@ -52,13 +56,19 @@ public class AddClassFragment extends Fragment implements RoomView {
     private String facultyName;
     private String hallName;
     private Hall hall;
+    private Room room;
+    private TextView txtFacultyName;
+    private TextView txtHallName;
+    private String positiveBtnText;
+    private AlertDialog dialog;
 
     @Override
     public void onStart() {
         super.onStart();
         presenter = new RoomPresenter(this,
                 MainApplication.getFacultyRepo(),
-                MainApplication.getHallRepo());
+                MainApplication.getHallRepo(),
+                MainApplication.getRoomRepo());
         presenter.getRooms();
     }
 
@@ -68,7 +78,8 @@ public class AddClassFragment extends Fragment implements RoomView {
         View view = inflater.inflate(R.layout.fragment_add_item, container, false);
         presenter =  new RoomPresenter(this,
                 MainApplication.getFacultyRepo(),
-                MainApplication.getHallRepo());
+                MainApplication.getHallRepo(),
+                MainApplication.getRoomRepo());
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -136,27 +147,24 @@ public class AddClassFragment extends Fragment implements RoomView {
         btnAddCourse.setOnClickListener(v -> {
 
             presenter.getFacultiesForHalls();
-            builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
+            builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs);
             builder.setCancelable(true);
             builder.setView(dialogView);
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (edtRoomId.getText().toString().isEmpty()
-                            || edtVolume.getText().toString().isEmpty()
-                    ) {
-                        showMessage("All the fields are required");
-                    } else {
-                        Room room = new Room();
-                        room.setAvailability(switchAvailability.isChecked());
-                        room.setFacultyId(faculty.getFacultyId());
-                        room.setHall_id(hall.getHallId());
-                        room.setId(edtRoomId.getText().toString());
-                        room.setLab(switchLab.isChecked());
-                        room.setVolume(edtVolume.getText().toString());
+            builder.setPositiveButton(R.string.ok, (dialogInterface, i) -> {
+                if (edtRoomId.getText().toString().isEmpty()
+                        || edtVolume.getText().toString().isEmpty()
+                ) {
+                    showMessage("All the fields are required");
+                } else {
+                    Room room = new Room();
+                    room.setAvailability(switchAvailability.isChecked());
+                    room.setFacultyId(faculty.getFacultyId());
+                    room.setHall_id(hall.getHallId());
+                    room.setId(edtRoomId.getText().toString());
+                    room.setLab(switchLab.isChecked());
+                    room.setVolume(edtVolume.getText().toString());
 
-                        presenter.addRoom(room, edtPassCode.getText().toString());
-                    }
+                    presenter.addRoom(room, edtPassCode.getText().toString());
                 }
             });
 
@@ -167,6 +175,7 @@ public class AddClassFragment extends Fragment implements RoomView {
             AlertDialog dialog = builder.create();
             dialog.show();
             Window window = dialog.getWindow();
+            assert window != null;
             window.setLayout(550, ViewGroup.LayoutParams.WRAP_CONTENT);
         });
         return view;
@@ -189,7 +198,7 @@ public class AddClassFragment extends Fragment implements RoomView {
     public void setRooms(List<Room> rooms) {
         this.list = rooms;
 
-        adapter = new RoomAdapter(getActivity(), rooms);
+        adapter = new RoomAdapter(getActivity(), rooms, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -207,7 +216,7 @@ public class AddClassFragment extends Fragment implements RoomView {
         for (Hall hall : halls) {
             hallNames.add(hall.getHallName());
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_spinner_dropdown_item, hallNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerHall.setAdapter(arrayAdapter);
@@ -220,9 +229,129 @@ public class AddClassFragment extends Fragment implements RoomView {
         for (Faculty faculty : faculties) {
             facultyNames.add(faculty.getFacultyName());
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_spinner_dropdown_item, facultyNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFaculty.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    public void loadFaculty(Faculty faculty) {
+        this.faculty = faculty;
+        txtFacultyName.setText(faculty.getFacultyName());
+    }
+
+    @Override
+    public void setHall(Hall hall) {
+        this.hall = hall;
+        txtHallName.setText(hall.getHallName());
+    }
+
+    @Override
+    public void onItemSelected(Room item) {
+        this.room = item;
+        presenter.getFacultyById(item.getFacultyId());
+        presenter.getHall(item.getHall_id());
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_room, null, false);
+
+        LinearLayout llCourseDetails = view.findViewById(R.id.ll_room_details);
+        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_room_edit_details);
+
+        // Before editing
+        // Display details in plain text.
+        TextView txtClassId = view.findViewById(R.id.text_class_id);
+        txtClassId.setText(item.getId());
+        txtFacultyName = view.findViewById(R.id.text_faculty_name);
+        txtHallName = view.findViewById(R.id.text_hall_name);
+        TextView txtVolume = view.findViewById(R.id.text_volume);
+        txtVolume.setText(item.getVolume());
+
+        // check availability
+        TextView txtAvailability = view.findViewById(R.id.text_availability);
+
+        String availability;
+        if (!item.isAvailability())
+            availability = "Not Available";
+        else availability = "Available";
+        txtAvailability.setText(availability);
+
+        // check if lab
+        TextView txtIsLab = view.findViewById(R.id.text_is_lab);
+
+        String isLabStr;
+        if (item.isLab()) {
+            isLabStr = "Lab";
+        }
+        else isLabStr = "Not Lab";
+        txtIsLab.setText(isLabStr);
+
+        // editing section
+        EditText edtRoomId = view.findViewById(R.id.edit_room_id);
+        edtRoomId.setText(item.getId());
+        EditText edtVolume = view.findViewById(R.id.edit_volume);
+        edtVolume.setText(item.getVolume());
+
+        presenter.getFacultiesForHalls();
+        spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
+        spinnerFaculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                presenter.getHalls(faculties.get(i).getFacultyId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                presenter.getHalls(faculties.get(adapterView.getSelectedItemPosition()).getFacultyId());
+            }
+        });
+        spinnerHall = view.findViewById(R.id.change_spinner_hall);
+
+        // Is Lab
+        Switch swIsLab = view.findViewById(R.id.switch_is_lab);
+        if (item.isLab()) swIsLab.setChecked(true);
+        else swIsLab.setChecked(false);
+
+        // Is Available
+        Switch swAvailable = view.findViewById(R.id.switch_availability);
+        if (item.isAvailability()) swAvailable.setChecked(true);
+        else swAvailable.setChecked(false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()),R.style.Theme_Dialogs);
+        builder.setView(view);
+        builder.setTitle("Edit Hall");
+        positiveBtnText = "Edit";
+
+        builder.setPositiveButton(positiveBtnText, null);
+
+        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
+            presenter.deleteHall(item);
+        });
+
+
+        dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
+            if (positiveBtnText.equalsIgnoreCase("edit")) {
+                llCourseEditDetails.setVisibility(View.VISIBLE);
+                llCourseDetails.setVisibility(View.GONE);
+
+                positiveBtnText = "Save";
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+            } else {
+                Room room = new Room();
+                room.setId(edtRoomId.getText().toString());
+                room.setVolume(edtVolume.getText().toString());
+                room.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
+                room.setHall_id(halls.get(spinnerHall.getSelectedItemPosition()).getHallId());
+                room.setLab(swIsLab.isChecked());
+                room.setAvailability(swAvailable.isChecked());
+                presenter.updateRoom(room);
+            }
+        });
+
+        adapter.notifyDataSetChanged();
     }
 }

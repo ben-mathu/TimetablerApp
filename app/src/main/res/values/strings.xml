@@ -87,6 +87,12 @@
     <string name="reset_user_details">Reset user details</string>
     <string name="instructions"><![CDATA[Ensure that your name follows this form: FirstName<space>MiddlerName<space>LastName.]]></string>
     <string name="department_id">Department Id</string>
+    <string name="class_id">Class ID</string>
+    <string name="hall_name">Hall Name</string>
+    <string name="available">Available</string>
+    <string name="is_lab">Is a Lab</string>
+    <string name="volume">Volume</string>
+    <string name="halls">Choose Halls</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

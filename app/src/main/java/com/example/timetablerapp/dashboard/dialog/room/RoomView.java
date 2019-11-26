@@ -2,7 +2,7 @@ package com.example.timetablerapp.dashboard.dialog.room;
 
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.hall.model.Hall;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.room.model.Room;
 
 import java.util.List;
 
@@ -17,4 +17,8 @@ public interface RoomView {
     void setHalls(List<Hall> halls);
 
     void setFaculties(List<Faculty> faculties);
+
+    void loadFaculty(Faculty faculty);
+
+    void setHall(Hall hall);
 }

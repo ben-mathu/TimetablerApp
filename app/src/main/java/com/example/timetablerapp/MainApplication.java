@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.preference.PreferenceManager;
 
+import com.example.timetablerapp.dashboard.dialog.room.RoomRepo;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
 import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
 import com.example.timetablerapp.data.campuses.source.CampusRemoteDS;
@@ -25,6 +26,8 @@ import com.example.timetablerapp.data.hall.source.HallRemoteDS;
 import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.source.ProgLocalDS;
 import com.example.timetablerapp.data.programmes.source.ProgRemoteDS;
+import com.example.timetablerapp.data.room.source.local.RoomLocalDS;
+import com.example.timetablerapp.data.room.source.remote.RoomRemoteDS;
 import com.example.timetablerapp.data.units.UnitsRepo;
 import com.example.timetablerapp.data.units.source.local.UnitsLocalDS;
 import com.example.timetablerapp.data.units.source.remote.UnitsRemoteDS;
@@ -62,6 +65,7 @@ public class MainApplication extends Application {
     private static UnitsRepo unitRepo;
     private static AdminRepo adminRepo;
     private static HallRepo hallRepo;
+    private static RoomRepo roomRepo;
 
     public static ProgrammesRepository getProgRepo() {
         return programmesRepo;
@@ -91,6 +95,10 @@ public class MainApplication extends Application {
         return hallRepo;
     }
 
+    public static RoomRepo getRoomRepo() {
+        return roomRepo;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -118,6 +126,8 @@ public class MainApplication extends Application {
         adminRepo = AdminRepo.newInstance(new AdminLocalDS(), new AdminRemoteDS());
 
         hallRepo = HallRepo.newInstance(new HallLocalDS(), new HallRemoteDS());
+
+        roomRepo = RoomRepo.newInstance(new RoomLocalDS(), new RoomRemoteDS());
     }
 
     public static SharedPreferences getSharedPreferences() {
@@ -152,6 +162,7 @@ public class MainApplication extends Application {
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            assert notificationManager != null;
             notificationManager.createNotificationChannel(channel);
         }
     }

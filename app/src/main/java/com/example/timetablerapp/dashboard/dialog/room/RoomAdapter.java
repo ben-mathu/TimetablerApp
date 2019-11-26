@@ -8,8 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.timetablerapp.R;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.dashboard.dialog.util.UtilViewHolder;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.room.model.Room;
 
 import java.util.List;
 
@@ -19,10 +20,12 @@ import java.util.List;
 public class RoomAdapter extends RecyclerView.Adapter<UtilViewHolder> {
     private Context context;
     private List<Room> rooms;
+    private OnItemSelectedListener<Room> onItemSelectedListener;
 
-    public RoomAdapter(Context context, List<Room> rooms) {
+    RoomAdapter(Context context, List<Room> rooms, OnItemSelectedListener<Room> onItemSelectedListener) {
         this.context = context;
         this.rooms = rooms;
+        this.onItemSelectedListener = onItemSelectedListener;
     }
 
     @NonNull
@@ -37,6 +40,9 @@ public class RoomAdapter extends RecyclerView.Adapter<UtilViewHolder> {
         holder.txtId.setText(rooms.get(position).getHall_id());
         String name = rooms.get(position).getId();
         holder.txtName.setText(name);
+        holder.itemView.setOnClickListener(view -> {
+            onItemSelectedListener.onItemSelected(rooms.get(position));
+        });
     }
 
     @Override

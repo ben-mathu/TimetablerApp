@@ -1,7 +1,7 @@
 package com.example.timetablerapp.data.timetable.model;
 
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.room.model.Room;
 import com.example.timetablerapp.data.units.model.Unit;
 import com.google.gson.annotations.SerializedName;
 

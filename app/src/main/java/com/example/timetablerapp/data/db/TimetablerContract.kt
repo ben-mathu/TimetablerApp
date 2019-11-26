@@ -172,4 +172,41 @@ object TimetablerContract {
 
     const val  SQL_DELETE_PROGRAMMES = "DROP TABLE IF EXISTS ${Programme.TABLE_NAME}"
 
+    object Hall : BaseColumns {
+        const val TABLE_NAME = Constants.TABLE_HALLS
+        const val HALL_ID = Constants.HALL_ID
+        const val HALL_NAME = Constants.HALL_NAME
+        const val FACULTY_ID = Constants.FACULTY_ID
+    }
+
+    const val SQL_CREATE_HALL_TABLE =
+            "CREATE TABLE ${Hall.TABLE_NAME} (" +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
+                    "${Hall.HALL_ID} VARCHAR(25)," +
+                    "${Hall.HALL_NAME} VARCHAR(255)," +
+                    "${Hall.FACULTY_ID} VARCHAR(25))"
+
+    const val  SQL_DELETE_HALL = "DROP TABLE IF EXISTS ${Hall.TABLE_NAME}"
+
+    object Room : BaseColumns {
+        const val TABLE_NAME = Constants.TABLE_ROOM
+        const val ROOM_ID = Constants.ROOM_ID
+        const val HALL_ID = Constants.HALL_ID
+        const val FACULTY_ID = Constants.FACULTY_ID
+        const val VOLUME = Constants.VOLUME
+        const val AVAILABILITY = Constants.AVAILABILITY
+        const val IS_LAB = Constants.IS_LAB
+    }
+
+    const val SQL_CREATE_ROOM_TABLE =
+            "CREATE TABLE ${Room.TABLE_NAME} (" +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
+                    "${Room.ROOM_ID} VARCHAR(25)," +
+                    "${Room.HALL_ID} VARCHAR(255)," +
+                    "${Room.FACULTY_ID} VARCHAR(25)," +
+                    "${Room.VOLUME} VARCHAR(25)," +
+                    "${Room.AVAILABILITY} BOOLEAN," +
+                    "${Room.IS_LAB} BOOLEAN)"
+
+    const val  SQL_DELETE_ROOM = "DROP TABLE IF EXISTS ${Room.TABLE_NAME}"
 }
