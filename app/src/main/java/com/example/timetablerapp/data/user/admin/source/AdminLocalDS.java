@@ -33,12 +33,12 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Admin obj, String pass) {
+    public void userSignUp(SuccessfulCallback callBack, Admin obj, String pass) {
 
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Admin obj) {
+    public void authUser(SuccessfulCallback callBack, Admin obj) {
 
     }
 
@@ -120,7 +120,7 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
 
     }
 
@@ -135,17 +135,17 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void update(Admin item) {
+    public void update(Admin item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Admin item) {
+    public void delete(Admin item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Admin item) {
+    public void save(Admin item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         // Map items or data to contentvalues

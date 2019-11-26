@@ -5,6 +5,7 @@ import com.example.timetablerapp.data.hall.model.Hall;
 import com.example.timetablerapp.data.hall.source.HallLocalDS;
 import com.example.timetablerapp.data.hall.source.HallRemoteDS;
 import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -30,17 +31,17 @@ public class HallRepo implements HallDS {
     }
 
     @Override
-    public void update(Hall item) {
+    public void update(Hall item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Hall item) {
+    public void delete(Hall item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Hall item) {
+    public void save(Hall item, SuccessfulCallback callback) {
 
     }
 

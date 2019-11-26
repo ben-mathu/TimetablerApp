@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.faculties;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.faculties.source.FacultyLocalDS;
 import com.example.timetablerapp.data.faculties.source.FacultyRemoteDS;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -103,17 +104,17 @@ public class FacultiesRepository implements FacultyDS {
     }
 
     @Override
-    public void update(Faculty item) {
+    public void update(Faculty item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Faculty item) {
+    public void delete(Faculty item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Faculty item) {
-        facultyLocalDS.save(item);
+    public void save(Faculty item, SuccessfulCallback callback) {
+        facultyLocalDS.save(item, callback);
     }
 }

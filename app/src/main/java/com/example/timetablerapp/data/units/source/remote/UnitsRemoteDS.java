@@ -14,6 +14,7 @@ import com.example.timetablerapp.data.units.model.UnitRequest;
 import com.example.timetablerapp.data.units.model.UnitResponse;
 import com.example.timetablerapp.data.units.model.UnitsRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+import com.example.timetablerapp.util.SuccessfulCallback;
 import com.google.gson.annotations.SerializedName;
 
 import java.net.ConnectException;
@@ -30,17 +31,17 @@ import retrofit2.Response;
 public class UnitsRemoteDS implements UnitDataSource {
     private static final String TAG = UnitsRemoteDS.class.getSimpleName();
     @Override
-    public void update(Unit item) {
+    public void update(Unit item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Unit item) {
+    public void delete(Unit item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Unit item) {
+    public void save(Unit item, SuccessfulCallback callback) {
 
     }
 

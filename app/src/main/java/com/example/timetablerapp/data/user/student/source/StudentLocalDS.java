@@ -41,12 +41,12 @@ public class StudentLocalDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
+    public void userSignUp(SuccessfulCallback callBack, Student obj, String pass) {
 
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Student obj) {
+    public void authUser(SuccessfulCallback callBack, Student obj) {
 
     }
 
@@ -67,7 +67,7 @@ public class StudentLocalDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
 
     }
 
@@ -164,17 +164,17 @@ public class StudentLocalDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void update(Student item) {
+    public void update(Student item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Student item) {
+    public void delete(Student item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Student item) {
+    public void save(Student item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         // Map items or data to contentvalues

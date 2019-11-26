@@ -38,12 +38,12 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer, String pass) {
+    public void userSignUp(SuccessfulCallback callBack, Lecturer lecturer, String pass) {
 
     }
 
     @Override
-    public void authUser(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
+    public void authUser(SuccessfulCallback callBack, Lecturer lecturer) {
 
     }
 
@@ -138,12 +138,12 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
         String passwd = getPassWd(role, username);
         if (passwd.equals(password)) {
-            callback.userIsAuthSuccessful("Successfully logged in.");
+            callback.successful("Successfully logged in.");
         } else {
-            callback.authNotSuccessful("Username or password is wrong, please try again.");
+            callback.unsuccessful("Username or password is wrong, please try again.");
         }
     }
 
@@ -188,17 +188,17 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void update(Lecturer item) {
+    public void update(Lecturer item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Lecturer item) {
+    public void delete(Lecturer item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Lecturer item) {
+    public void save(Lecturer item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         // Map items or data to contentvalues

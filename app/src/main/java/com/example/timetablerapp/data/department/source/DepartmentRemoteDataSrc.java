@@ -7,10 +7,10 @@ import com.example.timetablerapp.data.department.model.DepartmentRequest;
 import com.example.timetablerapp.data.department.model.DepartmentsResponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.net.ConnectException;
 import java.net.NoRouteToHostException;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import retrofit2.Call;
@@ -86,15 +86,15 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
             @Override
             public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callback.success(response.body().getMessage());
+                    callback.successful(response.body().getMessage());
                 } else {
-                    callback.unSuccessful(response.message());
+                    callback.unsuccessful(response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<MessageReport> call, Throwable t) {
-                callback.unSuccessful("Error, " + t.getLocalizedMessage());
+                callback.unsuccessful("Error, " + t.getLocalizedMessage());
             }
         });
     }
@@ -127,17 +127,57 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
     }
 
     @Override
-    public void update(Department item) {
+    public void update(Department item, SuccessfulCallback callback) {
+        DepartmentRequest req = new DepartmentRequest(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(DepartmentApi.class)
+                .upDepartment("application/json", req);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unsuccessful("Error: " + t.getLocalizedMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public void delete(Department item) {
+    public void delete(Department item, SuccessfulCallback callback) {
+        DepartmentRequest req = new DepartmentRequest(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(DepartmentApi.class)
+                .deleteCourse("application/json", req);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unsuccessful("Error: " + t.getLocalizedMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public void save(Department item) {
+    public void save(Department item, SuccessfulCallback callback) {
 
     }
 }

@@ -9,6 +9,7 @@ import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.FacultiesRepository;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -73,14 +74,14 @@ public class DepartmentPresenter {
     }
 
     public void addDepartment(Department department) {
-        depRepo.addDepartment(department, new DepartmentDS.SuccessfulCallback() {
+        depRepo.addDepartment(department, new SuccessfulCallback() {
             @Override
-            public void success(String message) {
+            public void successful(String message) {
                 view.showMessage(message);
             }
 
             @Override
-            public void unSuccessful(String message) {
+            public void unsuccessful(String message) {
                 view.showMessage(message);
             }
         });
@@ -96,6 +97,34 @@ public class DepartmentPresenter {
             @Override
             public void dataNotAvailable(String message) {
 
+            }
+        });
+    }
+
+    public void deleteDepartment(Department item) {
+        depRepo.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
+
+    public void updateDepartment(Department department) {
+        depRepo.update(department, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
             }
         });
     }

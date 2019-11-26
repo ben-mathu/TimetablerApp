@@ -70,7 +70,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void userSignUp(UserDataSource.UserAuthCallback callBack, Lecturer lecturer, String pass) {
+    public void userSignUp(SuccessfulCallback callBack, Lecturer lecturer, String pass) {
         LecturerRequest lecturerRequest = new LecturerRequest();
         lecturerRequest.setLecturer(lecturer);
         lecturerRequest.setPass(pass);
@@ -83,21 +83,21 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
             @Override
             public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callBack.userIsAuthSuccessful(response.body().getMessage());
+                    callBack.successful(response.body().getMessage());
                 } else {
-                    callBack.authNotSuccessful(response.message());
+                    callBack.unsuccessful(response.message());
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
-                callBack.authNotSuccessful(t.getMessage());
+                callBack.unsuccessful(t.getMessage());
             }
         });
     }
 
     @Override
-    public void authUser(UserDataSource.UserAuthCallback callBack, Lecturer lecturer) {
+    public void authUser(SuccessfulCallback callBack, Lecturer lecturer) {
 
     }
 
@@ -246,7 +246,7 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
         ValidationRequest request = new ValidationRequest();
         request.setRole(role);
         request.setUsername(username);
@@ -269,23 +269,23 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                                 MainApplication.getSharedPreferences().edit()
                                         .putString(Constants.USER_ID, admin.getAdminId())
                                         .apply();
-                                adminLocalDS.save(admin);
-                                callback.userIsAuthSuccessful("Authentication Successful");
+                                adminLocalDS.save(admin, callback);
+                                callback.successful("Authentication Successful");
                             } else {
-                                callback.authNotSuccessful("Authentication not successful");
+                                callback.unsuccessful("Authentication not successful");
                             }
                         } else {
-                            callback.authNotSuccessful("Authentication not successful, please try again");
+                            callback.unsuccessful("Authentication not successful, please try again");
                         }
                     } else {
-                        callback.authNotSuccessful("Authentication not successful. Please try again.");
+                        callback.unsuccessful("Authentication not successful. Please try again.");
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<AdminRequest> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: Error" + t.getLocalizedMessage() + "\n", t);
-                    callback.authNotSuccessful("Authentication not successful. Please contact the administrator.");
+                    callback.unsuccessful("Authentication not successful. Please contact the administrator.");
                 }
             });
         } else if (role.equalsIgnoreCase("student")) {
@@ -305,28 +305,28 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                                         .putString(Constants.USER_ID, student.getStudentId())
                                         .apply();
 
-                                studentLocalDS.save(student);
-                                departmentLocalDS.save(response.body().getDepartment());
-                                facultyLocalDS.save(response.body().getFaculty());
-                                progLocalDS.save(response.body().getProgramme());
-                                campusLocalDS.save(response.body().getCampus());
+                                studentLocalDS.save(student, callback);
+                                departmentLocalDS.save(response.body().getDepartment(), callback);
+                                facultyLocalDS.save(response.body().getFaculty(), callback);
+                                progLocalDS.save(response.body().getProgramme(), callback);
+                                campusLocalDS.save(response.body().getCampus(), callback);
 
-                                callback.userIsAuthSuccessful("Authentication Successful");
+                                callback.successful("Authentication Successful");
                             } else {
-                                callback.authNotSuccessful("Authentication not successful");
+                                callback.unsuccessful("Authentication not successful");
                             }
                         } else {
-                            callback.authNotSuccessful("Authentication not successful, please try again");
+                            callback.unsuccessful("Authentication not successful, please try again");
                         }
                     } else {
-                        callback.authNotSuccessful("Authentication not successful. Please try again.");
+                        callback.unsuccessful("Authentication not successful. Please try again.");
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<StudentResponse> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: Error" + t.getLocalizedMessage() + "\n", t);
-                    callback.authNotSuccessful("Authentication not successful. Please contact the administrator.");
+                    callback.unsuccessful("Authentication not successful. Please contact the administrator.");
                 }
             });
         } else if (role.equalsIgnoreCase("lecturer")) {
@@ -345,28 +345,28 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
                                 MainApplication.getSharedPreferences().edit()
                                         .putString(Constants.USER_ID, lecturer.getId())
                                         .apply();
-                                lecturerLocalDS.save(lecturer);
+                                lecturerLocalDS.save(lecturer, callback);
 
-                                departmentLocalDS.save(response.body().getDepartment());
-                                facultyLocalDS.save(response.body().getFaculty());
+                                departmentLocalDS.save(response.body().getDepartment(), callback);
+                                facultyLocalDS.save(response.body().getFaculty(), callback);
 //                                progLocalDS.save(response.body().getProgramme());
 
-                                callback.userIsAuthSuccessful("Authentication Successful");
+                                callback.successful("Authentication Successful");
                             } else {
-                                callback.authNotSuccessful("Authentication not successful");
+                                callback.unsuccessful("Authentication not successful");
                             }
                         } else {
-                            callback.authNotSuccessful("Authentication not successful, please try again");
+                            callback.unsuccessful("Authentication not successful, please try again");
                         }
                     } else {
-                        callback.authNotSuccessful("Authentication not successful. Please try again.");
+                        callback.unsuccessful("Authentication not successful. Please try again.");
                     }
                 }
 
                 @Override
                 public void onFailure(@NotNull Call<LecturerResponse> call, @NotNull Throwable t) {
                     Log.e(TAG, "onFailure: Error" + t.getLocalizedMessage() + "\n", t);
-                    callback.authNotSuccessful("Authentication not successful. Please contact the administrator.");
+                    callback.unsuccessful("Authentication not successful. Please contact the administrator.");
                 }
             });
         }
@@ -383,17 +383,17 @@ public class LecturerRemoteDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void update(Lecturer item) {
+    public void update(Lecturer item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Lecturer item) {
+    public void delete(Lecturer item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Lecturer item) {
+    public void save(Lecturer item, SuccessfulCallback callback) {
 
     }
 

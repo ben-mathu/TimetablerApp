@@ -1,5 +1,6 @@
 package com.example.timetablerapp.dashboard.dialog.department;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,12 +17,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
@@ -40,6 +42,7 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
     private List<Department> list;
     private List<Campus> campuses;
     private List<Faculty> faculties;
+    private Department department;
 
     // object dependencies
     private DepartmentPresenter presenter;
@@ -50,6 +53,14 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
     private RecyclerView recyclerDepartment;
     private Spinner spinnerCampus;
     private Spinner spinnerFaculty;
+    private TextView txtFacultyName;
+    private TextView txtCampusName;
+    private String facultyName;
+    private Faculty faculty;
+    private Spinner spinnerDepartment;
+    private String departmentName;
+    private String positiveBtnText;
+    private AlertDialog dialog;
 
     @Override
     public void onStart() {
@@ -211,6 +222,63 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
 
     @Override
     public void onItemSelected(Department item) {
+        this.department = item;
+        presenter.getFacultyById(item.getFacultyId());
 
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_department, null, false);
+
+        LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
+        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_course_edit_details);
+
+        // Before editing
+        // Display details in plain text.
+        TextView txtDepartmentId = view.findViewById(R.id.text_department_id);
+        txtDepartmentId.setText(item.getDepartmentId());
+        TextView txtDepartmentName = view.findViewById(R.id.text_department_name);
+        txtDepartmentName.setText(item.getDepartmentName());
+
+        txtFacultyName = view.findViewById(R.id.text_faculty);
+        txtCampusName = view.findViewById(R.id.text_campus);
+
+        EditText edtDepartmentId = view.findViewById(R.id.edit_department_id);
+        edtDepartmentId.setText(item.getDepartmentId());
+        EditText edtDepartmentName = view.findViewById(R.id.edit_department_name);
+        edtDepartmentName.setText(item.getDepartmentName());
+
+        spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
+        builder.setView(view);
+        builder.setTitle("Edit Course");
+        positiveBtnText = "Edit";
+
+        builder.setPositiveButton(positiveBtnText, null);
+
+        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
+            presenter.deleteDepartment(item);
+        });
+
+
+        dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
+            if (positiveBtnText.equalsIgnoreCase("edit")) {
+                llCourseEditDetails.setVisibility(View.VISIBLE);
+                llCourseDetails.setVisibility(View.GONE);
+
+                positiveBtnText = "Save";
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+            } else {
+                Department department = new Department();
+                department.setDepartmentId(edtDepartmentId.getText().toString());
+                department.setDepartmentName(edtDepartmentName.getText().toString());
+                department.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
+                presenter.updateDepartment(department);
+            }
+        });
+
+        adapter.notifyDataSetChanged();
     }
 }

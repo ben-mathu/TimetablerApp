@@ -8,6 +8,7 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.db.TimetablerContract;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 /**
  * 08/05/19 -bernard
@@ -42,17 +43,17 @@ public class CampusLocalDS implements CampusesDS {
     }
 
     @Override
-    public void update(Campus item) {
+    public void update(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Campus item) {
+    public void delete(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Campus item) {
+    public void save(Campus item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         values.put(TimetablerContract.Campus.CAMPUS_ID, item.getCampusId());

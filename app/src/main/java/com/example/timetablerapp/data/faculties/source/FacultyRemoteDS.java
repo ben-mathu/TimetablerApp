@@ -10,6 +10,7 @@ import com.example.timetablerapp.data.faculties.model.FacultyRequest;
 import com.example.timetablerapp.data.faculties.model.FacultyResponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.net.ConnectException;
 import java.util.List;
@@ -122,17 +123,17 @@ public class FacultyRemoteDS implements FacultyDS {
     }
 
     @Override
-    public void update(Faculty item) {
+    public void update(Faculty item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Faculty item) {
+    public void delete(Faculty item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Faculty item) {
+    public void save(Faculty item, SuccessfulCallback callback) {
 
     }
 }

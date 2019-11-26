@@ -28,4 +28,11 @@ public interface DepartmentApi {
 
     @GET("department")
     Call<DepartmentRequest> getDepartmentById(@Query(Constants.DEPARTMENT_ID) String departmentId);
+
+    @PUT("delete")
+    Call<MessageReport> deleteCourse(@Header(Constants.APPLICATION_JSON) String contentType,
+                                     @Body DepartmentRequest req);
+
+    @PUT("update")
+    Call<MessageReport> upDepartment(@Header(Constants.APPLICATION_JSON) String contentType, @Body DepartmentRequest req);
 }

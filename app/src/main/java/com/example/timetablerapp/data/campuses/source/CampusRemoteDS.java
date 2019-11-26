@@ -9,6 +9,7 @@ import com.example.timetablerapp.data.campuses.model.CampusRequest;
 import com.example.timetablerapp.data.campuses.model.CampusesReponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -121,17 +122,17 @@ public class CampusRemoteDS implements CampusesDS {
     }
 
     @Override
-    public void update(Campus item) {
+    public void update(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Campus item) {
+    public void delete(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Campus item) {
+    public void save(Campus item, SuccessfulCallback callback) {
 
     }
 }

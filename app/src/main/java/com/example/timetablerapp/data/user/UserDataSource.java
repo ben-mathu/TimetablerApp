@@ -9,14 +9,14 @@ import com.example.timetablerapp.data.user.lecturer.LecturerDS;
  * 19/05/19 -bernard
  */
 public interface UserDataSource<T> extends DataSource<T> {
-    void userSignUp(UserAuthCallback callBack, T obj, String pass);
-    void authUser(UserDataSource.UserAuthCallback callBack, T obj);
+    void userSignUp(SuccessfulCallback callBack, T obj, String pass);
+    void authUser(SuccessfulCallback callBack, T obj);
 
     void updateUsername(String name, String userId, String role, SuccessfulCallback callback);
 
     void fetchSettingsFromRemote(FetchSettingsCallback callback);
 
-    void validateUser(String role, String username, String password, String userId, UserAuthCallback callback);
+    void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback);
 
     void sendUserRole(GetSaltCallBack callBack, String role);
 
@@ -27,12 +27,6 @@ public interface UserDataSource<T> extends DataSource<T> {
     void updateUserDetails(T obj, SuccessfulCallback callback);
 
     void deleteAccount(String userRole, String userId, SuccessfulCallback callback);
-
-    interface UserAuthCallback {
-
-        void userIsAuthSuccessful(String message);
-        void authNotSuccessful(String message);
-    }
 
     interface GetSaltCallBack {
 

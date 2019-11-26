@@ -34,32 +34,32 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Lecturer lecturer, String pass) {
-        lecturerRemoteDS.userSignUp(new UserAuthCallback() {
+    public void userSignUp(SuccessfulCallback callBack, Lecturer lecturer, String pass) {
+        lecturerRemoteDS.userSignUp(new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
-                save(lecturer);
-                callBack.userIsAuthSuccessful(message);
+            public void successful(String message) {
+                save(lecturer, callBack);
+                callBack.unsuccessful(message);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
-                callBack.authNotSuccessful(message);
+            public void unsuccessful(String message) {
+                callBack.unsuccessful(message);
             }
         }, lecturer, pass);
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Lecturer lecturer) {
-        lecturerRemoteDS.userSignUp(new UserAuthCallback(){
+    public void authUser(SuccessfulCallback callBack, Lecturer lecturer) {
+        lecturerRemoteDS.userSignUp(new SuccessfulCallback(){
             @Override
-            public void userIsAuthSuccessful(String message) {
-                callBack.userIsAuthSuccessful(message);
+            public void successful(String message) {
+                callBack.successful(message);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
-                callBack.authNotSuccessful(message);
+            public void unsuccessful(String message) {
+                callBack.unsuccessful(message);
             }
         }, lecturer, "");
     }
@@ -96,30 +96,30 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
-        lecturerLocalDS.validateUser(role, username, password, userId, new UserAuthCallback() {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
+        lecturerLocalDS.validateUser(role, username, password, userId, new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
-                callback.userIsAuthSuccessful(message);
+            public void successful(String message) {
+                callback.successful(message);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
+            public void unsuccessful(String message) {
                 validateUserFromRemote(role, username, password, userId, callback)
 ;            }
         });
     }
 
-    private void validateUserFromRemote(String role, String username, String password, String userId, UserAuthCallback callback) {
-        lecturerRemoteDS.validateUser(role, username, password, userId, new UserAuthCallback() {
+    private void validateUserFromRemote(String role, String username, String password, String userId, SuccessfulCallback callback) {
+        lecturerRemoteDS.validateUser(role, username, password, userId, new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
-                callback.userIsAuthSuccessful(message);
+            public void successful(String message) {
+                callback.successful(message);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
-                callback.authNotSuccessful(message);
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
             }
         });
     }
@@ -256,18 +256,18 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void update(Lecturer item) {
+    public void update(Lecturer item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Lecturer item) {
+    public void delete(Lecturer item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Lecturer item) {
-        lecturerLocalDS.save(item);
+    public void save(Lecturer item, SuccessfulCallback callback) {
+        lecturerLocalDS.save(item, callback);
     }
 
     public void getLecturers(LecturerDS.LecturersLoadedCallback callback) {

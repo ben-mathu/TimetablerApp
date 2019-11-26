@@ -13,8 +13,8 @@
     <string name="auth_error">Username or password is wrong.</string>
     <string name="programmes">Choose a Programme</string>
     <string name="departments">Choose Department</string>
-    <string name="faculties">Choose Faculty</string>
-    <string name="campuses">Choose Campus</string>
+    <string name="faculties">Choose Faculty:</string>
+    <string name="campuses">Choose Campus:</string>
     <string name="first_name">First Name</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
@@ -86,6 +86,7 @@
     <string name="edit_user_details">Edit user details</string>
     <string name="reset_user_details">Reset user details</string>
     <string name="instructions"><![CDATA[Ensure that your name follows this form: FirstName<space>MiddlerName<space>LastName.]]></string>
+    <string name="department_id">Department Id</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

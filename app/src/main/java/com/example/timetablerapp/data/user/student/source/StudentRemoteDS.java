@@ -33,7 +33,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
     private static final String TAG = StudentRemoteDS.class.getSimpleName();
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
+    public void userSignUp(SuccessfulCallback callBack, Student obj, String pass) {
         StudentRequest request = new StudentRequest();
         request.setStudent(obj);
 
@@ -45,21 +45,21 @@ public class StudentRemoteDS implements UserDataSource<Student> {
             @Override
             public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
                 if (response.isSuccessful()) {
-                    callBack.userIsAuthSuccessful("Successfully registered.");
+                    callBack.successful("Successfully registered.");
                 } else {
-                    callBack.authNotSuccessful("An Error occurred, please try again.");
+                    callBack.unsuccessful("An Error occurred, please try again.");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
-                callBack.authNotSuccessful("Error: " + t.getLocalizedMessage());
+                callBack.unsuccessful("Error: " + t.getLocalizedMessage());
             }
         });
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Student obj) {
+    public void authUser(SuccessfulCallback callBack, Student obj) {
 
     }
 
@@ -93,7 +93,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
     }
 
     @Override
@@ -241,17 +241,17 @@ public class StudentRemoteDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void update(Student item) {
+    public void update(Student item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Student item) {
+    public void delete(Student item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Student item) {
+    public void save(Student item, SuccessfulCallback callback) {
 
     }
 }

@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.campuses;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
 import com.example.timetablerapp.data.campuses.source.CampusRemoteDS;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -102,17 +103,17 @@ public class CampusesRepository implements CampusesDS {
     }
 
     @Override
-    public void update(Campus item) {
+    public void update(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Campus item) {
+    public void delete(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Campus item) {
-        campusLocalDS.save(item);
+    public void save(Campus item, SuccessfulCallback callback) {
+        campusLocalDS.save(item, callback);
     }
 }

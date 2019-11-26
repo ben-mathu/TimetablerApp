@@ -33,24 +33,24 @@ public class StudentRepository implements UserDataSource<Student> {
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Student obj, String pass) {
-        save(obj);
-        userDataSourceRemote.userSignUp(new UserAuthCallback() {
+    public void userSignUp(SuccessfulCallback callBack, Student obj, String pass) {
+        save(obj, callBack);
+        userDataSourceRemote.userSignUp(new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
-                callBack.userIsAuthSuccessful(message);
+            public void successful(String message) {
+                callBack.successful(message);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
-                callBack.authNotSuccessful(message);
+            public void unsuccessful(String message) {
+                callBack.unsuccessful(message);
             }
         }, obj, "");
 
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Student obj) {
+    public void authUser(SuccessfulCallback callBack, Student obj) {
 
     }
 
@@ -86,16 +86,16 @@ public class StudentRepository implements UserDataSource<Student> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
-        userDataSourceRemote.validateUser(role, username, password, userId, new UserAuthCallback() {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
+        userDataSourceRemote.validateUser(role, username, password, userId, new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
-                callback.userIsAuthSuccessful(message);
+            public void successful(String message) {
+                callback.successful(message);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
-                callback.authNotSuccessful(message);
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
             }
         });
     }
@@ -242,17 +242,17 @@ public class StudentRepository implements UserDataSource<Student> {
     }
 
     @Override
-    public void update(Student item) {
+    public void update(Student item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Student item) {
+    public void delete(Student item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Student item) {
-        userDataSourceLocal.save(item);
+    public void save(Student item, SuccessfulCallback callback) {
+        userDataSourceLocal.save(item, callback);
     }
 }

@@ -31,7 +31,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     private static final String TAG = AdminRemoteDS.class.getSimpleName();
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Admin obj, String pass) {
+    public void userSignUp(SuccessfulCallback callBack, Admin obj, String pass) {
 
         AdminRequest request = new AdminRequest();
         request.setAdmin(obj);
@@ -45,15 +45,15 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
             @Override
             public void onResponse(@NotNull Call<MessageReport> call, @NonNull Response<MessageReport> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callBack.userIsAuthSuccessful(response.body().getMessage());
+                    callBack.successful(response.body().getMessage());
                 } else {
-                    callBack.authNotSuccessful("An error has occurred, please try again");
+                    callBack.unsuccessful("An error has occurred, please try again");
                 }
             }
 
             @Override
             public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
-                callBack.authNotSuccessful("An error has occurred");
+                callBack.unsuccessful("An error has occurred");
                 Log.e(TAG, "onFailure: ", t);
                 t.printStackTrace();
             }
@@ -61,7 +61,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Admin obj) {
+    public void authUser(SuccessfulCallback callBack, Admin obj) {
 
     }
 
@@ -213,7 +213,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
 
     }
 
@@ -228,17 +228,17 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void update(Admin item) {
+    public void update(Admin item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Admin item) {
+    public void delete(Admin item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Admin item) {
+    public void save(Admin item, SuccessfulCallback callback) {
 
     }
 }

@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.department;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.department.source.DepartmentLocalDataSrc;
 import com.example.timetablerapp.data.department.source.DepartmentRemoteDataSrc;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -75,13 +76,13 @@ public class DepartmentRepository implements DepartmentDS {
     public void addDepartment(Department department, SuccessfulCallback callback) {
         departmentRemoteDataSrc.addDepartment(department, new SuccessfulCallback() {
             @Override
-            public void success(String message) {
-                callback.success(message);
+            public void successful(String message) {
+                callback.successful(message);
             }
 
             @Override
-            public void unSuccessful(String message) {
-                callback.unSuccessful(message);
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
             }
         });
     }
@@ -102,6 +103,20 @@ public class DepartmentRepository implements DepartmentDS {
         });
     }
 
+    private void deleteLocalDS(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
     private void getDepartment(String departmentId, LoadDepartmentCallback callback) {
         departmentLocalDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
             @Override
@@ -117,17 +132,55 @@ public class DepartmentRepository implements DepartmentDS {
     }
 
     @Override
-    public void update(Department item) {
+    public void update(Department item, SuccessfulCallback callback) {
+        departmentRemoteDataSrc.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                update(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalDS(item, callback);
+            }
+        });
+    }
+
+    private void updateLocalDS(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override
-    public void delete(Department item) {
+    public void delete(Department item, SuccessfulCallback callback) {
+        departmentRemoteDataSrc.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                deleteLocalDS(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                deleteLocalDS(item,  callback);
+            }
+        });
     }
 
     @Override
-    public void save(Department item) {
-        departmentLocalDataSrc.save(item);
+    public void save(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.save(item, callback);
     }
 }

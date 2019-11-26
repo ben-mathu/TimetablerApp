@@ -7,6 +7,7 @@ import com.example.timetablerapp.data.settings.model.DeadlineSettings;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.student.StudentRepository;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.security.NoSuchAlgorithmException;
 
@@ -47,15 +48,15 @@ public class LoginPresenter {
             e.printStackTrace();
         }
 
-        lecturerRepo.validateUser(role, username, password, userId, new UserDataSource.UserAuthCallback() {
+        lecturerRepo.validateUser(role, username, password, userId, new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
+            public void successful(String message) {
                 view.showMessage(message);
                 view.startTimetableActivity();
             }
 
             @Override
-            public void authNotSuccessful(String message) {
+            public void unsuccessful(String message) {
                 view.showUsernameError(R.string.auth_error);
                 view.showPasswordError(R.string.auth_error);
             }

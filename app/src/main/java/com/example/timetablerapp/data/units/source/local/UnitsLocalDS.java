@@ -2,6 +2,7 @@ package com.example.timetablerapp.data.units.source.local;
 
 import com.example.timetablerapp.data.units.UnitDataSource;
 import com.example.timetablerapp.data.units.model.Unit;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -10,17 +11,17 @@ import java.util.List;
  */
 public class UnitsLocalDS implements UnitDataSource {
     @Override
-    public void update(Unit item) {
+    public void update(Unit item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Unit item) {
+    public void delete(Unit item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Unit item) {
+    public void save(Unit item, SuccessfulCallback callback) {
 
     }
 

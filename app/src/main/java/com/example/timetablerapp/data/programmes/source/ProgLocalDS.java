@@ -8,6 +8,7 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.model.Programme;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 /**
  * 08/05/19 -bernard
@@ -42,17 +43,17 @@ public class ProgLocalDS implements ProgrammeDS {
     }
 
     @Override
-    public void update(Programme item) {
+    public void update(Programme item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Programme item) {
+    public void delete(Programme item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Programme item) {
+    public void save(Programme item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         values.put(TimetablerContract.Programme.PROGRAMME_ID, item.getProgrammeId());

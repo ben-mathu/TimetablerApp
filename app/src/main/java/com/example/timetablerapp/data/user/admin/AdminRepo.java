@@ -32,23 +32,23 @@ public class AdminRepo implements UserDataSource<Admin>{
     }
 
     @Override
-    public void userSignUp(UserAuthCallback callBack, Admin obj, String pass) {
-        remoteDs.userSignUp(new UserAuthCallback() {
+    public void userSignUp(SuccessfulCallback callBack, Admin obj, String pass) {
+        remoteDs.userSignUp(new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
-                callBack.userIsAuthSuccessful(message);
-                save(obj);
+            public void successful(String message) {
+                callBack.successful(message);
+                save(obj, callBack);
             }
 
             @Override
-            public void authNotSuccessful(String message) {
-                callBack.authNotSuccessful(message);
+            public void unsuccessful(String message) {
+                callBack.unsuccessful(message);
             }
         }, obj, pass);
     }
 
     @Override
-    public void authUser(UserAuthCallback callBack, Admin obj) {
+    public void authUser(SuccessfulCallback callBack, Admin obj) {
 
     }
 
@@ -205,7 +205,7 @@ public class AdminRepo implements UserDataSource<Admin>{
     }
 
     @Override
-    public void validateUser(String role, String username, String password, String userId, UserAuthCallback callback) {
+    public void validateUser(String role, String username, String password, String userId, SuccessfulCallback callback) {
 
     }
 
@@ -220,17 +220,17 @@ public class AdminRepo implements UserDataSource<Admin>{
     }
 
     @Override
-    public void update(Admin item) {
+    public void update(Admin item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Admin item) {
+    public void delete(Admin item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Admin item) {
-        localDs.save(item);
+    public void save(Admin item, SuccessfulCallback callback) {
+        localDs.save(item, callback);
     }
 }

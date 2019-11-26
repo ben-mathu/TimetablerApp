@@ -21,6 +21,7 @@ import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.student.StudentRepository;
 import com.example.timetablerapp.data.user.student.model.Student;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -41,6 +42,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     private StudentRepository studentRepo;
     private LecturerRepo lecturerRepo;
     private AdminRepo adminRepo;
+    private SuccessfulCallback callback;
 
     public SignUpPresenter(SignUpContract.View view,
                            DepartmentRepository departmentRepository,
@@ -142,21 +144,21 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             Log.e(TAG, "registerUser: ", e);
             e.printStackTrace();
         }
-        lecturerRepo.userSignUp(new UserDataSource.UserAuthCallback() {
+        lecturerRepo.userSignUp(new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
+            public void successful(String message) {
                 view.showMessages(message);
                 view.startLoginActivity();
             }
 
             @Override
-            public void authNotSuccessful(String message) {
+            public void unsuccessful(String message) {
                 view.showMessages(message);
             }
         }, lec, passw);
 
-        departmentRepository.save(department);
-        facultiesRepository.save(faculty);
+        departmentRepository.save(department, callback);
+        facultiesRepository.save(faculty, callback);
     }
 
     @Override
@@ -184,24 +186,24 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             Log.e(TAG, "registerUser: ", e);
             e.printStackTrace();
         }
-        studentRepo.userSignUp(new UserDataSource.UserAuthCallback() {
+        studentRepo.userSignUp(new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessful(String message) {
+            public void successful(String message) {
                 view.showMessages(message);
                 view.startLoginActivity();
             }
 
             @Override
-            public void authNotSuccessful(String message) {
+            public void unsuccessful(String message) {
                 view.showMessages(message);
             }
         }, student, "");
 
         // save attributes for the students
-        departmentRepository.save(department);
-        facultiesRepository.save(faculty);
-        programmesRepository.save(programme);
-        campusesRepository.save(campus);
+        departmentRepository.save(department, callback);
+        facultiesRepository.save(faculty, callback);
+        programmesRepository.save(programme, callback);
+        campusesRepository.save(campus, callback);
     }
 
     @Override
@@ -225,16 +227,16 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             Log.e(TAG, "registerUser: ", e);
             e.printStackTrace();
         }
-        adminRepo.userSignUp(new UserDataSource.UserAuthCallback() {
+        adminRepo.userSignUp(new SuccessfulCallback() {
 
             @Override
-            public void userIsAuthSuccessful(String message) {
+            public void successful(String message) {
                 view.showMessages(message);
                 view.startLoginActivity();
             }
 
             @Override
-            public void authNotSuccessful(String message) {
+            public void unsuccessful(String message) {
                 view.showMessages(message);
             }
         }, admin, pass);
