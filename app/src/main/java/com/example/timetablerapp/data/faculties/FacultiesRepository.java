@@ -16,7 +16,7 @@ public class FacultiesRepository implements FacultyDS {
     private FacultyLocalDS facultyLocalDS;
     private FacultyRemoteDS facultyRemoteDS;
 
-    public FacultiesRepository(FacultyLocalDS facultyLocalDS,  FacultyRemoteDS facultyRemoteDS) {
+    private FacultiesRepository(FacultyLocalDS facultyLocalDS, FacultyRemoteDS facultyRemoteDS) {
         this.facultyLocalDS = facultyLocalDS;
         this.facultyRemoteDS = facultyRemoteDS;
     }
@@ -75,7 +75,7 @@ public class FacultiesRepository implements FacultyDS {
 
     @Override
     public void getFacultyById(String facultyId, LoadFacultyCallback callback) {
-        facultyLocalDS.getFacultyById(facultyId, new LoadFacultyCallback() {
+        facultyRemoteDS.getFacultyById(facultyId, new LoadFacultyCallback() {
             @Override
             public void successfullyLoadedFaculty(Faculty faculty) {
                 callback.successfullyLoadedFaculty(faculty);
@@ -84,13 +84,13 @@ public class FacultiesRepository implements FacultyDS {
             @Override
             public void unsuccessful(String message) {
                 callback.unsuccessful(message);
-                getFromRemote(facultyId, callback);
+                getFromLocal(facultyId, callback);
             }
         });
     }
 
-    private void getFromRemote(String facultyId, LoadFacultyCallback callback) {
-        facultyRemoteDS.getFacultyById(facultyId, new LoadFacultyCallback() {
+    private void getFromLocal(String facultyId, LoadFacultyCallback callback) {
+        facultyLocalDS.getFacultyById(facultyId, new LoadFacultyCallback() {
             @Override
             public void successfullyLoadedFaculty(Faculty faculty) {
                 callback.successfullyLoadedFaculty(faculty);

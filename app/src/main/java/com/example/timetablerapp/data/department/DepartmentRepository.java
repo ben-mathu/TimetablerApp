@@ -103,11 +103,11 @@ public class DepartmentRepository implements DepartmentDS {
         });
     }
 
-    private void deleteLocalDS(Department item, SuccessfulCallback callback) {
-        departmentLocalDataSrc.delete(item, new SuccessfulCallback() {
+    private void getDepartment(String departmentId, LoadDepartmentCallback callback) {
+        departmentLocalDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
             @Override
-            public void successful(String message) {
-                callback.successful(message);
+            public void loadDepartment(Department department) {
+                callback.loadDepartment(department);
             }
 
             @Override
@@ -117,11 +117,11 @@ public class DepartmentRepository implements DepartmentDS {
         });
     }
 
-    private void getDepartment(String departmentId, LoadDepartmentCallback callback) {
-        departmentLocalDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
+    private void deleteLocalDS(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.delete(item, new SuccessfulCallback() {
             @Override
-            public void loadDepartment(Department department) {
-                callback.loadDepartment(department);
+            public void successful(String message) {
+                callback.successful(message);
             }
 
             @Override

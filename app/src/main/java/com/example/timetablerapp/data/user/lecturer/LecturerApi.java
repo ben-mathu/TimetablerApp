@@ -58,7 +58,7 @@ public interface LecturerApi {
     Call<MessageReport> changePassword(@Header(Constants.CONTENT_TYPE) String contentType,
                                        @Body UserResponse req);
 
-    @POST("update-lecturer")
+    @PUT("update-lecturer")
     Call<MessageReport> updateUserDetails(@Header(Constants.CONTENT_TYPE) String contentType,
                                           @Body LecturerRequest req,
                                           @Query(Constants.USER_ID) String userId,
