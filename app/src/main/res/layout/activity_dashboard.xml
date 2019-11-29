@@ -61,19 +61,18 @@
                     android:textSize="12sp"
                     tools:text="Student" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_scheduled_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="2"
-                android:gravity="end"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                tools:text="@string/placeholder2" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/text_scheduled_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="end"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="@string/placeholder2" />
 
     <RelativeLayout
         android:layout_width="match_parent"
