@@ -106,8 +106,6 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
 
-        isTimeAdded = MainApplication.getSharedPreferences().getBoolean(Constants.IS_TIME_ADDED, false);
-
         startDate = MainApplication.getSharedPreferences().getString(Constants.START_DATE, "");
         deadline = MainApplication.getSharedPreferences().getString(Constants.END_DATE, "");
 
@@ -164,8 +162,8 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         fileName = userId + " " + username + ".png";
 
         // get file path
-        String filepath = "";
-        filepath = this.getFilesDir().getPath().toString() + "/" + fileName;
+        String filepath;
+        filepath = this.getFilesDir().getPath() + "/" + fileName;
 
         bitmap = BitmapFactory.decodeFile(filepath);
 
@@ -176,16 +174,16 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         if (userType.equalsIgnoreCase("admin") && screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             navigationView.setVisibility(View.VISIBLE);
         }
+
+        // Start intent service to handle timers on the notification.
+        Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
+        startService(intentService);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-        // Start intent service to handle timers on the notification.
-        Intent intentService = new Intent(this, ScheduleTimerIntentService.class);
-        startService(intentService);
 
         txtTimer = findViewById(R.id.text_scheduled_timer);
         txtTimetableTimer = findViewById(R.id.text_timetable_schedule);
@@ -212,14 +210,14 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         setSupportActionBar(toolbar);
 
-        fragment = getSupportFragmentManager().findFragmentById(R.id.timetable_fragment_container);
-
 //        if (fragment == null) {
 //            fragment = ListUnitsFragment.newInstance();
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.timetable_fragment_container, fragment)
 //                    .commit();
 //        }
+
+        fragment = getSupportFragmentManager().findFragmentById(R.id.timetable_fragment_container);
 
         if (fragment == null) {
             fragment = ShowTimetableFragment.newInstance();
@@ -247,62 +245,59 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         if (screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             navigationView = findViewById(R.id.bottom_navigation);
-            navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.room:
-                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_ROOM);
+            navigationView.setOnNavigationItemSelectedListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.room:
+                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_ROOM);
 
-                            if (fragment == null) {
-                                fragment = new AddClassFragment();
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, Constants.TAG_ROOM)
-                                        .commit();
-                            }
-                            break;
-                        case R.id.course:
-                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_COURSES);
-
-                            if (fragment == null) {
-                                fragment = new AddCourseFragment();
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, Constants.TAG_COURSES)
-                                        .commit();
-                            }
-                            break;
-                        case R.id.lecturer:
-                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_LECTURER);
-
-                            if (fragment == null) {
-                                fragment = new AddLecturerFragment();
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, Constants.TAG_LECTURER)
-                                        .commit();
-                            }
-                            break;
-                        case R.id.dashboard:
+                        if (fragment == null) {
+                            fragment = new AddClassFragment();
                             getSupportFragmentManager().beginTransaction()
-                                    .remove(fragment)
+                                    .replace(R.id.fragment_container, fragment, Constants.TAG_ROOM)
                                     .commit();
-                            break;
-                        case R.id.more:
-                            fragment = getSupportFragmentManager().findFragmentByTag(Constants.MORE);
+                        }
+                        break;
+                    case R.id.course:
+                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_COURSES);
 
-                            if (fragment != null && fragment.isVisible() && getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                                onBackPressed();
-                            }
+                        if (fragment == null) {
+                            fragment = new AddCourseFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, fragment, Constants.TAG_COURSES)
+                                    .commit();
+                        }
+                        break;
+                    case R.id.lecturer:
+                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_LECTURER);
 
-                            if (fragment == null) {
-                                fragment = new MoreFragment();
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.fragment_container, fragment, Constants.MORE)
-                                        .commit();
-                            }
-                            break;
-                    }
-                    return true;
+                        if (fragment == null) {
+                            fragment = new AddLecturerFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, fragment, Constants.TAG_LECTURER)
+                                    .commitAllowingStateLoss();
+                        }
+                        break;
+                    case R.id.dashboard:
+                        getSupportFragmentManager().beginTransaction()
+                                .remove(fragment)
+                                .commit();
+                        break;
+                    case R.id.more:
+                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.MORE);
+
+                        if (fragment != null && fragment.isVisible() && getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                            onBackPressed();
+                        }
+
+                        if (fragment == null) {
+                            fragment = new MoreFragment();
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragment_container, fragment, Constants.MORE)
+                                    .commit();
+                        }
+                        break;
                 }
+                return true;
             });
         }
     }
@@ -334,44 +329,45 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                 strTimer += minutes > 9 ? "" + minutes + ":" : "0" + minutes + ":";
                 strTimer += seconds > 9 ? "" + seconds : "0" + seconds;
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isUnitRegistrationScheduled && !isTimeAdded) {
-                            strTimer = "Registration ends in\n" + strTimer;
-                            txtTimer.setVisibility(View.VISIBLE);
-                            txtTimer.setText(strTimer);
-                        } else {
-                            strTimer = "Timetable will be available in\n" + strTimer;
-                            txtTimetableTimer.setText(strTimer);
-                        }
+                runOnUiThread(() -> {
+                    if (isUnitRegistrationScheduled && !isTimeAdded) {
+                        strTimer = "Registration ends in\n" + strTimer;
+                        txtTimer.setVisibility(View.VISIBLE);
+                        txtTimer.setText(strTimer);
+                    } else {
+                        strTimer = "Timetable will be available in\n" + strTimer;
+                        txtTimetableTimer.setText(strTimer);
                     }
                 });
 
                 if (timeRemaining < 1000 && isTimeAdded) {
+                    runOnUiThread(() -> {
+                        frameTimetable.setVisibility(View.VISIBLE);
+
+                        fragment = getSupportFragmentManager().findFragmentById(R.id.timetable_fragment_container);
+
+                        if (fragment == null) {
+                            fragment = ShowTimetableFragment.newInstance();
+                            getSupportFragmentManager().beginTransaction()
+                                    .add(R.id.timetable_fragment_container, fragment)
+                                    .commitAllowingStateLoss();
+                        }
+                    });
                     timer.cancel();
                 } else if (timeRemaining < 1000 && !isTimeAdded) {
                     isUnitRegistrationScheduled = false;
-
                     MainApplication.getSharedPreferences().edit()
                             .putBoolean(Constants.SCHEDULE, isUnitRegistrationScheduled)
                             .apply();
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            txtTimer.setVisibility(View.GONE);
-                        }
-                    });
+                    runOnUiThread(() -> txtTimer.setVisibility(View.GONE));
 
                     timeRemaining = TimeUnit.MINUTES.toMillis(5);
-
                     MainApplication.getSharedPreferences().edit()
                             .putString(Constants.END_DATE, DateFormat.format("dd-MM-yyyy HH:mm:ss", timeRemaining - Calendar.getInstance().getTimeInMillis()).toString())
                             .apply();
 
                     isTimeAdded = true;
-
                     MainApplication.getSharedPreferences().edit()
                             .putBoolean(Constants.IS_TIME_ADDED, isTimeAdded)
                             .apply();
@@ -414,17 +410,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                         .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                 finish();
 
-                // remove session
-                MainApplication.getSharedPreferences().edit()
-                        .putBoolean(Constants.IS_LOGGED_IN, false)
-                        .putBoolean(Constants.IS_TIME_ADDED, false)
-                        .putBoolean(Constants.SCHEDULE, false)
-                        .putString(Constants.USER_ID, "")
-                        .putString(Constants.START_DATE, "")
-                        .putString(Constants.END_DATE, "")
-                        .putString(Constants.USERNAME, "")
-                        .putInt(Constants.NOTIFICATION_ID, 0)
-                        .apply();
+                endSession();
                 break;
             case R.id.show_registered_units:
                 startActivity(new Intent(this, RegisteredUnitsActivity.class));
@@ -444,6 +430,25 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         }
 
         return true;
+    }
+
+    /**
+     * Ends the session by removing all share preferences related to this user.
+     */
+    private void endSession() {
+        // remove session
+        MainApplication.getSharedPreferences().edit()
+                .putBoolean(Constants.IS_LOGGED_IN, false)
+                .putBoolean(Constants.IS_TIME_ADDED, false)
+                .putBoolean(Constants.SCHEDULE, false)
+                .putBoolean(Constants.NOTIFICATION_CREATED, false)
+                .putBoolean(Constants.REMINDER_SET, false)
+                .putString(Constants.USER_ID, "")
+                .putString(Constants.START_DATE, "")
+                .putString(Constants.END_DATE, "")
+                .putString(Constants.USERNAME, "")
+                .putInt(Constants.NOTIFICATION_ID, 0)
+                .apply();
     }
 
     @Override

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * 22/05/19 -bernard
  */
-public class AdminRepo implements UserDataSource<Admin>{
+public class AdminRepo implements UserDataSource<Admin, Admin>{
     private static final String TAG = AdminRepo.class.getSimpleName();
 
     private static AdminRepo INSTANCE;
@@ -70,7 +70,7 @@ public class AdminRepo implements UserDataSource<Admin>{
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<Admin> callback) {
         remoteDs.getDetails(userId, userRole, new LoadUserDetailsCallback<Admin>() {
             @Override
             public void loadData(@NotNull Admin obj) {
@@ -176,7 +176,7 @@ public class AdminRepo implements UserDataSource<Admin>{
         }, hashedNewPasswd);
     }
 
-    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback callback) {
+    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback<Admin> callback) {
         localDs.getDetails(userId, userRole, new LoadUserDetailsCallback<Admin>() {
             @Override
             public void loadData(@NotNull Admin obj) {

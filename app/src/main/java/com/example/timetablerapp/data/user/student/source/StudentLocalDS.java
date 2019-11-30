@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.data.user.student.model.StudentResponse;
 import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
@@ -32,7 +33,7 @@ import static com.example.timetablerapp.data.db.TimetablerContract.Student.YEAR_
 /**
  * 06/05/19 -bernard
  */
-public class StudentLocalDS implements UserDataSource<Student> {
+public class StudentLocalDS implements UserDataSource<Student, StudentResponse> {
     private static final String TAG = StudentLocalDS.class.getSimpleName();
     private SQLiteDatabase database;
 
@@ -77,7 +78,7 @@ public class StudentLocalDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<StudentResponse> callback) {
         String[] arrCol = new String[]{
                 STUDENT_ID,
                 FIRST_NAME,
@@ -92,6 +93,7 @@ public class StudentLocalDS implements UserDataSource<Student> {
                 FACULTY_ID,
                 ADMISSION_DATE,
                 IN_SESSION,
+                EMAIL
         };
 
         Cursor cursor = database.query(TABLE_NAME,
@@ -101,6 +103,7 @@ public class StudentLocalDS implements UserDataSource<Student> {
 
         if (cursor.moveToFirst()) {
             Student student = new Student();
+            student.setStudentId(cursor.getString(0));
             student.setFname(cursor.getString(1));
             student.setMname(cursor.getString(2));
             student.setLname(cursor.getString(3));
@@ -114,7 +117,10 @@ public class StudentLocalDS implements UserDataSource<Student> {
             student.setAdmissionDate(cursor.getString(11));
             student.setInSession(cursor.getInt(12) == 1);
             student.setEmail(cursor.getString(13));
-            callback.loadData(student);
+
+            StudentResponse response = new StudentResponse();
+            response.setStudent(student);
+            callback.loadData(response);
         }
 
         if (cursor.isNull(0)) {

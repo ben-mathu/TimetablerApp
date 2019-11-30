@@ -93,6 +93,7 @@
     <string name="is_lab">Is a Lab</string>
     <string name="volume">Volume</string>
     <string name="halls">Choose Halls</string>
+    <string name="date">Date</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

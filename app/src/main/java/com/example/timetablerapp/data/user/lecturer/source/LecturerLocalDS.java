@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.data.user.admin.model.Admin;
+import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
@@ -29,7 +31,7 @@ import static com.example.timetablerapp.data.db.TimetablerContract.Lecturer.USER
 /**
  * 08/05/19 -bernard
  */
-public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
+public class LecturerLocalDS implements UserDataSource<Lecturer, LecturerResponse>, LecturerDS {
     private static final String TAG = LecturerLocalDS.class.getSimpleName();
     private SQLiteDatabase database;
 
@@ -53,7 +55,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
 
         contentValues.put(Constants.USERNAME, name);
 
-        long countRow = database.update(TimetablerContract.Lecturer.TABLE_NAME,
+        long countRow = database.update(TABLE_NAME,
                 contentValues,
                 Constants.LECTURER_ID + "=?",
                 new String[]{userId});
@@ -64,7 +66,7 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<LecturerResponse> callback) {
         String[] arrCol = new String[]{
                 LECTURER_ID,
                 FIRST_NAME,
@@ -75,15 +77,18 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
                 IN_SESSION,
                 DEPARTMENT_ID,
                 FACULTY_ID,
+                CAMPUS_ID,
+                EMAIL
         };
 
-        Cursor cursor = database.query(TimetablerContract.Lecturer.TABLE_NAME,
+        Cursor cursor = database.query(TABLE_NAME,
                 arrCol,
-                TimetablerContract.Lecturer.LECTURER_ID + "=?",
+                LECTURER_ID + "=?",
                 new String[]{userId}, null, null, null);
 
         if (cursor.moveToFirst()) {
             Lecturer lecturer = new Lecturer();
+            lecturer.setId(cursor.getString(0));
             lecturer.setFirstName(cursor.getString(1));
             lecturer.setLastName(cursor.getString(2));
             lecturer.setMiddleName(cursor.getString(3));
@@ -92,8 +97,12 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
             lecturer.setInSesson(cursor.getInt(6) == 1);
             lecturer.setDepartmentId(cursor.getString(7));
             lecturer.setFacultyId(cursor.getString(8));
-            lecturer.setEmail(cursor.getString(9));
-            callback.loadData(lecturer);
+            lecturer.setCampusId(cursor.getString(9));
+            lecturer.setEmail(cursor.getString(10));
+
+            LecturerResponse response = new LecturerResponse();
+            response.setLecturer(lecturer);
+            callback.loadData(response);
         }
 
         if (cursor.isNull(0)) {
@@ -202,17 +211,19 @@ public class LecturerLocalDS implements UserDataSource<Lecturer>, LecturerDS {
         ContentValues values = new ContentValues();
 
         // Map items or data to contentvalues
-        values.put(TimetablerContract.Lecturer.FIRST_NAME, item.getFirstName());
-        values.put(TimetablerContract.Lecturer.LAST_NAME, item.getLastName());
-        values.put(TimetablerContract.Lecturer.MIDDLE_NAME, item.getMiddleName());
-        values.put(TimetablerContract.Lecturer.USERNAME, item.getUsername());
-        values.put(TimetablerContract.Lecturer.PASSWORD, item.getPassword());
-        values.put(TimetablerContract.Lecturer.LECTURER_ID, item.getId());
-        values.put(TimetablerContract.Lecturer.DEPARTMENT_ID, item.getDepartmentId());
-        values.put(TimetablerContract.Lecturer.FACULTY_ID, item.getFacultyId());
-        values.put(TimetablerContract.Lecturer.IN_SESSION, item.isInSession());
+        values.put(FIRST_NAME, item.getFirstName());
+        values.put(LAST_NAME, item.getLastName());
+        values.put(MIDDLE_NAME, item.getMiddleName());
+        values.put(USERNAME, item.getUsername());
+        values.put(PASSWORD, item.getPassword());
+        values.put(LECTURER_ID, item.getId());
+        values.put(DEPARTMENT_ID, item.getDepartmentId());
+        values.put(FACULTY_ID, item.getFacultyId());
+        values.put(IN_SESSION, item.isInSession());
+        values.put(CAMPUS_ID, item.getCampusid());
+        values.put(EMAIL, item.getEmail());
 
-        long countRow = database.insert(TimetablerContract.Lecturer.TABLE_NAME, null, values);
+        long countRow = database.insert(TABLE_NAME, null, values);
 
         if (countRow > 0) {
             Log.d(TAG, "save: Successfully recorded..." + countRow + "record(s)");

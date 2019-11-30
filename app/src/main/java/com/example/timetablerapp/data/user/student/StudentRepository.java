@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * 06/05/19 -bernard
  */
-public class StudentRepository implements UserDataSource<Student> {
+public class StudentRepository implements UserDataSource<Student, StudentResponse> {
     private static StudentRepository INSTANCE = null;
     private StudentRemoteDS userDataSourceRemote;
     private StudentLocalDS userDataSourceLocal;
@@ -116,7 +116,7 @@ public class StudentRepository implements UserDataSource<Student> {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<StudentResponse> callback) {
         userDataSourceRemote.getDetails(userId, userRole, new LoadUserDetailsCallback<StudentResponse>() {
             @Override
             public void loadData(@NotNull StudentResponse obj) {
@@ -222,7 +222,7 @@ public class StudentRepository implements UserDataSource<Student> {
         }, hashedNewPasswd);
     }
 
-    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback callback) {
+    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback<StudentResponse> callback) {
         userDataSourceLocal.getDetails(userId, userRole, new LoadUserDetailsCallback<StudentResponse>() {
             @Override
             public void loadData(@NotNull StudentResponse obj) {

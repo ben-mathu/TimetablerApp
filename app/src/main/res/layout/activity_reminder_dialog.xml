@@ -3,25 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <Button
+        android:id="@+id/text_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_background_two"
+        android:layout_centerInParent="true"
+        android:text="@string/date"
+        android:textSize="21sp" />
 
-        <TextView
-            android:id="@+id/text_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Date"
-            android:textSize="32sp" />
-
-        <TextView
-            android:id="@+id/text_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="Time"
-            android:textSize="32sp" />
-    </LinearLayout>
+    <!--<Button
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/button_background_two"
+        android:text="Time"
+        android:textSize="21sp" />-->
 </RelativeLayout>

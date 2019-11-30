@@ -141,4 +141,6 @@ public class Constants {
     public static final String APPLICATION_JSON = "application/json";
     public static final String DELETED_ACCOUNT_MESSAGE = "Account deleted successfully";
 
+    public static final String NOTIFICATION_CREATED = "isNotificationCreated";
+    public static final String REMINDER_SET = "isReminderSet";
 }

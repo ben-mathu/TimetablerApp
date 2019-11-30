@@ -42,5 +42,5 @@
         android:id="@+id/recycler_timetable"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        android:orientation="vertical"/>
 </RelativeLayout>

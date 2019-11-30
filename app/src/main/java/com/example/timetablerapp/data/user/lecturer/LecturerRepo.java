@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * 08/05/19 -bernard
  */
-public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
+public class LecturerRepo implements UserDataSource<Lecturer, LecturerResponse>, LecturerDS {
     private static LecturerRepo INSTANCE = null;
 
     private LecturerLocalDS lecturerLocalDS;
@@ -130,7 +130,7 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<LecturerResponse> callback) {
         lecturerRemoteDS.getDetails(userId, userRole, new LoadUserDetailsCallback<LecturerResponse>() {
             @Override
             public void loadData(@NotNull LecturerResponse obj) {
@@ -236,10 +236,10 @@ public class LecturerRepo implements UserDataSource<Lecturer>, LecturerDS {
         }, hashedNewPasswd);
     }
 
-    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback callback) {
-        lecturerLocalDS.getDetails(userId, userRole, new LoadUserDetailsCallback<Lecturer>() {
+    private void getFromLocalDS(String userId, String userRole, LoadUserDetailsCallback<LecturerResponse> callback) {
+        lecturerLocalDS.getDetails(userId, userRole, new LoadUserDetailsCallback<LecturerResponse>() {
             @Override
-            public void loadData(@NotNull Lecturer obj) {
+            public void loadData(@NotNull LecturerResponse obj) {
                 callback.loadData(obj);
             }
 

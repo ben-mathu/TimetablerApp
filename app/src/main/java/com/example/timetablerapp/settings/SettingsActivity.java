@@ -110,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     protected void onStart() {
         super.onStart();
 
-        if (presenter != null) {
+        if (presenter == null) {
             presenter = new SettingsPresenter(this,
                     MainApplication.getAdminRepo(),
                     MainApplication.getLecturerRepo(),
@@ -183,12 +183,10 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             View v = inflater.inflate(R.layout.edit_image, null);
 
             ImageButton imgCamera = v.findViewById(R.id.image_take_pic);
-            imgCamera.setOnClickListener(view1 -> {
-                startActivityForResult(
-                        new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE),
-                        ACTIVITY_CAM_RESULT
-                );
-            });
+            imgCamera.setOnClickListener(view1 -> startActivityForResult(
+                    new Intent(MediaStore.ACTION_IMAGE_CAPTURE),
+                    ACTIVITY_CAM_RESULT
+            ));
 
             ImageButton imgGallery = v.findViewById(R.id.image_pick_from_gallery);
             imgGallery.setOnClickListener(view1 -> {
@@ -276,9 +274,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         });
 
         imgResetDetails = findViewById(R.id.img_reset_details);
-        imgResetDetails.setOnClickListener(view -> {
-            presenter.setUserDetails(userId, userRole);
-        });
+        imgResetDetails.setOnClickListener(view -> presenter.setUserDetails(userId, userRole));
 
         // Edit details section
 
@@ -325,14 +321,15 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         edtYearofStudy = findViewById(R.id.edit_year_of_study);
 
         swInSession = findViewById(R.id.switch_in_session);
-        swInSession.setOnCheckedChangeListener((compoundButton, b) -> {
-            enableButton();
-        });
+        swInSession.setOnCheckedChangeListener((compoundButton, b) -> enableButton());
 
         btnSaveDetails = findViewById(R.id.button_save_details);
-        btnSaveDetails.setOnClickListener(view -> {
-            presenter.updateUser(edtFullName.getText().toString(), edtEmail.getText().toString(), userRole, userId, swInSession.isChecked());
-        });
+        btnSaveDetails.setOnClickListener(view ->
+                presenter.updateUser(edtFullName.getText().toString(),
+                        edtEmail.getText().toString(),
+                        userRole, userId,
+                        swInSession.isChecked())
+        );
 
         Button btnDeleteAccount = findViewById(R.id.button_delete_account);
         btnDeleteAccount.setOnClickListener(view -> {
@@ -341,9 +338,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
                             "you want to do this.\n\n" +
                             "Use the cancel button to cancel this dialog and use the proceed button to delete your account")
                     .setCancelable(true)
-                    .setPositiveButton("Proceed", (dialogInterface, i) -> {
-                        presenter.deleteAccount(userRole, userId);
-                    })
+                    .setPositiveButton("Proceed", (dialogInterface, i) -> presenter.deleteAccount(userRole, userId))
                     .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                     .setTitle("Change Display Name");
 
@@ -456,16 +451,16 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         String fullName = student.getFname() + " " + student.getMname() + " " + student.getLname();
         edtFullName.setText(fullName);
         edtEmail.setText(student.getEmail());
-        edtCampus.setText(campus.getCampusName());
+        edtCampus.setText(campus != null ? campus.getCampusName() : "Campus name");
 
         edtFaculty.setVisibility(View.VISIBLE);
-        edtFaculty.setText(faculty.getFacultyName());
+        edtFaculty.setText(faculty != null ? faculty.getFacultyName() : "Faculty Name");
 
         edtDepartment.setVisibility(View.VISIBLE);
-        edtDepartment.setText(department.getDepartmentName());
+        edtDepartment.setText(department != null ? department.getDepartmentName() : "Department name");
 
         edtProgramme.setVisibility(View.VISIBLE);
-        edtProgramme.setText(programme.getProgrammeName());
+        edtProgramme.setText(programme != null ? programme.getProgrammeName() : "Programme Name");
 
         edtYearofStudy.setVisibility(View.VISIBLE);
         edtYearofStudy.setText(student.getYearOfStudy());
@@ -488,13 +483,13 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         edtEmail.setText(lecturer.getEmail());
 
         edtCampus.setVisibility(View.VISIBLE);
-        edtCampus.setText(campus.getCampusName());
+        edtCampus.setText(campus != null ? campus.getCampusName() : " Campus name");
 
         edtFaculty.setVisibility(View.VISIBLE);
-        edtFaculty.setText(faculty.getFacultyName());
+        edtFaculty.setText(campus != null ? faculty.getFacultyName() : "Faculty Name");
 
         edtDepartment.setVisibility(View.VISIBLE);
-        edtDepartment.setText(department.getDepartmentName());
+        edtDepartment.setText(department != null ? department.getDepartmentName() : "Department Name");
 
     }
 

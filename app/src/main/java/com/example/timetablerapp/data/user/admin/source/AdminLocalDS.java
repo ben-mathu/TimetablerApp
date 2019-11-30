@@ -20,11 +20,12 @@ import static com.example.timetablerapp.data.db.TimetablerContract.Admin.LAST_NA
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.MIDDLE_NAME;
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.PASSWORD;
 import static com.example.timetablerapp.data.db.TimetablerContract.Admin.TABLE_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Admin.USERNAME;
 
 /**
  * 22/05/19 -bernard
  */
-public class AdminLocalDS implements UserDataSource<Admin> {
+public class AdminLocalDS implements UserDataSource<Admin, Admin> {
     private static final String TAG = AdminLocalDS.class.getSimpleName();
     private final SQLiteDatabase database;
 
@@ -48,7 +49,7 @@ public class AdminLocalDS implements UserDataSource<Admin> {
 
         contentValues.put(Constants.USERNAME, name);
 
-        long countRow = database.update(TimetablerContract.Admin.TABLE_NAME,
+        long countRow = database.update(TABLE_NAME,
                 contentValues,
                 Constants.ADMIN_ID + "=?",
                 new String[]{userId});
@@ -58,16 +59,16 @@ public class AdminLocalDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
-        String[] arrCol = new String[]{TimetablerContract.Admin.ADMIN_ID,
-                TimetablerContract.Admin.FIRST_NAME,
-                TimetablerContract.Admin.MIDDLE_NAME,
-                TimetablerContract.Admin.LAST_NAME,
-                TimetablerContract.Admin.USERNAME,
-                TimetablerContract.Admin.PASSWORD};
-        Cursor cursor = database.query(TimetablerContract.Admin.TABLE_NAME,
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<Admin> callback) {
+        String[] arrCol = new String[]{ADMIN_ID,
+                FIRST_NAME,
+                MIDDLE_NAME,
+                LAST_NAME,
+                USERNAME,
+                PASSWORD};
+        Cursor cursor = database.query(TABLE_NAME,
                 arrCol,
-                TimetablerContract.Admin.ADMIN_ID,
+                ADMIN_ID,
                 new String[]{userId}, null, null, null);
 
         if (cursor.moveToFirst()) {
@@ -149,14 +150,14 @@ public class AdminLocalDS implements UserDataSource<Admin> {
         ContentValues values = new ContentValues();
 
         // Map items or data to contentvalues
-        values.put(TimetablerContract.Admin.FIRST_NAME, item.getfName());
-        values.put(TimetablerContract.Admin.LAST_NAME, item.getlName());
-        values.put(TimetablerContract.Admin.MIDDLE_NAME, item.getmName());
-        values.put(TimetablerContract.Admin.USERNAME, item.getUsername());
-        values.put(TimetablerContract.Admin.PASSWORD, item.getPassword());
-        values.put(TimetablerContract.Admin.ADMIN_ID, item.getAdminId());
+        values.put(FIRST_NAME, item.getfName());
+        values.put(LAST_NAME, item.getlName());
+        values.put(MIDDLE_NAME, item.getmName());
+        values.put(USERNAME, item.getUsername());
+        values.put(PASSWORD, item.getPassword());
+        values.put(ADMIN_ID, item.getAdminId());
 
-        long countRow = database.insert(TimetablerContract.Admin.TABLE_NAME, null, values);
+        long countRow = database.insert(TABLE_NAME, null, values);
 
         if (countRow > 0) {
             Log.d(TAG, "save: Successfully recorded..." + countRow + "record(s)");
