@@ -99,7 +99,7 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String SALTROLE = "salt_role";
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
 
     public static final String SALT = "salt";
     public static final String ROLE = "role";

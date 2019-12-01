@@ -53,7 +53,7 @@ public class ScheduleTimerIntentService extends IntentService {
 
     private int notificationId = 0;
     private boolean isJobScheduled = false;
-    private boolean isNotificationCreate = false;
+    private boolean isNotificationCreated = false;
     private boolean isReminderSet = false;
 
     public ScheduleTimerIntentService() {
@@ -68,7 +68,7 @@ public class ScheduleTimerIntentService extends IntentService {
         isJobScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
         isReminderSet = isJobScheduled && MainApplication.getSharedPreferences()
                 .getBoolean(Constants.REMINDER_SET, false);
-        isNotificationCreate = MainApplication.getSharedPreferences().getBoolean(Constants.NOTIFICATION_CREATED, false);
+        isNotificationCreated = MainApplication.getSharedPreferences().getBoolean(Constants.NOTIFICATION_CREATED, false);
 
 //        String timeRemaining = intent.getStringExtra(Constants.NOTIFICATION_CONTENT);
 //
@@ -91,68 +91,11 @@ public class ScheduleTimerIntentService extends IntentService {
             public void run() {
                 isRegistrationScheduled = MainApplication.getSharedPreferences().getBoolean(Constants.SCHEDULE, false);
                 String role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
+
                 if (!isRegistrationScheduled && role.equalsIgnoreCase("lecturer")) {
-                    String userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
-                    Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
-                            .create(TimerApi.class)
-                            .getRegistrationSchedule(userId);
-
-                    call.enqueue(new Callback<DeadlineSettings>() {
-                        @Override
-                        public void onResponse(@NotNull Call<DeadlineSettings> call, @NotNull Response<DeadlineSettings> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                if (response.body().isActive()) {
-                                    String startDate = response.body().getStartDate();
-                                    String deadline = response.body().getDeadline();
-
-                                    authorizeNotification(startDate, deadline);
-                                } else {
-                                    MainApplication.getSharedPreferences().edit()
-                                            .putBoolean(Constants.SCHEDULE, false)
-                                            .apply();
-                                }
-                            } else {
-                                Log.d(TAG, "onResponse: Error no response");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull Call<DeadlineSettings> call, @NotNull Throwable throwable) {
-                            Log.e(TAG, "onFailure: Error check logs", throwable);
-                        }
-                    });
-                } else {
-                    Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
-                            .create(TimerApi.class)
-                            .getRegistrationSchedule();
-
-                    call.enqueue(new Callback<DeadlineSettings>() {
-                        @Override
-                        public void onResponse(@NotNull Call<DeadlineSettings> call, @NotNull Response<DeadlineSettings> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                if (response.body().isActive()) {
-                                    String startDate = response.body().getStartDate();
-                                    String deadline = response.body().getDeadline();
-
-                                    authorizeNotification(startDate, deadline);
-                                } else {
-                                    MainApplication.getSharedPreferences().edit()
-                                            .putBoolean(Constants.SCHEDULE, false)
-                                            .apply();
-                                }
-                            } else {
-                                Log.d(TAG, "onResponse: Error no response");
-                                MainApplication.getSharedPreferences().edit()
-                                        .putBoolean(Constants.SCHEDULE, false)
-                                        .apply();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull Call<DeadlineSettings> call, @NotNull Throwable throwable) {
-                            Log.e(TAG, "onFailure: Error check logs", throwable);
-                        }
-                    });
+                    getScheduleForLecturer();
+                } else if (!isRegistrationScheduled){
+                    getScheduleForOthers();
                 }
             }
         }, 0, TimeUnit.MINUTES.toMillis(5));
@@ -168,6 +111,53 @@ public class ScheduleTimerIntentService extends IntentService {
         }
     }
 
+    private void getScheduleForOthers() {
+        Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
+                .create(TimerApi.class)
+                .getRegistrationSchedule();
+
+        enqueue(call);
+    }
+
+    private void getScheduleForLecturer() {
+        String userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
+        Call<DeadlineSettings> call = RetrofitClient.getRetrofit()
+                .create(TimerApi.class)
+                .getRegistrationSchedule(userId);
+
+        enqueue(call);
+    }
+
+    private void enqueue(Call<DeadlineSettings> call) {
+        call.enqueue(new Callback<DeadlineSettings>() {
+            @Override
+            public void onResponse(@NotNull Call<DeadlineSettings> call, @NotNull Response<DeadlineSettings> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().isActive()) {
+                        String startDate = response.body().getStartDate();
+                        String deadline = response.body().getDeadline();
+
+                        authorizeNotification(startDate, deadline);
+                    } else {
+                        MainApplication.getSharedPreferences().edit()
+                                .putBoolean(Constants.SCHEDULE, false)
+                                .apply();
+                    }
+                } else {
+                    Log.d(TAG, "onResponse: Error no response");
+                    MainApplication.getSharedPreferences().edit()
+                            .putBoolean(Constants.SCHEDULE, false)
+                            .apply();
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<DeadlineSettings> call, @NotNull Throwable throwable) {
+                Log.e(TAG, "onFailure: Error check logs", throwable);
+            }
+        });
+    }
+
     /**
      * Checks if notification was created and reminder is set
      *
@@ -175,7 +165,7 @@ public class ScheduleTimerIntentService extends IntentService {
      * @param deadline date unit registration ends
      */
     private void authorizeNotification(String startDate, String deadline) {
-        if (!isNotificationCreate && !isReminderSet)
+        if (!isNotificationCreated && !isReminderSet)
             formatNotification(startDate, deadline);
     }
 
@@ -262,7 +252,7 @@ public class ScheduleTimerIntentService extends IntentService {
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(this, MainApplication.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_schedule)
-                .setContentTitle("Scheduled unit registration")
+                .setContentTitle("Scheduled units registration")
                 .setContentText(notificationContent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)

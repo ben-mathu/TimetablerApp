@@ -28,7 +28,7 @@ import retrofit2.Response;
 /**
  * 06/05/19 -bernard
  */
-public class StudentRemoteDS implements UserDataSource<Student> {
+public class StudentRemoteDS implements UserDataSource<Student, StudentResponse> {
 
     private static final String TAG = StudentRemoteDS.class.getSimpleName();
 
@@ -122,7 +122,7 @@ public class StudentRemoteDS implements UserDataSource<Student> {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<StudentResponse> callback) {
         RequestParams req = new RequestParams("", userId, userRole);
         Call<StudentResponse> call = RetrofitClient.getRetrofit()
                 .create(StudentApi.class)

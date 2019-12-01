@@ -27,7 +27,7 @@ import retrofit2.Response;
 /**
  * 22/05/19 -bernard
  */
-public class AdminRemoteDS implements UserDataSource<Admin> {
+public class AdminRemoteDS implements UserDataSource<Admin, Admin> {
     private static final String TAG = AdminRemoteDS.class.getSimpleName();
 
     @Override
@@ -95,7 +95,7 @@ public class AdminRemoteDS implements UserDataSource<Admin> {
     }
 
     @Override
-    public void getDetails(String userId, String userRole, LoadUserDetailsCallback callback) {
+    public void getDetails(String userId, String userRole, LoadUserDetailsCallback<Admin> callback) {
         RequestParams requestParams = new RequestParams("", userId, userRole);
         Call<AdminDAO> call = RetrofitClient.getRetrofit()
                 .create(AdminApi.class)

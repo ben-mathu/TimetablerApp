@@ -61,20 +61,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DashboardActivity extends AppCompatActivity implements ScheduleRegistration.OnClickListener, DashboardView {
     private static final String TAG = DashboardActivity.class.getSimpleName();
 
-    // Important classes
-    private SimpleDateFormat sf;
-    private Date date;
     private Timer timer;
     private DashboardPresenter presenter;
-    private Bitmap bitmap;
 
-    // Widgets
-    private Toolbar toolbar;
-    private TextView txtUsername, txtUserType, txtUserId;
     private TextView txtTimer, txtTimetableTimer;
     private CircleImageView circleImageView;
-    private Button btnAddLecturer, btnAddUnits, btnAddClass;
-    private LinearLayout llAddingItems;
     private BottomNavigationView navigationView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
@@ -88,9 +79,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 //    private boolean isJobScheduled = false;
 
     private String userType = "", username = "", userId = "";
-    private String deadline = "", startDate = "";
     private String strTimer = "";
-    private String fileName = "";
 
     private int screenSize = 0;
     private long timeRemaining = 0;
@@ -106,13 +95,15 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         presenter = new DashboardPresenter(this, MainApplication.getUnitRepo());
 
-        startDate = MainApplication.getSharedPreferences().getString(Constants.START_DATE, "");
-        deadline = MainApplication.getSharedPreferences().getString(Constants.END_DATE, "");
+        String startDate = MainApplication.getSharedPreferences().getString(Constants.START_DATE, "");
+        String deadline = MainApplication.getSharedPreferences().getString(Constants.END_DATE, "");
 
-        sf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        // Important classes
+        SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
         //check start date
         if (!startDate.isEmpty()) {
+            Date date;
             try {
                 date = sf.parse(startDate);
 
@@ -159,13 +150,13 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
             txtTimetableTimer.setVisibility(View.GONE);
         }
 
-        fileName = userId + " " + username + ".png";
+        String fileName = userId + " " + username + ".png";
 
         // get file path
         String filepath;
         filepath = this.getFilesDir().getPath() + "/" + fileName;
 
-        bitmap = BitmapFactory.decodeFile(filepath);
+        Bitmap bitmap = BitmapFactory.decodeFile(filepath);
 
         if (bitmap != null) {
             circleImageView.setImageBitmap(bitmap);
@@ -192,19 +183,20 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 
         frameTimetable = findViewById(R.id.timetable_fragment_container);
 
-        txtUserType = findViewById(R.id.text_user_type);
+        TextView txtUserType = findViewById(R.id.text_user_type);
         userType = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
         txtUserType.setText(userType);
 
-        txtUsername = findViewById(R.id.text_user_name);
+        TextView txtUsername = findViewById(R.id.text_user_name);
         username = MainApplication.getSharedPreferences().getString(Constants.USERNAME, "");
         txtUsername.setText(username);
 
-        txtUserId = findViewById(R.id.text_user_id);
+        TextView txtUserId = findViewById(R.id.text_user_id);
         userId = MainApplication.getSharedPreferences().getString(Constants.USER_ID, "");
         txtUserId.setText(userId);
 
-        toolbar = findViewById(R.id.toolbar_user_details);
+        // Widgets
+        Toolbar toolbar = findViewById(R.id.toolbar_user_details);
         toolbar.setTitle("");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
 
@@ -353,13 +345,15 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                                     .commitAllowingStateLoss();
                         }
                     });
-                    timer.cancel();
-                } else if (timeRemaining < 1000 && !isTimeAdded) {
+
+                    // set isUnitRegistrationScheduled to false when timetable is ready
                     isUnitRegistrationScheduled = false;
                     MainApplication.getSharedPreferences().edit()
                             .putBoolean(Constants.SCHEDULE, isUnitRegistrationScheduled)
                             .apply();
 
+                    timer.cancel();
+                } else if (timeRemaining < 1000) {
                     runOnUiThread(() -> txtTimer.setVisibility(View.GONE));
 
                     timeRemaining = TimeUnit.MINUTES.toMillis(5);
@@ -443,6 +437,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
                 .putBoolean(Constants.SCHEDULE, false)
                 .putBoolean(Constants.NOTIFICATION_CREATED, false)
                 .putBoolean(Constants.REMINDER_SET, false)
+                .putString(Constants.REMINDER, "")
                 .putString(Constants.USER_ID, "")
                 .putString(Constants.START_DATE, "")
                 .putString(Constants.END_DATE, "")
@@ -492,5 +487,12 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
 //        }
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause() {
+        if (timer != null)
+            timer.cancel();
+        super.onPause();
     }
 }
