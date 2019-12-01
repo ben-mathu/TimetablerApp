@@ -31,5 +31,5 @@ public interface FacultyApi {
                                    @Body FacultyRequest req);
 
     @GET("faculty")
-    Call<FacultyResponse> getFaculty(@Query(Constants.FACULTY_ID) String facultyId);
+    Call<FacultyRequest> getFaculty(@Query(Constants.FACULTY_ID) String facultyId);
 }

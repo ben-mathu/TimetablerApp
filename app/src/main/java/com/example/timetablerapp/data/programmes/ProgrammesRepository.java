@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.programmes;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.programmes.source.ProgLocalDS;
 import com.example.timetablerapp.data.programmes.source.ProgRemoteDS;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -78,17 +79,17 @@ public class ProgrammesRepository implements ProgrammeDS {
     }
 
     @Override
-    public void update(Programme item) {
+    public void update(Programme item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Programme item) {
+    public void delete(Programme item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Programme item) {
-        progLocalDS.save(item);
+    public void save(Programme item, SuccessfulCallback callback) {
+        progLocalDS.save(item, callback);
     }
 }

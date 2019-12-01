@@ -1,6 +1,7 @@
 package com.example.timetablerapp.data.user.lecturer.model;
 
 import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
@@ -16,8 +17,8 @@ public class LecturerResponse {
     private Faculty faculty;
     @SerializedName(Constants.TABLE_DEPARTMENTS)
     private Department department;
-    @SerializedName(Constants.TABLE_PROGRAMMES)
-    private Programme programme;
+    @SerializedName(Constants.TABLE_CAMPUS)
+    private Campus campus;
 
     public Lecturer getLecturer() {
         return lecturer;
@@ -43,11 +44,11 @@ public class LecturerResponse {
         this.department = department;
     }
 
-    public Programme getProgramme() {
-        return programme;
+    public Campus getCampus() {
+        return campus;
     }
 
-    public void setProgramme(Programme programme) {
-        this.programme = programme;
+    public void setCampus(Campus campus) {
+        this.campus = campus;
     }
 }

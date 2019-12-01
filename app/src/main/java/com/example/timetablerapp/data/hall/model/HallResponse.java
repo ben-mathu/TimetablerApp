@@ -2,20 +2,20 @@ package com.example.timetablerapp.data.hall.model;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 /**
- * 03/09/19 -bernard
+ * 26/11/19
+ *
+ * @author bernard
  */
 public class HallResponse {
-    @SerializedName("halls")
-    private List<Hall> list;
+    @SerializedName("hall")
+    private Hall hall;
 
-    public List<Hall> getList() {
-        return list;
+    public void setHall(Hall hall) {
+        this.hall = hall;
     }
 
-    public void setList(List<Hall> list) {
-        this.list = list;
+    public Hall getHall() {
+        return hall;
     }
 }

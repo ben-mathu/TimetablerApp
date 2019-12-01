@@ -6,6 +6,7 @@
     <color name="colorPrimary2">#2F5F93</color>
     <color name="colorPrimary3">#085c82</color>
     <color name="my_kind_of_grey">#8F8F8F</color>
+    <color name="grey_01">#3B8F8F8F</color>
     <color name="sterleto_blue">#0B3388</color>
     <color name="white">#FFFFFFFF</color>
     <color name="colorHint">#9BADB3</color>
@@ -13,4 +14,5 @@
     <color name="text_hint_color">#969595</color>
     <color name="transparent">#00043E54</color>
     <color name="primaryShade">#59022631</color>
+    <color name="red">#FF0000</color>
 </resources>

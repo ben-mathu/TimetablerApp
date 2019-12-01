@@ -13,8 +13,8 @@
     <string name="auth_error">Username or password is wrong.</string>
     <string name="programmes">Choose a Programme</string>
     <string name="departments">Choose Department</string>
-    <string name="faculties">Choose Faculty</string>
-    <string name="campuses">Choose Campus</string>
+    <string name="faculties">Choose Faculty:</string>
+    <string name="campuses">Choose Campus:</string>
     <string name="first_name">First Name</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
@@ -67,6 +67,33 @@
     <string name="department_name">Department Name</string>
     <string name="lecturer_id">Lecturer Id</string>
     <string name="lecturer_name">Lecturer Name</string>
+    <string name="not_practical">Not practical</string>
+    <string name="not_common">Not a common unit</string>
+    <string name="text_holder">You are modifying your username.\nUsernames are required to be all lowercase letters. You can include numbers.</string>
+    <string name="user_details">User Details</string>
+    <string name="full_name">Full Name</string>
+    <string name="year_of_study">Year of Study</string>
+    <string name="save_details">Save</string>
+    <string name="current_password">Current Password</string>
+    <string name="not_in_session">Not in session</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="user_avatar">User avatar</string>
+    <string name="placeholder3">Placeholder</string>
+    <string name="edit_username">Edit_username</string>
+    <string name="life_is_crazy">life is crazy</string>
+    <string name="show_current_password">Show_current_password</string>
+    <string name="show_password">Show password</string>
+    <string name="edit_user_details">Edit user details</string>
+    <string name="reset_user_details">Reset user details</string>
+    <string name="instructions"><![CDATA[Ensure that your name follows this form: FirstName<space>MiddlerName<space>LastName.]]></string>
+    <string name="department_id">Department Id</string>
+    <string name="class_id">Class ID</string>
+    <string name="hall_name">Hall Name</string>
+    <string name="available">Available</string>
+    <string name="is_lab">Is a Lab</string>
+    <string name="volume">Volume</string>
+    <string name="halls">Choose Halls</string>
+    <string name="date">Date</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

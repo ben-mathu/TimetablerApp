@@ -1,18 +1,19 @@
 package com.example.timetablerapp.data;
 
-import com.example.timetablerapp.data.user.admin.model.Admin;
-
-import org.jetbrains.annotations.NotNull;
-
 /**
+ * All parameters put here are used in the entire project,
+ * this file keeps environment variables for the project.
+ *
  * 07/05/19 -bernard
  */
 public class Constants {
-    public static final String BASE_URL = "http://192.168.43.146:8080/Timetabler-v2.0-0.0.1-SNAPSHOT/";
+    // Api end-point
+    public static final String BASE_URL = "http://192.168.43.146:8080/timetabler/";
+
+    /**
+     * Database properties
+     */
     public static final String DATABASE_NAME = "timetabler.db";
-    public static final String SALT = "salt";
-    public static final String ROLE = "role";
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     // Campus - done
     public static final String TABLE_CAMPUS = "campuses";
@@ -84,29 +85,45 @@ public class Constants {
     public static final String IS_LAB = "is_lab";
     public static final String IS_PRACTICAL = "is_practical";
 
-    // other parameters
-    public static final String MESSAGE = "message";
 
+    public static final String EMAIL = "email";
+
+    // Room
+    public static final String TABLE_ROOM = "classes";
+    public static final String ROOM_ID = "class_id";
+    /**
+     * Other parameters
+     */
+
+    // serialized strings for json converted
+    public static final String MESSAGE = "message";
     public static final String SALTROLE = "salt_role";
+
+    public static final String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
+
+    public static final String SALT = "salt";
+    public static final String ROLE = "role";
 
     public static final String TIMESLOT = "timeslot";
     public static final String UNIT = "unit";
     public static final String NOTIFICATION_ID = "notification_id";
-    public static final String ACTION_SNOOZE = "Reminder";
     public static final String NOTIFICATION_CONTENT = "notification_content";
     public static final String REMINDER = "reminder";
     public static final String START_DATE = "start_date";
     public static final String END_DATE = "end_date";
-
-    public static final String SCHEDULE = "job scheduled";
     public static final String USER_ID = "user_id";
+
+    // shared preferences parameters
+    public static final String ACTION_SNOOZE = "Reminder";
+    public static final String SCHEDULE = "job scheduled";
     public static final String IS_LOGGED_IN = "isLoggedIn";
     public static final String IS_TIME_REACHED = "isTimeReached";
     public static final String IS_TIME_ADDED = "isTimeAdded";
-    public static final String EMAIL = "email";
     public static final String ACCESS_CODE = "access_code";
     public static final String COMMON = "is_common";
     public static final String REQUEST_CODE = "request_code";
+
+    // Fragment tags - to create or bring a fragment into view
     public static final String TAG_ROOM = "tag_room";
     public static final String TAG_COURSES = "tag_course";
     public static final String TAG_LECTURER = "tag_lecturer";
@@ -115,4 +132,15 @@ public class Constants {
     public static final String TAG_DEPARTMENT = "tag_department";
     public static final String MORE = "tag_more";
     public static final String TAG_PROG = "tag_prog";
+    public static final String CONTENT_TYPE = "Content-Type";
+
+    // Message variables
+    public static final String MESSAGE_SUCCESS = "Successfully updated.";
+    public static final String CHECK_CONNECTION = "Check your connection, then try again.";
+    public static final String OTHER_ISSUE = "Please contact the administrator to resolve the issue.\n";
+    public static final String APPLICATION_JSON = "application/json";
+    public static final String DELETED_ACCOUNT_MESSAGE = "Account deleted successfully";
+
+    public static final String NOTIFICATION_CREATED = "isNotificationCreated";
+    public static final String REMINDER_SET = "isReminderSet";
 }

@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements MainView{
     private String role = "";
 
     public static Intent newIntent(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        return intent;
+        return new Intent(context, MainActivity.class);
     }
 
     @Override
@@ -53,18 +52,16 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MainApplication.INTERNET_ACCESS_REQUEST_CODE:
-                DialogFragment dialog = ShowExplanationDialog.newFragment("Hi, the application requires internet access and I need your permission first.", MainApplication.INTERNET_ACCESS_REQUEST_CODE);
-                dialog.show(getSupportFragmentManager(), "Explanation dialog");
-                break;
+        if (requestCode == MainApplication.INTERNET_ACCESS_REQUEST_CODE) {
+            DialogFragment dialog = ShowExplanationDialog.newFragment("Hi, the application requires internet access and I need your permission first.", MainApplication.INTERNET_ACCESS_REQUEST_CODE);
+            dialog.show(getSupportFragmentManager(), "Explanation dialog");
         }
     }
 
     private void checkIfRoleAlreadySelected() {
         role = MainApplication.getSharedPreferences().getString(Constants.ROLE, "");
 
-        if (role != null && !role.isEmpty()) {
+        if (!role.isEmpty()) {
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -87,7 +84,17 @@ public class MainActivity extends AppCompatActivity implements MainView{
 
         btnGotoLogin = findViewById(R.id.button_goto_login);
         btnGotoLogin.setOnClickListener(v -> {
+            // store role selected
             role = spinnerUserRole.getSelectedItem().toString();
+
+            // start activity login
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+
+            // save role as shared preferences
+            MainApplication.getSharedPreferences().edit()
+                    .putString(Constants.ROLE, role)
+                    .apply();
             presenter.sendUserRole(role);
         });
     }
@@ -95,14 +102,8 @@ public class MainActivity extends AppCompatActivity implements MainView{
     @Override
     public void setSalt(String salt) {
         MainApplication.getSharedPreferences().edit()
-                .putString(Constants.ROLE, role)
-                .apply();
-        MainApplication.getSharedPreferences().edit()
                 .putString(Constants.SALT, salt)
                 .apply();
-
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
-        finish();
     }
 
     @Override

@@ -25,26 +25,28 @@ object TimetablerContract {
         const val FACULTY_ID = Constants.FACULTY_ID
         const val ADMISSION_DATE = Constants.ADMISSION_DATE
         const val IN_SESSION = Constants.IN_SESSION
+        const val EMAIL = Constants.EMAIL
     }
 
     const val SQL_CREATE_STUDENT_TABLE =
-            "CREATE TABLE ${TimetablerContract.Student.TABLE_NAME} (" +
+            "CREATE TABLE ${Student.TABLE_NAME} (" +
                     "${BaseColumns._ID} INTEGER PRIMARY KEY," +
-                    "${TimetablerContract.Student.STUDENT_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Student.FIRST_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Student.LAST_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Student.MIDDLE_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Student.USERNAME} VARCHAR(15) UNIQUE," +
-                    "${TimetablerContract.Student.PASSWORD} VARCHAR(32) UNIQUE," +
-                    "${TimetablerContract.Student.YEAR_OF_STUDY} INTEGER," +
-                    "${TimetablerContract.Student.PROGRAMME_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Student.DEPARTMENT_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Student.CAMPUS_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Student.FACULTY_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Student.ADMISSION_DATE} VARCHAR(32)," +
-                    "${TimetablerContract.Student.IN_SESSION} BOOLEAN)"
+                    "${Student.STUDENT_ID} VARCHAR(10)," +
+                    "${Student.FIRST_NAME} VARCHAR(15)," +
+                    "${Student.LAST_NAME} VARCHAR(15)," +
+                    "${Student.MIDDLE_NAME} VARCHAR(15)," +
+                    "${Student.USERNAME} VARCHAR(15) UNIQUE," +
+                    "${Student.PASSWORD} VARCHAR(32) UNIQUE," +
+                    "${Student.YEAR_OF_STUDY} INTEGER," +
+                    "${Student.PROGRAMME_ID} VARCHAR(10)," +
+                    "${Student.DEPARTMENT_ID} VARCHAR(10)," +
+                    "${Student.CAMPUS_ID} VARCHAR(10)," +
+                    "${Student.FACULTY_ID} VARCHAR(10)," +
+                    "${Student.ADMISSION_DATE} VARCHAR(32)," +
+                    "${Student.IN_SESSION} BOOLEAN," +
+                    "${Student.EMAIL} VARCHAR(32))"
 
-    const val SQL_DELETE_STUDENT = "DROP TABLE IF EXISTS ${TimetablerContract.Student.TABLE_NAME}"
+    const val SQL_DELETE_STUDENT = "DROP TABLE IF EXISTS ${Student.TABLE_NAME}"
 
     // define lecturers fields
     object Lecturer : BaseColumns {
@@ -58,45 +60,51 @@ object TimetablerContract {
         const val IN_SESSION = Constants.IN_SESSION
         const val DEPARTMENT_ID = Constants.DEPARTMENT_ID
         const val FACULTY_ID = Constants.FACULTY_ID
+        const val CAMPUS_ID = Constants.CAMPUS_ID
+        const val EMAIL = Constants.EMAIL
     }
 
     const val SQL_CREATE_LECTURER_TABLE =
-            "CREATE TABLE ${TimetablerContract.Lecturer.TABLE_NAME} (" +
+            "CREATE TABLE ${Lecturer.TABLE_NAME} (" +
                     "${BaseColumns._ID} INTEGER PRIMARY KEY," +
-                    "${TimetablerContract.Lecturer.LECTURER_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Lecturer.FIRST_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Lecturer.LAST_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Lecturer.MIDDLE_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Lecturer.USERNAME} VARCHAR(15) UNIQUE," +
-                    "${TimetablerContract.Lecturer.PASSWORD} VARCHAR(32) UNIQUE," +
-                    "${TimetablerContract.Lecturer.IN_SESSION} BOOLEAN," +
-                    "${TimetablerContract.Lecturer.DEPARTMENT_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Lecturer.FACULTY_ID} VARCHAR(10))"
+                    "${Lecturer.LECTURER_ID} VARCHAR(10)," +
+                    "${Lecturer.FIRST_NAME} VARCHAR(15)," +
+                    "${Lecturer.LAST_NAME} VARCHAR(15)," +
+                    "${Lecturer.MIDDLE_NAME} VARCHAR(15)," +
+                    "${Lecturer.USERNAME} VARCHAR(15) UNIQUE," +
+                    "${Lecturer.PASSWORD} VARCHAR(32) UNIQUE," +
+                    "${Lecturer.IN_SESSION} BOOLEAN," +
+                    "${Lecturer.DEPARTMENT_ID} VARCHAR(10)," +
+                    "${Lecturer.FACULTY_ID} VARCHAR(10)," +
+                    "${Lecturer.CAMPUS_ID} VARCHAR(10)," +
+                    "${Lecturer.EMAIL} VARCHAR(32))"
 
-    const val SQL_DELETE_LECTURER = "DROP TABLE IF EXISTS ${TimetablerContract.Lecturer.TABLE_NAME}"
+    const val SQL_DELETE_LECTURER = "DROP TABLE IF EXISTS ${Lecturer.TABLE_NAME}"
 
     // define admin fields
     object Admin : BaseColumns {
         const val TABLE_NAME = Constants.TABLE_ADMIN
-        const val LECTURER_ID = Constants.ADMIN_ID
+        const val ADMIN_ID = Constants.ADMIN_ID
         const val FIRST_NAME = Constants.F_NAME
         const val LAST_NAME = Constants.L_NAME
         const val MIDDLE_NAME = Constants.M_NAME
         const val USERNAME = Constants.USERNAME
         const val PASSWORD = Constants.PASSWORD
+        const val EMAIL = Constants.EMAIL
     }
 
     const val SQL_CREATE_ADMIN_TABLE =
-            "CREATE TABLE ${TimetablerContract.Admin.TABLE_NAME} (" +
+            "CREATE TABLE ${Admin.TABLE_NAME} (" +
                     "${BaseColumns._ID} INTEGER PRIMARY KEY," +
-                    "${TimetablerContract.Admin.LECTURER_ID} VARCHAR(10)," +
-                    "${TimetablerContract.Admin.FIRST_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Admin.LAST_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Admin.MIDDLE_NAME} VARCHAR(15)," +
-                    "${TimetablerContract.Admin.USERNAME} VARCHAR(15) UNIQUE," +
-                    "${TimetablerContract.Admin.PASSWORD} VARCHAR(32) UNIQUE)"
+                    "${Admin.ADMIN_ID} VARCHAR(10)," +
+                    "${Admin.FIRST_NAME} VARCHAR(15)," +
+                    "${Admin.LAST_NAME} VARCHAR(15)," +
+                    "${Admin.MIDDLE_NAME} VARCHAR(15)," +
+                    "${Admin.USERNAME} VARCHAR(15) UNIQUE," +
+                    "${Admin.PASSWORD} VARCHAR(32)," +
+                    "${Admin.EMAIL} VARCHAR(32) UNIQUE)"
 
-    const val SQL_DELETE_ADMIN = "DROP TABLE IF EXISTS ${TimetablerContract.Admin.TABLE_NAME}"
+    const val SQL_DELETE_ADMIN = "DROP TABLE IF EXISTS ${Admin.TABLE_NAME}"
 
     // define campus details
     object Campus : BaseColumns {
@@ -164,4 +172,41 @@ object TimetablerContract {
 
     const val  SQL_DELETE_PROGRAMMES = "DROP TABLE IF EXISTS ${Programme.TABLE_NAME}"
 
+    object Hall : BaseColumns {
+        const val TABLE_NAME = Constants.TABLE_HALLS
+        const val HALL_ID = Constants.HALL_ID
+        const val HALL_NAME = Constants.HALL_NAME
+        const val FACULTY_ID = Constants.FACULTY_ID
+    }
+
+    const val SQL_CREATE_HALL_TABLE =
+            "CREATE TABLE ${Hall.TABLE_NAME} (" +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
+                    "${Hall.HALL_ID} VARCHAR(25)," +
+                    "${Hall.HALL_NAME} VARCHAR(255)," +
+                    "${Hall.FACULTY_ID} VARCHAR(25))"
+
+    const val  SQL_DELETE_HALL = "DROP TABLE IF EXISTS ${Hall.TABLE_NAME}"
+
+    object Room : BaseColumns {
+        const val TABLE_NAME = Constants.TABLE_ROOM
+        const val ROOM_ID = Constants.ROOM_ID
+        const val HALL_ID = Constants.HALL_ID
+        const val FACULTY_ID = Constants.FACULTY_ID
+        const val VOLUME = Constants.VOLUME
+        const val AVAILABILITY = Constants.AVAILABILITY
+        const val IS_LAB = Constants.IS_LAB
+    }
+
+    const val SQL_CREATE_ROOM_TABLE =
+            "CREATE TABLE ${Room.TABLE_NAME} (" +
+                    "${BaseColumns._ID} INTEGER PRIMARY KEY," +
+                    "${Room.ROOM_ID} VARCHAR(25)," +
+                    "${Room.HALL_ID} VARCHAR(255)," +
+                    "${Room.FACULTY_ID} VARCHAR(25)," +
+                    "${Room.VOLUME} VARCHAR(25)," +
+                    "${Room.AVAILABILITY} BOOLEAN," +
+                    "${Room.IS_LAB} BOOLEAN)"
+
+    const val  SQL_DELETE_ROOM = "DROP TABLE IF EXISTS ${Room.TABLE_NAME}"
 }

@@ -11,11 +11,13 @@
         android:id="@+id/toolbar_user_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/toolbar_bg_01"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        android:elevation="8dp">
+        android:elevation="3dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circle_view"
@@ -26,16 +28,11 @@
             android:elevation="12dp"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:weightSum="4">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:orientation="vertical">
+            android:baselineAligned="false"
+            android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/text_user_id"
@@ -60,20 +57,19 @@
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     tools:text="Student" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_scheduled_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="2"
-                android:gravity="end"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                tools:text="@string/placeholder2" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/text_scheduled_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="end"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="@string/placeholder2"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -89,7 +85,7 @@
                 android:id="@+id/timetable_fragment_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:paddingTop="10dp"
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
@@ -144,9 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/bottom_navigation"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginTop="10dp"/>
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/bottom_navigation"

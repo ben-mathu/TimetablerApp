@@ -1,10 +1,10 @@
 package com.example.timetablerapp.data.hall;
 
-import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.hall.model.Hall;
 import com.example.timetablerapp.data.hall.source.HallLocalDS;
 import com.example.timetablerapp.data.hall.source.HallRemoteDS;
-import com.example.timetablerapp.data.room.Room;
+import com.example.timetablerapp.data.room.model.Room;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class HallRepo implements HallDS {
     private final HallLocalDS hallLocalDS;
     private final HallRemoteDS hallRemoteDS;
 
-    public HallRepo(HallLocalDS hallLocalDS, HallRemoteDS hallRemoteDS) {
+    private HallRepo(HallLocalDS hallLocalDS, HallRemoteDS hallRemoteDS) {
 
         this.hallLocalDS = hallLocalDS;
         this.hallRemoteDS = hallRemoteDS;
@@ -30,17 +30,17 @@ public class HallRepo implements HallDS {
     }
 
     @Override
-    public void update(Hall item) {
+    public void update(Hall item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Hall item) {
+    public void delete(Hall item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Hall item) {
+    public void save(Hall item, SuccessfulCallback callback) {
 
     }
 
@@ -69,6 +69,35 @@ public class HallRepo implements HallDS {
             @Override
             public void dataNotAvailable(String message) {
                 callback.dataNotAvailable(message);
+            }
+        });
+    }
+
+    @Override
+    public void getHall(String hall_id, LoadHallCallback callback) {
+        hallRemoteDS.getHall(hall_id, new LoadHallCallback() {
+            @Override
+            public void loadHall(Hall hall) {
+                callback.loadHall(hall);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                getHallFromLocalDS(hall_id, callback);
+            }
+        });
+    }
+
+    private void getHallFromLocalDS(String hall_id, LoadHallCallback callback) {
+        hallLocalDS.getHall(hall_id, new LoadHallCallback() {
+            @Override
+            public void loadHall(Hall hall) {
+                callback.loadHall(hall);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
             }
         });
     }

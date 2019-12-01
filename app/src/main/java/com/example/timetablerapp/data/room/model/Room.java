@@ -1,4 +1,4 @@
-package com.example.timetablerapp.data.room;
+package com.example.timetablerapp.data.room.model;
 
 import com.example.timetablerapp.data.Constants;
 import com.google.gson.annotations.SerializedName;

@@ -32,6 +32,7 @@ import com.example.timetablerapp.login.LoginActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 08/05/19 -bernard
@@ -82,7 +83,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         txtLogin = view.findViewById(R.id.text_login);
         txtLogin.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), LoginActivity.class));
-            getActivity().finish();
+            Objects.requireNonNull(getActivity()).finish();
         });
 
         // Initialize Widgets
@@ -118,6 +119,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         lec.setPassword(edtPassword.getText().toString());
         lec.setFacultyId(faculties.get(spnFaculties.getCount() > 0 ? spnFaculties.getSelectedItemPosition() : 0).getFacultyId());
         lec.setDepartmentId(departments.get(spnDepartments.getCount() > 0 ? spnDepartments.getSelectedItemPosition() : 0).getDepartmentId());
+        lec.setCampusId(""); // TODO: Campus Id is not set up.
         boolean inSess = switchInSess.isChecked();
         lec.setInSesson(inSess);
 
@@ -127,23 +129,15 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
         EditText editText = layoutView.findViewById(R.id.edit_password);
         editText.setTextColor(ResourcesCompat.getColor(getResources(), R.color.white, null));
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs);
         builder.setTitle("Enter Db Password");
         builder.setView(layoutView);
-        builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dbPassword = editText.getText().toString();
-                presenter.registerUser(lec, dbPassword, faculty, department);
-            }
+        builder.setPositiveButton("ok", (dialog, which) -> {
+            dbPassword = editText.getText().toString();
+            presenter.registerUser(lec, dbPassword, faculty, department);
         });
 
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("cancel", (dialog, which) -> dialog.dismiss());
 
         builder.create().show();
     }
@@ -176,7 +170,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
             if (faculty != null)
                 facultyNames.add(faculty.getFacultyName());
         }
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                 android.R.layout.simple_spinner_dropdown_item, facultyNames);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFaculties.setAdapter(arrayAdapter);
@@ -215,7 +209,7 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
             for (Department department : departments) {
                 departmentNames.add(department.getDepartmentName());
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
                     android.R.layout.simple_spinner_dropdown_item, departmentNames);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spnDepartments.setAdapter(arrayAdapter);

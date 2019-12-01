@@ -3,6 +3,7 @@ package com.example.timetablerapp.data.department;
 import com.example.timetablerapp.data.DataSource;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.FacultyDS;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -23,11 +24,6 @@ public interface DepartmentDS extends DataSource<Department> {
     interface LoadDepartmentsCallBack {
         void loadDepartmentsSuccessful(List<Department> departments);
         void dataNotAvailable(String message);
-    }
-
-    interface SuccessfulCallback {
-        void success(String message);
-        void unSuccessful(String message);
     }
 
     interface LoadDepartmentCallback {

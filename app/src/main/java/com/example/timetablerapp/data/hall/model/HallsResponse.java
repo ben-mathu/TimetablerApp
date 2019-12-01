@@ -1,6 +1,5 @@
 package com.example.timetablerapp.data.hall.model;
 
-import com.example.timetablerapp.data.room.Room;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -8,15 +7,15 @@ import java.util.List;
 /**
  * 03/09/19 -bernard
  */
-public class RoomResponse {
-    @SerializedName("rooms")
-    private List<Room> list;
+public class HallsResponse {
+    @SerializedName("halls")
+    private List<Hall> list;
 
-    public List<Room> getList() {
+    public List<Hall> getList() {
         return list;
     }
 
-    public void setList(List<Room> list) {
+    public void setList(List<Hall> list) {
         this.list = list;
     }
 }

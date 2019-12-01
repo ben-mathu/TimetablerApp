@@ -11,8 +11,6 @@ import java.util.List;
 public interface LecturerDS {
     void deleteLecturer(Lecturer lecturer, SuccessCallback callback);
 
-    void updateLecturer(Lecturer lecturer, SuccessCallback callback);
-
     interface LecturersLoadedCallback {
         void successfullyLoaded(List<Lecturer> list);
         void unsuccessful(String message);

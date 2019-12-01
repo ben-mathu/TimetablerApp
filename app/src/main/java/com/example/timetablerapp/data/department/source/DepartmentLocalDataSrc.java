@@ -10,9 +10,15 @@ import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.department.DepartmentDS;
 import com.example.timetablerapp.data.department.model.Department;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.timetablerapp.data.db.TimetablerContract.Department.DEPARTMENT_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Department.DEPARTMENT_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Department.FACULTY_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Department.TABLE_NAME;
 
 /**
  * 08/05/19 -bernard
@@ -92,17 +98,26 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
     }
 
     @Override
-    public void update(Department item) {
+    public void update(Department item, SuccessfulCallback callback) {
+        ContentValues values = new ContentValues();
 
+        values.put(DEPARTMENT_NAME, item.getDepartmentName());
+        values.put(FACULTY_ID, item.getFacultyId());
+
+        long count = database.update(TABLE_NAME, values, DEPARTMENT_ID + "=?", new String[]{item.getDepartmentId()});
+
+        if (count > 0)
+            Log.d(TAG, "update: row count: " + count);
     }
 
     @Override
-    public void delete(Department item) {
-
+    public void delete(Department item, SuccessfulCallback callback) {
+        database.delete(TABLE_NAME, DEPARTMENT_ID,
+                new String[]{item.getDepartmentId()});
     }
 
     @Override
-    public void save(Department item) {
+    public void save(Department item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         values.put(TimetablerContract.Department.DEPARTMENT_ID, item.getDepartmentId());

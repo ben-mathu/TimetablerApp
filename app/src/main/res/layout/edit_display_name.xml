@@ -5,7 +5,19 @@
     <EditText
         android:id="@+id/edit_display_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:textColor="@color/white"
         android:layout_margin="30dp"/>
+
+    <TextView
+        android:id="@+id/text_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_display_name"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:textAlignment="center"
+        android:text="@string/text_holder"
+        android:textStyle="italic"/>
 </RelativeLayout>

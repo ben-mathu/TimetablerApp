@@ -9,6 +9,7 @@ import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 /**
  * 08/05/19 -bernard
@@ -63,17 +64,17 @@ public class FacultyLocalDS implements FacultyDS {
     }
 
     @Override
-    public void update(Faculty item) {
+    public void update(Faculty item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Faculty item) {
+    public void delete(Faculty item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Faculty item) {
+    public void save(Faculty item, SuccessfulCallback callback) {
         ContentValues values = new ContentValues();
 
         values.put(TimetablerContract.Faculty.FACULTY_ID, item.getFacultyId());

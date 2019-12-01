@@ -1,7 +1,5 @@
 package com.example.timetablerapp.data.programmes.source;
 
-import android.support.v7.widget.RecyclerView;
-
 import com.example.timetablerapp.data.programmes.ProgrammeApi;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.model.Programme;
@@ -9,8 +7,7 @@ import com.example.timetablerapp.data.programmes.model.ProgrammeRequest;
 import com.example.timetablerapp.data.programmes.model.ProgrammesResponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
-
-import java.util.List;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -98,17 +95,17 @@ public class ProgRemoteDS implements ProgrammeDS {
     }
 
     @Override
-    public void update(Programme item) {
+    public void update(Programme item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Programme item) {
+    public void delete(Programme item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Programme item) {
+    public void save(Programme item, SuccessfulCallback callback) {
 
     }
 }
