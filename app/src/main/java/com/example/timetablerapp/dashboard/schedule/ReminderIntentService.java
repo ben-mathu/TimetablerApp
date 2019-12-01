@@ -55,11 +55,11 @@ public class ReminderIntentService extends IntentService {
 
         btnDate = view.findViewById(R.id.text_date);
 
-        new AlertDialog.Builder(getApplicationContext(), R.style.Theme_Dialogs)
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext(), R.style.Theme_Dialogs)
                 .setTitle("Set Reminder")
                 .setView(view)
                 .setPositiveButton("Set Reminder", (dialogInterface, i) -> {
-                    defineOnButtonClick();
+                    onButtonClick();
 
                     String reminderDateStr = calendar.getTime().toString();
                     MainApplication.getSharedPreferences().edit()
@@ -67,13 +67,16 @@ public class ReminderIntentService extends IntentService {
                             .putBoolean(Constants.REMINDER_SET, true)
                             .apply();
                 })
-                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss()).show();
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss());
+
+        builder.create();
+        builder.show();
     }
 
     /**
      * Define button click events.
      */
-    private void defineOnButtonClick() {
+    private void onButtonClick() {
         btnDate.setOnClickListener(view1 -> {
             onTimeSetListener = (timePicker, hour, minute) -> {
                 calendar.set(Calendar.HOUR_OF_DAY, hour);

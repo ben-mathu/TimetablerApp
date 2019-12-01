@@ -15,6 +15,7 @@ import com.example.timetablerapp.dashboard.DashboardActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,7 +35,7 @@ public class NotificationIntentService extends IntentService {
     public NotificationIntentService() {
         super(TAG);
 
-        sf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        sf = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
     }
 
     @Override
@@ -68,7 +69,7 @@ public class NotificationIntentService extends IntentService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        Intent snoozeIntent = new Intent(this, ReminderIntentService.class);
+        Intent snoozeIntent = new Intent(this, ScheduleTimerReceiver.class);
         snoozeIntent.setAction(Constants.ACTION_SNOOZE);
         snoozeIntent.putExtra(EXTRA_NOTIFICATION_ID, 0);
 
