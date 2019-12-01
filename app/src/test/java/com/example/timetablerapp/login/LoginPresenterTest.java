@@ -4,6 +4,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.student.StudentRepository;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class LoginPresenterTest {
     @Mock
     private LecturerRepo lecturerRepo;
     @Mock
-    private UserDataSource.UserAuthCallback callback;
+    private SuccessfulCallback callback;
     private LoginPresenter presenter;
 
     @Before
@@ -59,6 +60,6 @@ public class LoginPresenterTest {
         userRepository.validateUser("lecturer", "Jones", "password", "123456", callback);
         presenter.login();
 
-        verify(callback, times(1)).authNotSuccessful("");
+        verify(callback, times(1)).unsuccessful("");
     }
 }

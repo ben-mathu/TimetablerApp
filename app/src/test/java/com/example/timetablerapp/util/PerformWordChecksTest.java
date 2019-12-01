@@ -7,6 +7,8 @@ import org.junit.function.ThrowingRunnable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.timetablerapp.util.PerformWordChecks.serializeName;
+
 /**
  * 24/11/19
  *
@@ -15,13 +17,8 @@ import java.util.List;
 public class PerformWordChecksTest {
 
     @Test
-    public void serializeName_WhenStringIsNull_ThrowException() {
-        Assert.assertThrows(NullPointerException.class, () -> PerformWordChecks.serializeName(null));
-    }
-
-    @Test
     public void serializeName_WhenStringIsEmpty_ThrowException() {
-        Assert.assertThrows(IllegalArgumentException.class, () -> PerformWordChecks.serializeName(""));
+        Assert.assertThrows(IllegalArgumentException.class, () -> serializeName(""));
     }
 
     @Test
@@ -31,7 +28,7 @@ public class PerformWordChecksTest {
         list.add("Benard");list.add("Kamau");list.add("Mathu");
 
         // Actual list
-        List<String> strList = PerformWordChecks.serializeName("Benard Kamau Mathu");
+        List<String> strList = serializeName("Benard Kamau Mathu");
 
         Assert.assertArrayEquals(list.toArray(), strList.toArray());
     }
@@ -42,7 +39,7 @@ public class PerformWordChecksTest {
         List<String> list = new ArrayList<>();
 
         // Actual list
-        List<String> strList = PerformWordChecks.serializeName("Benard Kamau Mathu 90");
+        List<String> strList = serializeName("Benard Kamau Mathu 90");
 
         Assert.assertArrayEquals(list.toArray(), strList.toArray());
     }
@@ -53,7 +50,7 @@ public class PerformWordChecksTest {
         List<String> list = new ArrayList<>();
 
         // Actual list
-        List<String> strList = PerformWordChecks.serializeName("Benard");
+        List<String> strList = serializeName("Benard");
 
         Assert.assertArrayEquals(list.toArray(), strList.toArray());
     }
