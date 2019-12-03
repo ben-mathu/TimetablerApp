@@ -129,6 +129,7 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
     @Override
     public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        presenter.getCampuses();
     }
 
     @Override

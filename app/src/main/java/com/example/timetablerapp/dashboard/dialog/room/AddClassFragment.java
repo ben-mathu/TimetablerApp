@@ -207,6 +207,7 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
         if (getActivity() != null) {
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
         }
+        presenter.getRooms();
     }
 
     @Override
