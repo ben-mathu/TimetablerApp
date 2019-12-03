@@ -295,6 +295,9 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
         dialog = builder.create();
         dialog.show();
 
+        Button btnCancel = view.findViewById(R.id.button_cancel);
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
             if (positiveBtnText.equalsIgnoreCase("edit")) {
                 llDepartmentEditDetails.setVisibility(View.VISIBLE);
