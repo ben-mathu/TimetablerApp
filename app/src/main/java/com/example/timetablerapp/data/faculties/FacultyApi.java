@@ -32,4 +32,12 @@ public interface FacultyApi {
 
     @GET("faculty")
     Call<FacultyRequest> getFaculty(@Query(Constants.FACULTY_ID) String facultyId);
+
+    @PUT("update-faculty")
+    Call<MessageReport> update(@Header(Constants.CONTENT_TYPE) String contentType,
+                               @Body FacultyRequest req);
+
+    @PUT("delete-faculty")
+    Call<MessageReport> delete(@Header(Constants.CONTENT_TYPE) String contentType,
+                               @Body FacultyRequest req);
 }

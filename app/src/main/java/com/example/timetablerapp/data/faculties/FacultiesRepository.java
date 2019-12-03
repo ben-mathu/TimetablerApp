@@ -105,12 +105,43 @@ public class FacultiesRepository implements FacultyDS {
 
     @Override
     public void update(Faculty item, SuccessfulCallback callback) {
+        facultyRemoteDS.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalDS(item,callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalDS(item, callback);
+            }
+        });
+    }
+
+    private void updateLocalDS(Faculty item, SuccessfulCallback callback) {
+        facultyLocalDS.update(item, callback);
     }
 
     @Override
     public void delete(Faculty item, SuccessfulCallback callback) {
+        facultyRemoteDS.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                deleteLocally(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void deleteLocally(Faculty item, SuccessfulCallback callback) {
+        facultyLocalDS.delete(item, callback);
     }
 
     @Override
