@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,7 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
                 MainApplication.getFacultyRepo(),
                 MainApplication.getDepRepo(),
                 MainApplication.getCampusRepo());
+        presenter.getCampusesForDepartment();
         presenter.getDepartments();
     }
 
@@ -109,14 +111,14 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
             public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
 //                campusName = parent.getItemAtPosition(position).toString();
                 campus = campuses.get(position);
-                presenter.getFacultyById(campus.getCampusId());
+                presenter.getFacultiesByCampusId(campus.getCampusId());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 //                campusName= parent.getSelectedItem().toString();
                 campus = campuses.get(parent.getSelectedItemPosition());
-                presenter.getFacultyById(campus.getCampusId());
+                presenter.getFacultiesByCampusId(campus.getCampusId());
             }
         });
 
@@ -138,7 +140,6 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
         Button btnAddCampus = view.findViewById(R.id.button_add_item);
         btnAddCampus.setText(R.string.add_department);
         btnAddCampus.setOnClickListener(v -> {
-            presenter.getCampusesForDepartment();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs)
                     .setPositiveButton("Send", (dialogInterface, i) -> {
@@ -191,10 +192,10 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
             facultyNames.add(item.getFacultyName());
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
-                android.R.layout.simple_spinner_dropdown_item, facultyNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFaculty.setAdapter(arrayAdapter);
+        spinnerFaculty.setAdapter(setUpAdapter(facultyNames));
+
+        if (department != null)
+            presenter.getFacultyById(department.getFacultyId());
     }
 
     @Override
@@ -206,10 +207,35 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
             campusNames.add(item.getCampusName());
         }
 
+        spinnerCampus.setAdapter(setUpAdapter(campusNames));
+
+    }
+
+    @Override
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+        txtFacultyName.setText(faculty.getFacultyName());
+
+        spinnerFaculty.setSelection(getPosition(faculty));
+    }
+
+    private int getPosition(Faculty faculty) {
+        int pos = 0;
+
+        for (Faculty item : faculties) {
+            if (faculty.getFacultyName().equals(item.getFacultyName())) {
+                return faculties.indexOf(item);
+            }
+        }
+        return pos;
+    }
+
+    private ArrayAdapter<String> setUpAdapter(List<String> items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(Objects.requireNonNull(getActivity()),
-                android.R.layout.simple_spinner_dropdown_item, campusNames);
+                android.R.layout.simple_spinner_dropdown_item, items);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCampus.setAdapter(arrayAdapter);
+
+        return arrayAdapter;
     }
 
     @Override
@@ -223,12 +249,13 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
     @Override
     public void onItemSelected(Department item) {
         this.department = item;
-        presenter.getFacultyById(item.getFacultyId());
+        presenter.getFaculties();
+        presenter.getCampusesForDepartment();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_department, null, false);
 
-        LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
-        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_course_edit_details);
+        LinearLayout llDepartmentDetails = view.findViewById(R.id.ll_department_details);
+        LinearLayout llDepartmentEditDetails = view.findViewById(R.id.ll_department_edit_details);
 
         // Before editing
         // Display details in plain text.
@@ -247,9 +274,11 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
 
         spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
 
+        spinnerCampus = view.findViewById(R.id.change_spinner_campus);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
         builder.setView(view);
-        builder.setTitle("Edit Course");
+        builder.setTitle("Edit Department");
         positiveBtnText = "Edit";
 
         builder.setPositiveButton(positiveBtnText, null);
@@ -264,8 +293,8 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
 
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
             if (positiveBtnText.equalsIgnoreCase("edit")) {
-                llCourseEditDetails.setVisibility(View.VISIBLE);
-                llCourseDetails.setVisibility(View.GONE);
+                llDepartmentEditDetails.setVisibility(View.VISIBLE);
+                llDepartmentDetails.setVisibility(View.GONE);
 
                 positiveBtnText = "Save";
 

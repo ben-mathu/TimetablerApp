@@ -5,10 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_background_three"
+        android:text="@string/cancel"/>
+
     <LinearLayout
         android:id="@+id/ll_lecturer_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/button_cancel"
         android:visibility="visible"
         tools:visibility="visible"
         android:orientation="vertical">

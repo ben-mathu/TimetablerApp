@@ -31,16 +31,6 @@
             android:textSize="14sp"/>
 
         <TextView
-            android:id="@+id/text_faculty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="#fff"
-            android:textSize="14sp"
-            android:text="@string/faculties"/>
-
-        <TextView
             android:id="@+id/text_campus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,6 +39,16 @@
             android:textColor="#fff"
             android:textSize="14sp"
             android:text="@string/campuses"/>
+
+        <TextView
+            android:id="@+id/text_faculty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:text="@string/faculties"/>
     </LinearLayout>
 
     <LinearLayout
@@ -79,24 +79,6 @@
             android:textSize="14sp"/>
 
         <TextView
-            android:id="@+id/text_faculties"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginBottom="5dp"
-            android:textColor="#fff"
-            android:text="@string/faculties"/>
-
-        <Spinner
-            android:id="@+id/change_spinner_faculty"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:backgroundTint="@color/colorAccent"
-            android:textAlignment="viewStart"/>
-
-        <TextView
             android:id="@+id/text_campuses"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,6 +89,24 @@
 
         <Spinner
             android:id="@+id/change_spinner_campus"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textAlignment="viewStart"/>
+
+        <TextView
+            android:id="@+id/text_faculties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:text="@string/faculties"/>
+
+        <Spinner
+            android:id="@+id/change_spinner_faculty"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="30dp"

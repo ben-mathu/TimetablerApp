@@ -137,7 +137,7 @@ public class DepartmentRepository implements DepartmentDS {
             @Override
             public void successful(String message) {
                 callback.successful(message);
-                update(item, callback);
+                updateLocalDS(item, callback);
             }
 
             @Override

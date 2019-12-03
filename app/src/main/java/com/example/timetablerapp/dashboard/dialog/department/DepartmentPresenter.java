@@ -45,7 +45,7 @@ public class DepartmentPresenter {
         });
     }
 
-    public void getFacultyById(String campusId) {
+    public void getFacultiesByCampusId(String campusId) {
         facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
             public void loadingFacultiesSuccessful(List<Faculty> faculties) {
@@ -57,6 +57,20 @@ public class DepartmentPresenter {
                 view.showMessage(message);
             }
         }, campusId);
+    }
+
+    public void getFacultyById(String facultyId) {
+        facultyRepo.getFacultyById(facultyId, new FacultyDS.LoadFacultyCallback() {
+            @Override
+            public void successfullyLoadedFaculty(Faculty faculty) {
+                view.setFaculty(faculty);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
     }
 
     public void getCampusesForDepartment() {
@@ -91,12 +105,12 @@ public class DepartmentPresenter {
         facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
             public void loadingFacultiesSuccessful(List<Faculty> faculties) {
-
+                view.setFaculties(faculties);
             }
 
             @Override
             public void dataNotAvailable(String message) {
-
+                view.showMessage(message);
             }
         });
     }

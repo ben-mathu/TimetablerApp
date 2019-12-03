@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
@@ -29,10 +30,10 @@ public interface DepartmentApi {
     @GET("department")
     Call<DepartmentRequest> getDepartmentById(@Query(Constants.DEPARTMENT_ID) String departmentId);
 
-    @PUT("delete")
-    Call<MessageReport> deleteCourse(@Header(Constants.APPLICATION_JSON) String contentType,
+    @PUT("delete-department")
+    Call<MessageReport> deleteCourse(@Header(Constants.CONTENT_TYPE) String contentType,
                                      @Body DepartmentRequest req);
 
-    @PUT("update")
-    Call<MessageReport> upDepartment(@Header(Constants.APPLICATION_JSON) String contentType, @Body DepartmentRequest req);
+    @PUT("update-department")
+    Call<MessageReport> update(@Header(Constants.CONTENT_TYPE) String contentType, @Body DepartmentRequest req);
 }

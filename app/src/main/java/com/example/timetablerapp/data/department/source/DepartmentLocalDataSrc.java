@@ -112,7 +112,7 @@ public class DepartmentLocalDataSrc implements DepartmentDS {
 
     @Override
     public void delete(Department item, SuccessfulCallback callback) {
-        database.delete(TABLE_NAME, DEPARTMENT_ID,
+        database.delete(TABLE_NAME, DEPARTMENT_ID + "=?",
                 new String[]{item.getDepartmentId()});
     }
 
