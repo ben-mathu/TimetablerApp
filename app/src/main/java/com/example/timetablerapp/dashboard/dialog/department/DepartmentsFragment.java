@@ -1,5 +1,6 @@
 package com.example.timetablerapp.dashboard.dialog.department;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -61,6 +62,7 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
     private Spinner spinnerDepartment;
     private String departmentName;
     private String positiveBtnText;
+    private String negativeBtnText;
     private AlertDialog dialog;
 
     @Override
@@ -279,14 +281,16 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
         builder.setView(view);
         builder.setTitle("Edit Department");
-        positiveBtnText = "Edit";
 
+        positiveBtnText = "Edit";
         builder.setPositiveButton(positiveBtnText, null);
 
-        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
-            presenter.deleteDepartment(item);
-        });
+        negativeBtnText = "Delete";
+        builder.setNegativeButton(negativeBtnText, null);
 
+//        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
+//            presenter.deleteDepartment(item);
+//        });
 
         dialog = builder.create();
         dialog.show();
@@ -297,17 +301,30 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
                 llDepartmentDetails.setVisibility(View.GONE);
 
                 positiveBtnText = "Save";
-
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+
+                negativeBtnText = "Cancel";
+                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(negativeBtnText);
             } else {
                 Department department = new Department();
                 department.setDepartmentId(edtDepartmentId.getText().toString());
                 department.setDepartmentName(edtDepartmentName.getText().toString());
                 department.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
                 presenter.updateDepartment(department);
+
+                dialog.dismiss();
             }
         });
 
+        // configure negative button
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(view1 -> {
+            if (negativeBtnText.equalsIgnoreCase("cancel")) {
+                dialog.dismiss();
+            } else {
+                presenter.deleteDepartment(item);
+                dialog.dismiss();
+            }
+        });
         adapter.notifyDataSetChanged();
     }
 }

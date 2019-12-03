@@ -436,5 +436,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
                 dialog.dismiss();
             }
         });
+
+        adapter.notifyDataSetChanged();
     }
 }
