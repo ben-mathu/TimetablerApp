@@ -6,10 +6,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.util.SuccessfulCallback;
+
+import static com.example.timetablerapp.data.db.TimetablerContract.Faculty.CAMPUS_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Faculty.FACULTY_ID;
+import static com.example.timetablerapp.data.db.TimetablerContract.Faculty.FACULTY_NAME;
+import static com.example.timetablerapp.data.db.TimetablerContract.Faculty.TABLE_NAME;
 
 /**
  * 08/05/19 -bernard
@@ -65,12 +71,16 @@ public class FacultyLocalDS implements FacultyDS {
 
     @Override
     public void update(Faculty item, SuccessfulCallback callback) {
+        ContentValues values = new ContentValues();
+        values.put(FACULTY_NAME, item.getFacultyName());
+        values.put(CAMPUS_ID, item.getCampusId());
 
+        database.update(TABLE_NAME, values, FACULTY_ID + "=?", new String[]{item.getFacultyId()});
     }
 
     @Override
     public void delete(Faculty item, SuccessfulCallback callback) {
-
+        database.delete(TABLE_NAME, FACULTY_ID + "=?", new String[]{item.getFacultyId()});
     }
 
     @Override

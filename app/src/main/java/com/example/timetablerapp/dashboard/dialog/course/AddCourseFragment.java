@@ -236,6 +236,7 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
     @Override
     public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        presenter.getCourses();
     }
 
     @Override

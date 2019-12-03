@@ -1,5 +1,7 @@
 package com.example.timetablerapp.dashboard.dialog.faculty;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,23 +18,27 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.util.CompareStrings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 06/09/19 -bernard
  */
-public class FacultiesFragment extends Fragment implements FacultyView {
+public class FacultiesFragment extends Fragment implements FacultyView, OnItemSelectedListener<Faculty> {
     private List<Faculty> faculties;
     private List<Campus> campuses;
 
@@ -40,6 +46,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
     private FacultyPresenter presenter;
     private FacultyAdapter adapter;
     private Campus campus;
+    private Faculty faculty;
 
     // Widgets
     private RecyclerView recyclerFaculty;
@@ -47,6 +54,9 @@ public class FacultiesFragment extends Fragment implements FacultyView {
 
     // Literals
     private String campusName = "";
+    private String positiveBtnText = "";
+    private String negativeBtnText;
+    private AlertDialog dialog;
 
     @Override
     public void onStart() {
@@ -89,7 +99,7 @@ public class FacultiesFragment extends Fragment implements FacultyView {
 
         View dialogView = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_faculty, null, false);
-        EditText edtFacultyName = dialogView.findViewById(R.id.edit_campus_name);
+        EditText edtFacultyName = dialogView.findViewById(R.id.edit_faculty_name);
 
         spinnerCampus = dialogView.findViewById(R.id.spinner_campus);
         spinnerCampus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -154,22 +164,110 @@ public class FacultiesFragment extends Fragment implements FacultyView {
             campusNames.add(campus.getCampusName());
         }
 
+        spinnerCampus.setAdapter(initializeArrayAdapter(campusNames));
+    }
+
+    private SpinnerAdapter initializeArrayAdapter(List<String> items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, campusNames);
+                android.R.layout.simple_spinner_dropdown_item, items);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCampus.setAdapter(arrayAdapter);
+
+        return arrayAdapter;
     }
 
     @Override
     public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        presenter.getFacultiesForFaculty();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void setFaculties(List<Faculty> faculties) {
         this.faculties = faculties;
 
-        adapter = new FacultyAdapter(getActivity(), faculties);
+        adapter = new FacultyAdapter(getActivity(), faculties, this);
         recyclerFaculty.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemSelected(Faculty item) {
+        faculty = item;
+        presenter.getCampusesForFaculty();
+
+        @SuppressLint("InflateParams")
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_faculty, null, false);
+
+
+        LinearLayout llLecturerDetails = view.findViewById(R.id.ll_faculty_details);
+        LinearLayout llEditLecturerDetails = view.findViewById(R.id.ll_faculty_edit_details);
+
+        // Before editing
+        // show lecturer details.
+        TextView txtFacultyId = view.findViewById(R.id.text_faculty_id);
+        txtFacultyId.setText(item.getFacultyId());
+        TextView txtFacultyName = view.findViewById(R.id.text_faculty_name);
+        txtFacultyName = view.findViewById(R.id.text_faculty_name);
+
+        EditText edtFacultyId = view.findViewById(R.id.edit_faculty_id);
+        edtFacultyId.setText(item.getFacultyId());
+
+        EditText edtFacultyName = view.findViewById(R.id.edit_faculty_name);
+        edtFacultyName.setText(item.getFacultyName());
+
+        spinnerCampus = view.findViewById(R.id.change_spinner_campus);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()),R.style.Theme_Dialogs);
+        builder.setTitle("Edit Lecturer");
+        builder.setView(view);
+
+        // set initial positive button text to edit
+        positiveBtnText = "Edit";
+        builder.setPositiveButton(positiveBtnText, null);
+
+        // set initial negative button text to delete
+        negativeBtnText = "Delete";
+        builder.setNegativeButton(negativeBtnText, null);
+
+        dialog = builder.create();
+        dialog.show();
+
+        Button btnCancel = view.findViewById(R.id.button_cancel);
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        // configure positive button
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
+            if (positiveBtnText.equalsIgnoreCase("edit")) {
+                llEditLecturerDetails.setVisibility(View.VISIBLE);
+                llLecturerDetails.setVisibility(View.GONE);
+
+                // if button pressed and text == "edit" set positive button to "save"
+                // and negative button "cancel"
+                positiveBtnText = "Save";
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+
+                negativeBtnText = "Cancel";
+                dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setText(negativeBtnText);
+            } else {
+                Faculty f = new Faculty();
+                f.setFacultyId(edtFacultyId.getText().toString());
+                f.setFacultyName(edtFacultyName.getText().toString());
+                f.setCampusId(campuses.get(spinnerCampus.getSelectedItemPosition()).getCampusId());
+                presenter.updateFaculty(f);
+
+                dialog.dismiss();
+            }
+        });
+
+        // configure negative button
+        dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(view1 -> {
+            if (negativeBtnText.equalsIgnoreCase("cancel")) {
+                dialog.dismiss();
+            } else {
+                presenter.deleteFaculty(item);
+                dialog.dismiss();
+            }
+        });
+
+        adapter.notifyDataSetChanged();
     }
 }

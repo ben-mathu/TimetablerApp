@@ -208,6 +208,7 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView {
     @Override
     public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        presenter.getAllProgrammes();
     }
 
     @Override

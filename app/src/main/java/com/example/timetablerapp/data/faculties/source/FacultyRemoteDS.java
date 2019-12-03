@@ -2,6 +2,7 @@ package com.example.timetablerapp.data.faculties.source;
 
 import android.util.Log;
 
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.faculties.FacultyApi;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.FacultiesResponse;
@@ -11,6 +12,8 @@ import com.example.timetablerapp.data.faculties.model.FacultyResponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.example.timetablerapp.util.SuccessfulCallback;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.net.ConnectException;
 import java.util.List;
@@ -124,12 +127,55 @@ public class FacultyRemoteDS implements FacultyDS {
 
     @Override
     public void update(Faculty item, SuccessfulCallback callback) {
+        FacultyRequest req = new FacultyRequest(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(FacultyApi.class)
+                .update(Constants.APPLICATION_JSON, req);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again or contact the administrator.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                callback.unsuccessful("Error: " + t.getLocalizedMessage());
+                t.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void delete(Faculty item, SuccessfulCallback callback) {
+        FacultyRequest req = new FacultyRequest(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(FacultyApi.class)
+                .delete(Constants.APPLICATION_JSON, req);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(@NotNull Call<MessageReport> call, @NotNull Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful(Constants.OTHER_ISSUE + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull Call<MessageReport> call, @NotNull Throwable t) {
+                if (t instanceof ConnectException) {
+                    callback.unsuccessful(Constants.CHECK_CONNECTION);
+                } else {
+                    callback.unsuccessful(Constants.OTHER_ISSUE + t.getLocalizedMessage());
+                }
+            }
+        });
     }
 
     @Override

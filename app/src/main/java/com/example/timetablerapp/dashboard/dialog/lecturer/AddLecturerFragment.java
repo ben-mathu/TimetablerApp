@@ -178,6 +178,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+        presenter.getLecturers();
     }
 
     @Override

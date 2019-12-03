@@ -183,6 +183,7 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
     @Override
     public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        presenter.getDepartments();
     }
 
     @Override

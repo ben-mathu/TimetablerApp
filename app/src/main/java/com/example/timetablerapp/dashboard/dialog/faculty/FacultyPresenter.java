@@ -6,6 +6,7 @@ import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.faculties.FacultiesRepository;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -63,6 +64,34 @@ public class FacultyPresenter {
 
             @Override
             public void dataNotAvailable(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
+
+    public void updateFaculty(Faculty faculty) {
+        facultyRepo.update(faculty, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
+
+    public void deleteFaculty(Faculty faculty) {
+        facultyRepo.delete(faculty, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
                 view.showMessage(message);
             }
         });
