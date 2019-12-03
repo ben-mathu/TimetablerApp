@@ -17,4 +17,6 @@ public interface DepartView {
     void setFaculties(List<Faculty> faculties);
 
     void setCampusList(List<Campus> campuses);
+
+    void setFaculty(Faculty faculty);
 }

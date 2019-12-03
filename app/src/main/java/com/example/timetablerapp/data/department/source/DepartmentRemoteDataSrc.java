@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.department.source;
 
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.department.DepartmentApi;
 import com.example.timetablerapp.data.department.DepartmentDS;
 import com.example.timetablerapp.data.department.model.Department;
@@ -131,7 +132,7 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
         DepartmentRequest req = new DepartmentRequest(item);
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(DepartmentApi.class)
-                .upDepartment("application/json", req);
+                .update(Constants.APPLICATION_JSON, req);
 
         call.enqueue(new Callback<MessageReport>() {
             @Override
@@ -139,7 +140,7 @@ public class DepartmentRemoteDataSrc implements DepartmentDS {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getMessage());
                 } else {
-                    callback.unsuccessful("Please try again");
+                    callback.unsuccessful("Please try again or contact the administrator.");
                 }
             }
 

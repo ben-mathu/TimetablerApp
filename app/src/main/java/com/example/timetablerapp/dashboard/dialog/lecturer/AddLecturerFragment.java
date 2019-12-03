@@ -300,6 +300,7 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
         @SuppressLint("InflateParams")
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_lecturer, null, false);
 
+
         LinearLayout llLecturerDetails = view.findViewById(R.id.ll_lecturer_details);
         LinearLayout llEditLecturerDetails = view.findViewById(R.id.ll_lecturer_edit_details);
 
@@ -396,6 +397,8 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
         dialog = builder.create();
         dialog.show();
 
+        Button btnCancel = view.findViewById(R.id.button_cancel);
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
         // configure positive button
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
             if (positiveBtnText.equalsIgnoreCase("edit")) {
