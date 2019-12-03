@@ -178,6 +178,8 @@ public class FacultiesFragment extends Fragment implements FacultyView, OnItemSe
     @Override
     public void showMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        presenter.getFacultiesForFaculty();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
