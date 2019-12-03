@@ -99,7 +99,7 @@ public class FacultiesFragment extends Fragment implements FacultyView, OnItemSe
 
         View dialogView = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialog_faculty, null, false);
-        EditText edtFacultyName = dialogView.findViewById(R.id.edit_campus_name);
+        EditText edtFacultyName = dialogView.findViewById(R.id.edit_faculty_name);
 
         spinnerCampus = dialogView.findViewById(R.id.spinner_campus);
         spinnerCampus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

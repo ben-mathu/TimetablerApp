@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditText
-        android:id="@+id/edit_Faculty_name"
+        android:id="@+id/edit_faculty_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_background"
