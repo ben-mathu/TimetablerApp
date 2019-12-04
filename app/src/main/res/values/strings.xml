@@ -42,9 +42,9 @@
     <string name="email">Email</string>
     <string name="create">Create</string>
     <string name="home">Home</string>
-    <string name="lecturer">Lecturer</string>
-    <string name="room">Room</string>
-    <string name="course">Course</string>
+    <string name="lecturer">Lecturers</string>
+    <string name="room">Rooms</string>
+    <string name="course">Courses</string>
     <string name="error">An error occurred, please contact administrator</string>
     <string name="add_course">Add Course</string>
     <string name="unit_id">Unit Id</string>
@@ -95,6 +95,8 @@
     <string name="halls">Choose Halls</string>
     <string name="date">Date</string>
     <string name="programme_id">Programme Id</string>
+    <string name="hall_id">Hall Id</string>
+    <string name="hall">Halls</string>
 
     <string-array name="roles">
         <item>Lecturer</item>

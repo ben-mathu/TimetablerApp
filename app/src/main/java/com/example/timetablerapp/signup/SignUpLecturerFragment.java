@@ -80,17 +80,17 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up_lecturer, container, false);
 
-        txtLogin = view.findViewById(R.id.text_login);
-        txtLogin.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), LoginActivity.class));
-            Objects.requireNonNull(getActivity()).finish();
-        });
+//        txtLogin = view.findViewById(R.id.text_login);
+//        txtLogin.setOnClickListener(v -> {
+//            startActivity(new Intent(getActivity(), LoginActivity.class));
+//            Objects.requireNonNull(getActivity()).finish();
+//        });
 
         // Initialize Widgets
-        edtUserId = view.findViewById(R.id.edit_user_id);
-        edtFName = view.findViewById(R.id.edit_first_name);
-        edtLName = view.findViewById(R.id.edit_last_name);
-        edtMName = view.findViewById(R.id.edit_middle_name);
+//        edtUserId = view.findViewById(R.id.edit_user_id);
+//        edtFName = view.findViewById(R.id.edit_first_name);
+//        edtLName = view.findViewById(R.id.edit_last_name);
+//        edtMName = view.findViewById(R.id.edit_middle_name);
         edtUsername = view.findViewById(R.id.edit_username);
         edtPassword = view.findViewById(R.id.edit_password);
         edtEmail = view.findViewById(R.id.edit_email_address);
@@ -110,10 +110,6 @@ public class SignUpLecturerFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         Lecturer lec = new Lecturer();
-        lec.setId(edtUserId.getText().toString());
-        lec.setFirstName(edtFName.getText().toString());
-        lec.setLastName(edtLName.getText().toString());
-        lec.setMiddleName(edtMName.getText().toString());
         lec.setUsername(edtUsername.getText().toString());
         lec.setEmail(edtEmail.getText().toString());
         lec.setPassword(edtPassword.getText().toString());

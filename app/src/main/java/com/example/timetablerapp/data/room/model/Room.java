@@ -19,6 +19,8 @@ public class Room {
     private boolean isLab;
     @SerializedName(Constants.AVAILABILITY)
     private boolean availability;
+    @SerializedName(Constants.IS_REMOVED)
+    private boolean isRemoved;
 
     public Room(String id, String hall_id, String facultyId, String volume, boolean isLab, boolean availability) {
         this.id = id;
@@ -27,9 +29,11 @@ public class Room {
         this.volume = volume;
         this.isLab = isLab;
         this.availability = availability;
+        isRemoved = false;
     }
 
     public Room() {
+        isRemoved = false;
     }
 
     public String getId() {
@@ -78,5 +82,13 @@ public class Room {
 
     public void setFacultyId(String facultyId) {
         this.facultyId = facultyId;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }

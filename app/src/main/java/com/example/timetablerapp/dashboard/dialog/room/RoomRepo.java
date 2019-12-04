@@ -23,7 +23,7 @@ public class RoomRepo implements RoomDS {
     }
 
     public static RoomRepo newInstance(RoomLocalDS roomLocalDS, RoomRemoteDS roomRemoteDS) {
-        if (INSTANCE != null) {
+        if (INSTANCE == null) {
             INSTANCE = new RoomRepo(roomLocalDS, roomRemoteDS);
         }
         return INSTANCE;

@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
@@ -21,9 +20,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -238,59 +235,63 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         if (screenSize != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
             navigationView = findViewById(R.id.bottom_navigation);
             navigationView.setOnNavigationItemSelectedListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.room:
-                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_ROOM);
-
-                        if (fragment == null) {
-                            fragment = new AddClassFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, Constants.TAG_ROOM)
-                                    .commit();
-                        }
-                        break;
-                    case R.id.course:
-                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_COURSES);
-
-                        if (fragment == null) {
-                            fragment = new AddCourseFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, Constants.TAG_COURSES)
-                                    .commit();
-                        }
-                        break;
-                    case R.id.lecturer:
-                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_LECTURER);
-
-                        if (fragment == null) {
-                            fragment = new AddLecturerFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, Constants.TAG_LECTURER)
-                                    .commitAllowingStateLoss();
-                        }
-                        break;
-                    case R.id.dashboard:
-                        getSupportFragmentManager().beginTransaction()
-                                .remove(fragment)
-                                .commit();
-                        break;
-                    case R.id.more:
-                        fragment = getSupportFragmentManager().findFragmentByTag(Constants.MORE);
-
-                        if (fragment != null && fragment.isVisible() && getSupportFragmentManager().getBackStackEntryCount() == 1) {
-                            onBackPressed();
-                        }
-
-                        if (fragment == null) {
-                            fragment = new MoreFragment();
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragment_container, fragment, Constants.MORE)
-                                    .commit();
-                        }
-                        break;
-                }
+                switchViews(item);
                 return true;
             });
+        }
+    }
+
+    private void switchViews(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.room:
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_ROOM);
+
+                if (fragment == null) {
+                    fragment = new AddClassFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.TAG_ROOM)
+                            .commit();
+                }
+                break;
+            case R.id.course:
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_COURSES);
+
+                if (fragment == null) {
+                    fragment = new AddCourseFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.TAG_COURSES)
+                            .commit();
+                }
+                break;
+            case R.id.lecturer:
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.TAG_LECTURER);
+
+                if (fragment == null) {
+                    fragment = new AddLecturerFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.TAG_LECTURER)
+                            .commitAllowingStateLoss();
+                }
+                break;
+            case R.id.dashboard:
+                getSupportFragmentManager().beginTransaction()
+                        .remove(fragment)
+                        .commit();
+                break;
+            case R.id.more:
+                fragment = getSupportFragmentManager().findFragmentByTag(Constants.MORE);
+
+                if (fragment != null && fragment.isVisible() && getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                    onBackPressed();
+                }
+
+                if (fragment == null) {
+                    fragment = new MoreFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, fragment, Constants.MORE)
+                            .commit();
+                }
+                break;
         }
     }
 
@@ -387,7 +388,7 @@ public class DashboardActivity extends AppCompatActivity implements ScheduleRegi
         if (userType.equalsIgnoreCase("student") ||
                 userType.equalsIgnoreCase("lecturer") ||
                 userType.equalsIgnoreCase("admin")) {
-            if (isUnitRegistrationScheduled || userType.equalsIgnoreCase("admin")) {
+            if (isUnitRegistrationScheduled || userType.equalsIgnoreCase("admin") || userType.equalsIgnoreCase("lecturer") ) {
                 menu.add(0, 103, 1, "Register Units");
             }
         }

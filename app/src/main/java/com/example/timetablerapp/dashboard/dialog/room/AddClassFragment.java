@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
-import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.hall.model.Hall;
 import com.example.timetablerapp.data.room.model.Room;
@@ -167,6 +166,7 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
                     presenter.addRoom(room, edtPassCode.getText().toString());
                 }
             });
+            builder.setNegativeButton("Cancel", ((dialogInterface, i) -> dialogInterface.dismiss()));
 
             if (dialogView.getParent() != null) {
                 ((ViewGroup) dialogView.getParent()).removeView(dialogView);
@@ -204,10 +204,8 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
 
     @Override
     public void showMessage(String message) {
-        if (getActivity() != null) {
+        if (getActivity() != null)
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        }
-        presenter.getRooms();
     }
 
     @Override
@@ -326,7 +324,7 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
         builder.setPositiveButton(positiveBtnText, null);
 
         builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
-            presenter.deleteHall(item);
+            presenter.deleteRoom(item);
         });
 
 

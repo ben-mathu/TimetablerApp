@@ -127,10 +127,6 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         if (lec.getPassword().isEmpty() ||
                 lec.getFacultyId().isEmpty() ||
                 lec.getDepartmentId().isEmpty() ||
-                lec.getFirstName().isEmpty() ||
-                lec.getId().isEmpty() ||
-                lec.getLastName().isEmpty() ||
-                lec.getMiddleName().isEmpty() ||
                 lec.getUsername().isEmpty()
         ) {
             view.showMessages("Please fill out the form all field are required");

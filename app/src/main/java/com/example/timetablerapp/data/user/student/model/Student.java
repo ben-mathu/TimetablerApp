@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.user.student.model;
 
+import com.example.timetablerapp.data.Constants;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -34,6 +35,8 @@ public class Student {
     private boolean inSession = false;
     @SerializedName("email")
     private String email;
+    @SerializedName(Constants.IS_REMOVED)
+    private boolean isRemoved;
 
     public Student(String studentId,
                    String fname, String lname,
@@ -56,9 +59,11 @@ public class Student {
         this.admissionDate = admissionDate;
         this.inSession = inSession;
         this.email = email;
+        isRemoved = false;
     }
 
     public Student() {
+        isRemoved = false;
     }
 
     public String getStudentId() {
@@ -171,5 +176,13 @@ public class Student {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }

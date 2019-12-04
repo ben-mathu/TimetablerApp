@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.hall.source;
 
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.hall.HallDS;
 import com.example.timetablerapp.data.hall.model.Hall;
 import com.example.timetablerapp.data.hall.model.HallResponse;
@@ -10,7 +11,6 @@ import com.example.timetablerapp.data.room.model.Room;
 import com.example.timetablerapp.data.room.model.RoomRequest;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.example.timetablerapp.util.SuccessfulCallback;
-import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -93,6 +93,60 @@ public class HallRemoteDS implements HallDS{
         });
     }
 
+    @Override
+    public void getHalls(HallLoadedCallback hallLoadedCallback) {
+        Call<HallsResponse> call = RetrofitClient.getRetrofit()
+                .create(HallApi.class)
+                .getHalls();
+
+        call.enqueue(new Callback<HallsResponse>() {
+            @Override
+            public void onResponse(Call<HallsResponse> call, Response<HallsResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    hallLoadedCallback.loadingHallsSuccessful(response.body().getList());
+                } else {
+                    hallLoadedCallback.dataNotAvailable("please try again or contact the administrator");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HallsResponse> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    hallLoadedCallback.dataNotAvailable("Check your connection and try again.");
+                else
+                    hallLoadedCallback.dataNotAvailable("Please contact the administrator.");
+            }
+        });
+    }
+
+    @Override
+    public void addHall(Hall hall, SuccessfulCallback callback) {
+        HallResponse req = new HallResponse();
+        req.setHall(hall);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(HallApi.class)
+                .addHall(Constants.APPLICATION_JSON, req);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Please try again.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful("Check your connection.");
+                else
+                    callback.unsuccessful("Please contact the administrator.");
+            }
+        });
+    }
+
     public void addRooms(Room room, String passcode, HallDS.Success success) {
         RoomRequest request = new RoomRequest(room, passcode);
         Call<MessageReport> call = RetrofitClient.getRetrofit()
@@ -118,12 +172,56 @@ public class HallRemoteDS implements HallDS{
 
     @Override
     public void update(Hall item, SuccessfulCallback callback) {
+        HallResponse req = new HallResponse();
+        req.setHall(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(HallApi.class)
+                .update(Constants.APPLICATION_JSON, req);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    callback.successful(response.body().getMessage());
+                else
+                    callback.unsuccessful("Please try again.");
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful("Check your internet.");
+                else
+                    callback.unsuccessful("Please contact the administrator.");
+            }
+        });
     }
 
     @Override
     public void delete(Hall item, SuccessfulCallback callback) {
+        HallResponse req = new HallResponse();
+        req.setHall(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(HallApi.class)
+                .deleteHall(Constants.APPLICATION_JSON, req);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    callback.successful(response.body().getMessage());
+                else
+                    callback.unsuccessful("Please try again.");
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.successful("Check you internet");
+                else
+                    callback.unsuccessful("Please contact administrator.");
+            }
+        });
     }
 
     @Override

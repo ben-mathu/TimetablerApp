@@ -11,13 +11,17 @@ public class Campus {
     private String campusId;
     @SerializedName(Constants.CAMPUS_NAME)
     private String campusName;
+    @SerializedName(Constants.IS_REMOVED)
+    private boolean isRemoved;
 
     public Campus(String campusId, String campusName) {
         this.campusId = campusId;
         this.campusName = campusName;
+        isRemoved = false;
     }
 
     public Campus() {
+        isRemoved = false;
     }
 
     public String getCampusId() {
@@ -34,5 +38,13 @@ public class Campus {
 
     public void setCampusName(String campusName) {
         this.campusName = campusName;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }

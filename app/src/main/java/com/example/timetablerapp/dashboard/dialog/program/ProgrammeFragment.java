@@ -158,9 +158,9 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView, OnItem
             }
         });
 
-        Button btnAddCampus = view.findViewById(R.id.button_add_item);
-        btnAddCampus.setText(R.string.add_programme);
-        btnAddCampus.setOnClickListener(v -> {
+        Button btnAddProgramme = view.findViewById(R.id.button_add_item);
+        btnAddProgramme.setText(R.string.add_programme);
+        btnAddProgramme.setOnClickListener(v -> {
             presenter.getCampusesForDepartment();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs)
@@ -218,8 +218,8 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView, OnItem
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        presenter.getAllProgrammes();
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

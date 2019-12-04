@@ -139,9 +139,9 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
             }
         });
 
-        Button btnAddCampus = view.findViewById(R.id.button_add_item);
-        btnAddCampus.setText(R.string.add_department);
-        btnAddCampus.setOnClickListener(v -> {
+        Button btnAddDepartment = view.findViewById(R.id.button_add_item);
+        btnAddDepartment.setText(R.string.add_department);
+        btnAddDepartment.setOnClickListener(v -> {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs)
                     .setPositiveButton("Send", (dialogInterface, i) -> {
@@ -182,8 +182,8 @@ public class DepartmentsFragment extends Fragment implements DepartView, OnItemS
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        presenter.getDepartments();
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

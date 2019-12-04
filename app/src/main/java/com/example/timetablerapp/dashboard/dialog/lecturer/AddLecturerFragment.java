@@ -131,6 +131,8 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
                 }
             });
 
+            builder.setNegativeButton("Cancel" , ((dialogInterface, i) -> dialogInterface.dismiss()));
+
             builder.setCancelable(true);
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -173,12 +175,8 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
 
     @Override
     public void showMessage(String message) {
-        try {
+        if (getActivity() != null)
             Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-        presenter.getLecturers();
     }
 
     @Override
@@ -217,8 +215,10 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
         int pos = 0;
 
         for (Faculty item : faculties) {
-            if (faculty.getFacultyName().equals(item.getFacultyName())) {
-                return faculties.indexOf(item);
+            if (faculty.getFacultyName() != null) {
+                if (faculty.getFacultyName().equals(item.getFacultyName())) {
+                    return faculties.indexOf(item);
+                }
             }
         }
         return pos;
@@ -237,8 +237,10 @@ public class AddLecturerFragment extends Fragment implements LecturerView, OnIte
         int pos = 0;
 
         for (Department item : departments) {
-            if (department.getDepartmentName().equals(item.getDepartmentName())) {
-                return departments.indexOf(item);
+            if (department.getDepartmentName() != null) {
+                if (department.getDepartmentName().equals(item.getDepartmentName())) {
+                    return departments.indexOf(item);
+                }
             }
         }
         return pos;
