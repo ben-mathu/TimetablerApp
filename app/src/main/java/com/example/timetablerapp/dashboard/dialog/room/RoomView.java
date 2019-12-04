@@ -21,4 +21,6 @@ public interface RoomView {
     void loadFaculty(Faculty faculty);
 
     void setHall(Hall hall);
+
+    void dismissDialog();
 }
