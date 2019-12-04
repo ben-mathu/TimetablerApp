@@ -21,7 +21,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -268,7 +267,6 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView, OnItem
     public void onItemSelected(Programme item) {
         this.programme = item;
         presenter.getCampusesForDepartment();
-        presenter.
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_programme, null, false);
 

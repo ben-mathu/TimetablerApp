@@ -12,6 +12,7 @@ import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.model.Programme;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -104,5 +105,33 @@ public class ProgrammePresenter {
                 view.showMessage(message);
             }
         }, campusId);
+    }
+
+    public void deleteProgramme(Programme item) {
+        programmesRepo.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
+
+    public void updateCourse(Programme p) {
+        programmesRepo.update(p, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessage(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessage(message);
+            }
+        });
     }
 }
