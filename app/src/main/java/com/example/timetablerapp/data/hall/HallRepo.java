@@ -31,12 +31,63 @@ public class HallRepo implements HallDS {
 
     @Override
     public void update(Hall item, SuccessfulCallback callback) {
+        hallRemoteDS.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateToLocalDS(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void updateToLocalDS(Hall item, SuccessfulCallback callback) {
+        hallLocalDS.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override
     public void delete(Hall item, SuccessfulCallback callback) {
+        hallRemoteDS.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                deleteFromLocal(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                deleteFromLocal(item, callback);
+            }
+        });
+    }
+
+    private void deleteFromLocal(Hall item, SuccessfulCallback callback) {
+        hallLocalDS.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override
@@ -84,6 +135,66 @@ public class HallRepo implements HallDS {
             @Override
             public void unsuccessful(String message) {
                 getHallFromLocalDS(hall_id, callback);
+            }
+        });
+    }
+
+    @Override
+    public void getHalls(HallLoadedCallback hallLoadedCallback) {
+        hallRemoteDS.getHalls(new HallLoadedCallback() {
+            @Override
+            public void loadingHallsSuccessful(List<Hall> halls) {
+                hallLoadedCallback.loadingHallsSuccessful(halls);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                getFromLocal(hallLoadedCallback);
+            }
+        });
+    }
+
+    private void getFromLocal(HallLoadedCallback hallLoadedCallback) {
+        hallLocalDS.getHalls(new HallLoadedCallback() {
+            @Override
+            public void loadingHallsSuccessful(List<Hall> halls) {
+                hallLoadedCallback.loadingHallsSuccessful(halls);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                hallLoadedCallback.dataNotAvailable(message);
+            }
+        });
+    }
+
+    @Override
+    public void addHall(Hall hall, SuccessfulCallback callback) {
+        hallRemoteDS.addHall(hall, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                addToLocalDS(hall, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                addToLocalDS(hall, callback);
+            }
+        });
+    }
+
+    private void addToLocalDS(Hall hall, SuccessfulCallback callback) {
+        hallLocalDS.addHall(hall, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.successful(message);
             }
         });
     }

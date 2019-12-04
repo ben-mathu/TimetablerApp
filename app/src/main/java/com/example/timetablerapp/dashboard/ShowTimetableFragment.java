@@ -105,10 +105,7 @@ public class ShowTimetableFragment extends Fragment implements DashboardView {
 
     @Override
     public void showMessage(String message) {
-        try {
-            Toast.makeText(getActivity(), "Message: " + message, Toast.LENGTH_SHORT).show();
-        } catch (NullPointerException e) {
-            Log.e(TAG, "showMessage: Error" + e.getLocalizedMessage(), e);
-        }
+        assert getActivity() != null;
+        Toast.makeText(getActivity(), "Message: " + message, Toast.LENGTH_SHORT).show();
     }
 }

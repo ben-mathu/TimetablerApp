@@ -14,6 +14,7 @@ import com.example.timetablerapp.R;
 import com.example.timetablerapp.dashboard.dialog.campus.CampusesFragment;
 import com.example.timetablerapp.dashboard.dialog.department.DepartmentsFragment;
 import com.example.timetablerapp.dashboard.dialog.faculty.FacultiesFragment;
+import com.example.timetablerapp.dashboard.dialog.hall.AddHallFragment;
 import com.example.timetablerapp.dashboard.dialog.program.ProgrammeFragment;
 import com.example.timetablerapp.data.Constants;
 
@@ -26,12 +27,26 @@ public class MoreFragment extends Fragment {
 
     private Button btnAddDep, btnAddFaculty, btnAddCampus;
     private Button btnAddProgramme;
+    private Button btnAddHall;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_other, null, false);
         FragmentManager fm = getActivity().getSupportFragmentManager();
+
+        btnAddHall = view.findViewById(R.id.button_add_hall);
+        btnAddHall.setOnClickListener(v -> {
+            fragment = fm.findFragmentByTag(Constants.TAG_HALL);
+
+            if (fragment == null) {
+                fragment = new AddHallFragment();
+                fm.beginTransaction()
+                        .add(R.id.fragment_container, fragment, Constants.TAG_HALL)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         btnAddCampus = view.findViewById(R.id.button_add_campus);
         btnAddCampus.setOnClickListener(v -> {

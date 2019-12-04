@@ -239,6 +239,9 @@ public class LecturerLocalDS implements UserDataSource<Lecturer, LecturerRespons
         values.put(USERNAME, lecturer.getUsername());
         values.put(IN_SESSION, lecturer.isInSession());
         values.put(EMAIL, lecturer.getEmail());
+        values.put(DEPARTMENT_ID, lecturer.getDepartmentId());
+        values.put(FACULTY_ID, lecturer.getFacultyId());
+        values.put(CAMPUS_ID, lecturer.getCampusid());
 
         int count = database.update(TABLE_NAME, values, LECTURER_ID + "=?", new String[]{lecturer.getId()});
 

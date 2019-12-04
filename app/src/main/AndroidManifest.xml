@@ -43,6 +43,7 @@
             android:theme="@style/AppThemeNoActionBar"/>
 
         <activity android:name=".settings.SettingsActivity"/>
+        <activity android:name=".addunits.AvailableUnitsActivity" />
 
         <receiver android:name=".dashboard.schedule.ScheduleTimerReceiver" >
             <intent-filter>

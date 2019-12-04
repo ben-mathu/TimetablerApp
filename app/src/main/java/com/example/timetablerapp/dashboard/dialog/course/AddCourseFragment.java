@@ -235,8 +235,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        presenter.getCourses();
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -254,17 +254,20 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
             spinnerFaculty.setAdapter(arrayAdapter);
         }
 
-        getFacultyById(unit.getFacultyId());
+        if (unit != null)
+            getFacultyById(unit.getFacultyId());
     }
 
     @Override
     public void setDepartments(List<Department> departments) {
         this.departments = departments;
         departmentId = "";
-        for (Department dep : departments) {
-            departmentId = dep.getDepartmentId().equals(unit.getDepartmentId()) ? dep.getDepartmentId() : "";
+        if (unit != null) {
+            for (Department dep : departments) {
+                departmentId = dep.getDepartmentId().equals(unit.getDepartmentId()) ? dep.getDepartmentId() : "";
+            }
+            presenter.getProgrammes(departmentId);
         }
-        presenter.getProgrammes(departmentId);
 
         if (spinnerDepartment != null) {
             List<String> departmentNames = new ArrayList<>();
@@ -277,7 +280,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
             spinnerDepartment.setAdapter(arrayAdapter);
         }
 
-        getDepartmentById(unit.getDepartmentId());
+        if (unit != null)
+            getDepartmentById(unit.getDepartmentId());
     }
 
     @Override
@@ -285,7 +289,8 @@ public class AddCourseFragment extends Fragment implements CourseView, OnItemSel
         this.programmes = programmes;
 
         // get program associated with course
-        programme = getProgramme(unit);
+        if (unit != null)
+            programme = getProgramme(unit);
 
         if (spinnerProgramme != null) {
             List<String> programmesNames = new ArrayList<>();

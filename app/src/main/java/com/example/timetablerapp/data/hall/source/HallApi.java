@@ -12,6 +12,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 import static com.example.timetablerapp.data.Constants.HALL_ID;
@@ -32,4 +33,19 @@ public interface HallApi {
 
     @GET("hall")
     Call<HallResponse> getHall(@Query(HALL_ID) String hall_id);
+
+    @GET("halls")
+    Call<HallsResponse> getHalls();
+
+    @PUT("add-hall")
+    Call<MessageReport> addHall(@Header(Constants.CONTENT_TYPE) String contentType,
+                                @Body HallResponse req);
+
+    @PUT("delete-hall")
+    Call<MessageReport> deleteHall(@Header(Constants.CONTENT_TYPE) String contentType,
+                                   @Body HallResponse req);
+
+    @PUT("update-hall")
+    Call<MessageReport> update(@Header(Constants.CONTENT_TYPE) String contentType,
+                               @Body HallResponse req);
 }

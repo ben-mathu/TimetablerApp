@@ -116,9 +116,9 @@ public class FacultiesFragment extends Fragment implements FacultyView, OnItemSe
             }
         });
 
-        Button btnAddCampus = view.findViewById(R.id.button_add_item);
-        btnAddCampus.setText(R.string.add_faculty);
-        btnAddCampus.setOnClickListener(v -> {
+        Button btnAddFaculty = view.findViewById(R.id.button_add_item);
+        btnAddFaculty.setText(R.string.add_faculty);
+        btnAddFaculty.setOnClickListener(v -> {
             presenter.getCampusesForFaculty();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Theme_Dialogs)
@@ -177,9 +177,8 @@ public class FacultiesFragment extends Fragment implements FacultyView, OnItemSe
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        presenter.getFacultiesForFaculty();
-        adapter.notifyDataSetChanged();
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

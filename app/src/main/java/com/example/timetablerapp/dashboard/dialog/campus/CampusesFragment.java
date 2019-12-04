@@ -21,12 +21,9 @@ import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.DashboardPresenter;
 import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.util.CompareStrings;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,8 +125,8 @@ public class CampusesFragment extends Fragment implements CampusView, OnItemSele
 
     @Override
     public void showMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-        presenter.getCampuses();
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

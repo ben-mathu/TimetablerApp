@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edit_hall_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="Hall Id"
+        android:inputType="textPersonName"
+        android:textSize="21sp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/my_kind_of_grey"/>
+
+    <EditText
+        android:id="@+id/edit_hall_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="Hall Name"
+        android:textColor="@color/white"
+        android:inputType="textPersonName"
+        android:textSize="21sp"
+        android:textColorHint="@color/my_kind_of_grey"/>
+
+    <TextView
+        android:id="@+id/faculties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="textEnd"
+        android:textColor="#fff"
+        android:text="@string/faculties"/>
+
+    <Spinner
+        android:id="@+id/spinner_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"/>
+</LinearLayout>

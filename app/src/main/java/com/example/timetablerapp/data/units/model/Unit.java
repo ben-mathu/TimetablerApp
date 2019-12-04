@@ -21,6 +21,8 @@ public class Unit {
     private boolean isPractical = false;
     @SerializedName(Constants.COMMON)
     private boolean isCommon;
+    @SerializedName(Constants.IS_REMOVED)
+    private boolean isRemoved;
 
     private boolean isSelected;
 
@@ -33,9 +35,11 @@ public class Unit {
         this.isPractical = isPractical;
         this.isCommon = isCommon;
         this.isSelected = isSelected;
+        isRemoved = false;
     }
 
     public Unit() {
+        isRemoved = false;
     }
 
     public String getId() {
@@ -100,5 +104,13 @@ public class Unit {
 
     public void setDepartmentId(String departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }

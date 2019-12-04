@@ -132,6 +132,8 @@ public class Constants {
     public static final String TAG_DEPARTMENT = "tag_department";
     public static final String MORE = "tag_more";
     public static final String TAG_PROG = "tag_prog";
+    public static final String TAG_HALL = "tag_hall";
+
     public static final String CONTENT_TYPE = "Content-Type";
 
     // Message variables
@@ -143,4 +145,5 @@ public class Constants {
 
     public static final String NOTIFICATION_CREATED = "isNotificationCreated";
     public static final String REMINDER_SET = "isReminderSet";
+    public static final String IS_REMOVED = "is_removed";
 }

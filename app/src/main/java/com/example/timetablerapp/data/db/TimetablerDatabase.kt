@@ -22,6 +22,7 @@ class TimetablerDatabaseHelper(context: Context) :
         db?.execSQL(TimetablerContract.SQL_CREATE_FACULTY_TABLE)
         db?.execSQL(TimetablerContract.SQL_CREATE_PROGRAMME_TABLE)
         db?.execSQL(TimetablerContract.SQL_CREATE_HALL_TABLE)
+        db?.execSQL(TimetablerContract.SQL_CREATE_ROOM_TABLE)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -33,6 +34,7 @@ class TimetablerDatabaseHelper(context: Context) :
         db?.execSQL(TimetablerContract.SQL_DELETE_CAMPUS)
         db?.execSQL(TimetablerContract.SQL_DELETE_PROGRAMMES)
         db?.execSQL(TimetablerContract.SQL_DELETE_HALL)
+        db?.execSQL(TimetablerContract.SQL_DELETE_ROOM)
 
         onCreate(db)
     }

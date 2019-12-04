@@ -29,6 +29,8 @@ public class Lecturer {
     private boolean inSesson;
     @SerializedName(Constants.CAMPUS_ID)
     private String campusId;
+    @SerializedName(Constants.IS_REMOVED)
+    private boolean isRemoved;
 
     public Lecturer(String id, String firstName,
                     String lastName, String middleName,
@@ -46,9 +48,11 @@ public class Lecturer {
         this.facultyId = facultyId;
         this.inSesson = inSesson;
         this.campusId = campusId;
+        isRemoved = false;
     }
 
     public Lecturer() {
+        isRemoved = false;
     }
 
     public String getId() {
@@ -137,5 +141,13 @@ public class Lecturer {
 
     public void setCampusId(String campusId) {
         this.campusId = campusId;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }
