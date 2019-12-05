@@ -8,7 +8,7 @@ package com.example.timetablerapp.data;
  */
 public class Constants {
     // Api end-point
-    public static final String BASE_URL = "http://192.168.43.146:8080/timetabler/";
+    public static final String BASE_URL = "http://192.168.43.146:8080/timetabler-1.0.0/";
 
     /**
      * Database properties
