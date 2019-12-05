@@ -28,4 +28,12 @@ public interface ProgrammeApi {
     @PUT("add-programme")
     Call<MessageReport> addProgramme(@Header("Content-Type") String contentType,
                                      @Body ProgrammeRequest req);
+
+    @PUT("delete-programme")
+    Call<MessageReport> delete(@Header(Constants.CONTENT_TYPE) String contentType,
+                               @Body ProgrammeRequest request);
+
+    @PUT("update-programme")
+    Call<MessageReport> update(@Header(Constants.CONTENT_TYPE) String contentType,
+                               @Body ProgrammeRequest request);
 }

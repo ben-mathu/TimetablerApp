@@ -47,7 +47,7 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
     private RoomPresenter presenter;
     private AlertDialog.Builder builder;
     private Spinner spinnerFaculty, spinnerHall;
-    private Button btnAddCourse;
+    private Button btnAddClass;
     private RecyclerView recyclerView;
     private SearchView searchView;
     private Faculty faculty;
@@ -142,8 +142,8 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
                 switchLab = dialogView.findViewById(R.id.switch_lab);
         edtPassCode.setVisibility(View.VISIBLE);
 
-        btnAddCourse = view.findViewById(R.id.button_add_item);
-        btnAddCourse.setOnClickListener(v -> {
+        btnAddClass = view.findViewById(R.id.button_add_item);
+        btnAddClass.setOnClickListener(v -> {
 
             presenter.getFacultiesForHalls();
             builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()), R.style.Theme_Dialogs);
@@ -352,5 +352,10 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
         });
 
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void dismissDialog() {
+        dialog.dismiss();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.timetablerapp.dashboard.dialog.program;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,16 +18,18 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.timetablerapp.MainApplication;
 import com.example.timetablerapp.R;
-import com.example.timetablerapp.dashboard.DashboardPresenter;
+import com.example.timetablerapp.dashboard.dialog.OnItemSelectedListener;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
-import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.util.CompareStrings;
 
@@ -36,7 +40,7 @@ import java.util.Objects;
 /**
  * 09/09/19 -bernard
  */
-public class ProgrammeFragment extends Fragment implements ProgrammeView {
+public class ProgrammeFragment extends Fragment implements ProgrammeView, OnItemSelectedListener<Programme> {
     // List
     private List<Programme>  programmes;
     private List<Department>  departments;
@@ -48,13 +52,20 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView {
     private ProgrammePresenter presenter;
     private Campus campus;
     private Faculty faculty;
+    private Department department;
+    private Programme programme;
 
     // Widgets
     private RecyclerView recyclerProgrammes;
     private Spinner spinnerCampus;
     private Spinner spinnerFaculty;
     private Spinner spinnerDepartment;
-    private Department department;
+    private TextView txtFacultyName;
+    private TextView txtDepartmentName;
+    private AlertDialog dialog;
+
+    // String variables
+    private String positiveBtnText;
 
     @Override
     public void onStart() {
@@ -221,10 +232,7 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView {
             facultyNames.add(faculty.getFacultyName());
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, facultyNames);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFaculty.setAdapter(arrayAdapter);
+        spinnerFaculty.setAdapter(getArrayAdapter(facultyNames));
     }
 
     @Override
@@ -237,17 +245,114 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView {
             departmentNames.add(department.getDepartmentName());
         }
 
+        spinnerDepartment.setAdapter(getArrayAdapter(departmentNames));
+    }
+
+    private SpinnerAdapter getArrayAdapter(List<String> items) {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_dropdown_item, departmentNames);
+                android.R.layout.simple_spinner_dropdown_item, items);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerDepartment.setAdapter(arrayAdapter);
+        return arrayAdapter;
     }
 
     @Override
     public void setProgrammes(List<Programme> programmes) {
         this.programmes = programmes;
 
-        adapter = new ProgrammeAdapter(getActivity(), programmes);
+        adapter = new ProgrammeAdapter(getActivity(), programmes, this);
         recyclerProgrammes.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemSelected(Programme item) {
+        this.programme = item;
+        presenter.getCampusesForDepartment();
+
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_programme, null, false);
+
+        LinearLayout llCourseDetails = view.findViewById(R.id.ll_programme_details);
+        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_programme_edit_details);
+
+        // Before editing
+        // Display details in plain text.
+        TextView txtProgrammeId = view.findViewById(R.id.text_programme_id);
+        txtProgrammeId.setText(item.getProgrammeId());
+        TextView txtProgrammeName = view.findViewById(R.id.text_programme_name);
+        txtProgrammeName.setText(item.getProgrammeName());
+
+        txtFacultyName = view.findViewById(R.id.text_faculty);
+
+        txtDepartmentName = view.findViewById(R.id.text_department);
+
+        EditText edtProgrammeId = view.findViewById(R.id.edit_programme_id);
+        edtProgrammeId.setText(item.getProgrammeId());
+        EditText edtProgrammeName = view.findViewById(R.id.edit_programme_name);
+        edtProgrammeName.setText(item.getProgrammeName());
+
+        spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
+        spinnerFaculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//                campusName = parent.getItemAtPosition(position).toString();
+                faculty = faculties.get(position);
+                presenter.getDepartments(faculty.getFacultyId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+//                campusName= parent.getSelectedItem().toString();
+                faculty = faculties.get(parent.getSelectedItemPosition());
+                presenter.getDepartments(faculty.getFacultyId());
+            }
+        });
+
+        spinnerDepartment = view.findViewById(R.id.change_spinner_departments);
+        spinnerDepartment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+//                campusName = parent.getItemAtPosition(position).toString();
+//                department = departments.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+//                campusName= parent.getSelectedItem().toString();
+//                department = departments.get(parent.getSelectedItemPosition());
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_Dialogs);
+        builder.setView(view);
+        builder.setTitle("Edit Course");
+        positiveBtnText = "Edit";
+
+        builder.setPositiveButton(positiveBtnText, null);
+
+        builder.setNegativeButton(R.string.delete, (dialogInterface, i) -> {
+            presenter.deleteProgramme(item);
+        });
+
+        dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> {
+            if (positiveBtnText.equalsIgnoreCase("edit")) {
+                llCourseEditDetails.setVisibility(View.VISIBLE);
+                llCourseDetails.setVisibility(View.GONE);
+
+                positiveBtnText = "Save";
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
+            } else {
+                Programme p = new Programme();
+                p.setProgrammeId(edtProgrammeId.getText().toString());
+                p.setProgrammeName(edtProgrammeName.getText().toString());
+                p.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
+                p.setDepartmentId(departments.get(spinnerDepartment.getSelectedItemPosition()).getDepartmentId());
+                presenter.updateCourse(p);
+            }
+        });
+
+        adapter.notifyDataSetChanged();
     }
 }

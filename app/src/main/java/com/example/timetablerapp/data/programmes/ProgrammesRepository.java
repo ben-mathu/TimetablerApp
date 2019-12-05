@@ -80,12 +80,62 @@ public class ProgrammesRepository implements ProgrammeDS {
 
     @Override
     public void update(Programme item, SuccessfulCallback callback) {
+        progRemoteDS.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalDS(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void updateLocalDS(Programme item, SuccessfulCallback callback) {
+        progLocalDS.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override
     public void delete(Programme item, SuccessfulCallback callback) {
+        progRemoteDS.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                deleteFromLocalDS(item, callback);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void deleteFromLocalDS(Programme item, SuccessfulCallback callback) {
+        progLocalDS.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
     }
 
     @Override

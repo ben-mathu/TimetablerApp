@@ -9,7 +9,7 @@
         android:id="@+id/ll_room_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         android:orientation="vertical">
 
         <TextView
@@ -92,7 +92,7 @@
         android:id="@+id/ll_room_edit_details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
+        android:visibility="gone"
         android:orientation="vertical">
 
         <EditText

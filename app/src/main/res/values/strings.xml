@@ -94,6 +94,7 @@
     <string name="volume">Volume</string>
     <string name="halls">Choose Halls</string>
     <string name="date">Date</string>
+    <string name="programme_id">Programme Id</string>
     <string name="hall_id">Hall Id</string>
     <string name="hall">Halls</string>
 

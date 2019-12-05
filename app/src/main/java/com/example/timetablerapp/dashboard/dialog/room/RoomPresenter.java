@@ -132,6 +132,7 @@ public class RoomPresenter {
             @Override
             public void successful(String message) {
                 view.showMessage(message);
+                view.dismissDialog();
             }
 
             @Override

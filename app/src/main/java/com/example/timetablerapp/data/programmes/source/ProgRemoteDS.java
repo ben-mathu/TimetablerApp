@@ -1,5 +1,6 @@
 package com.example.timetablerapp.data.programmes.source;
 
+import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.programmes.ProgrammeApi;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.model.Programme;
@@ -8,6 +9,8 @@ import com.example.timetablerapp.data.programmes.model.ProgrammesResponse;
 import com.example.timetablerapp.data.response.MessageReport;
 import com.example.timetablerapp.data.utils.RetrofitClient;
 import com.example.timetablerapp.util.SuccessfulCallback;
+
+import java.net.ConnectException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -96,12 +99,37 @@ public class ProgRemoteDS implements ProgrammeDS {
 
     @Override
     public void update(Programme item, SuccessfulCallback callback) {
-
+        ProgrammeRequest request = new ProgrammeRequest(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(ProgrammeApi.class)
+                .update(Constants.APPLICATION_JSON, request);
     }
 
     @Override
     public void delete(Programme item, SuccessfulCallback callback) {
+        ProgrammeRequest request = new ProgrammeRequest(item);
+        Call<MessageReport> call = RetrofitClient.getRetrofit()
+                .create(ProgrammeApi.class)
+                .delete(Constants.APPLICATION_JSON, request);
 
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callback.successful(response.body().getMessage());
+                } else {
+                    callback.unsuccessful("Could not delete Programme: " + item.getProgrammeName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful("Check your internet connection.");
+                else
+                    callback.unsuccessful("Please contact the administrator.");
+            }
+        });
     }
 
     @Override
