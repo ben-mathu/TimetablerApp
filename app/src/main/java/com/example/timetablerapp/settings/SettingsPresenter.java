@@ -1,5 +1,8 @@
 package com.example.timetablerapp.settings;
 
+import com.example.timetablerapp.data.campuses.CampusesDS;
+import com.example.timetablerapp.data.campuses.CampusesRepository;
+import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.util.PerformWordChecks;
 import com.example.timetablerapp.util.SuccessfulCallback;
@@ -36,15 +39,17 @@ public class SettingsPresenter {
     private Admin admin = new Admin();
     private Student student = new Student();
     private Lecturer lecturer = new Lecturer();
+    private CampusesRepository campusRepo;
 
     SettingsPresenter(SettingsView view,
                       AdminRepo adminRepo,
                       LecturerRepo lecturerRepo,
-                      StudentRepository studentRepo) {
+                      StudentRepository studentRepo, CampusesRepository campusRepo) {
         this.view = view;
         this.adminRepo = adminRepo;
         this.lecturerRepo = lecturerRepo;
         this.studentRepo = studentRepo;
+        this.campusRepo = campusRepo;
     }
 
     public void updateUsername(String name, String userId, String role) {

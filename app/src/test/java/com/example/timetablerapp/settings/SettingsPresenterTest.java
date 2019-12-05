@@ -2,7 +2,6 @@ package com.example.timetablerapp.settings;
 
 import com.example.timetablerapp.data.campuses.CampusesRepository;
 import com.example.timetablerapp.data.user.admin.AdminRepo;
-import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.student.StudentRepository;
 
@@ -29,12 +28,14 @@ public class SettingsPresenterTest {
     private StudentRepository studentRepo;
     @Mock
     private AdminRepo adminRepo;
+    @Mock
+    private CampusesRepository campusRepo;
 
     private SettingsPresenter presenter;
 
     @Before
     public void setUp() throws Exception {
-        presenter = new SettingsPresenter(view, adminRepo, lecturerRepo, studentRepo);
+        presenter = new SettingsPresenter(view, adminRepo, lecturerRepo, studentRepo, campusRepo);
     }
 
     @Test

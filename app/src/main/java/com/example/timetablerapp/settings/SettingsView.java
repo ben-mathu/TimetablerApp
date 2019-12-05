@@ -1,5 +1,6 @@
 package com.example.timetablerapp.settings;
 
+import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;

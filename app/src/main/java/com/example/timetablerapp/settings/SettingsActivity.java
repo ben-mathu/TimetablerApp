@@ -50,6 +50,7 @@ import com.example.timetablerapp.settings.dialog.ShowExplanationDialog;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -94,7 +95,10 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     private ImageButton imgShowCurrentPasswd;
     private Button btnSave;
     private Button btnSaveDetails;
-    private Spinner spnCampus;
+    private ImageView imgResetDetails;
+    private Spinner spinnerCampus;
+    private Spinner spinnerFaculty;
+    private Spinner spinnerDepartment;
 
     // Literals
     private String userId = "";
@@ -104,7 +108,7 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
     private Lecturer lecturer;
     private String newPasswd;
     private String currentPasswd;
-    private ImageView imgResetDetails;
+    private boolean isEditing = false;
 
     @Override
     protected void onStart() {
@@ -114,8 +118,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
             presenter = new SettingsPresenter(this,
                     MainApplication.getAdminRepo(),
                     MainApplication.getLecturerRepo(),
-                    MainApplication.getStudentRepository()
-            );
+                    MainApplication.getStudentRepository(),
+                    MainApplication.getCampusRepo());
         }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -167,8 +171,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         presenter = new SettingsPresenter(this,
                 MainApplication.getAdminRepo(),
                 MainApplication.getLecturerRepo(),
-                MainApplication.getStudentRepository()
-        );
+                MainApplication.getStudentRepository(),
+                MainApplication.getCampusRepo());
 
         // define widgets
         txtDisplayName = findViewById(R.id.text_display_name);
@@ -319,6 +323,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         edtDepartment = findViewById(R.id.edit_department);
         edtProgramme = findViewById(R.id.edit_programme);
         edtYearofStudy = findViewById(R.id.edit_year_of_study);
+
+        spinnerCampus = findViewById(R.id.change_spinner_campus);
 
         swInSession = findViewById(R.id.switch_in_session);
         swInSession.setOnCheckedChangeListener((compoundButton, b) -> enableButton());
@@ -478,19 +484,18 @@ public class SettingsActivity extends AppCompatActivity implements SettingsView 
         faculty = obj.getFaculty();
         department = obj.getDepartment();
 
-        String fullName = lecturer.getFirstName() + " " + lecturer.getMiddleName() + " " + lecturer.getLastName();
+        String fullName = lecturer != null ? lecturer.getFirstName() + " " + lecturer.getMiddleName() + " " + lecturer.getLastName() : "Full Names is empty";
         edtFullName.setText(fullName);
         edtEmail.setText(lecturer.getEmail());
 
         edtCampus.setVisibility(View.VISIBLE);
-        edtCampus.setText(campus != null ? campus.getCampusName() : " Campus name");
+        edtCampus.setText(campus != null ? campus.getCampusName() : "Campus Name is empty");
 
         edtFaculty.setVisibility(View.VISIBLE);
-        edtFaculty.setText(campus != null ? faculty.getFacultyName() : "Faculty Name");
+        edtFaculty.setText(faculty != null ? faculty.getFacultyName() : "Faculty Name is empty");
 
         edtDepartment.setVisibility(View.VISIBLE);
-        edtDepartment.setText(department != null ? department.getDepartmentName() : "Department Name");
-
+        edtDepartment.setText(department != null ? department.getDepartmentName() : "Department Name is empty");
     }
 
     /**

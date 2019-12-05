@@ -230,7 +230,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/full_name"
@@ -256,7 +256,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/email"
@@ -271,14 +271,23 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/campus_name"
                     android:enabled="false"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:visibility="gone"
                     tools:visibility="visible"/>
+
+                <Spinner
+                    android:id="@+id/change_spinner_campus"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/edit_faculty"
@@ -288,7 +297,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/faculty_name"
@@ -296,6 +305,15 @@
                     android:inputType="text"
                     android:visibility="gone"
                     tools:visibility="visible"/>
+
+                <Spinner
+                    android:id="@+id/change_spinner_faculty"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/edit_department"
@@ -305,7 +323,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/department_name"
@@ -313,6 +331,15 @@
                     android:inputType="text"
                     android:visibility="gone"
                     tools:visibility="visible"/>
+
+                <Spinner
+                    android:id="@+id/change_spinner_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/edit_programme"
@@ -322,7 +349,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/programme_name"
@@ -339,7 +366,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
-                    android:background="@drawable/focused_edittext"
+                    android:background="@drawable/focused_edit_text"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:hint="@string/year_of_study"
