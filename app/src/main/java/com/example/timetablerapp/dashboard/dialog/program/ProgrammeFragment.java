@@ -270,41 +270,24 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView, OnItem
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_programme, null, false);
 
-        LinearLayout llCourseDetails = view.findViewById(R.id.ll_course_details);
-        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_course_edit_details);
+        LinearLayout llCourseDetails = view.findViewById(R.id.ll_programme_details);
+        LinearLayout llCourseEditDetails = view.findViewById(R.id.ll_programme_edit_details);
 
         // Before editing
         // Display details in plain text.
         TextView txtProgrammeId = view.findViewById(R.id.text_programme_id);
         txtProgrammeId.setText(item.getProgrammeId());
-        TextView txtProgrammeName = view.findViewById(R.id.text_unit_name);
+        TextView txtProgrammeName = view.findViewById(R.id.text_programme_name);
         txtProgrammeName.setText(item.getProgrammeName());
 
         txtFacultyName = view.findViewById(R.id.text_faculty);
 
         txtDepartmentName = view.findViewById(R.id.text_department);
 
-        EditText edtProgrammeId = view.findViewById(R.id.edit_unit_id);
+        EditText edtProgrammeId = view.findViewById(R.id.edit_programme_id);
         edtProgrammeId.setText(item.getProgrammeId());
-        EditText edtProgrammeName = view.findViewById(R.id.edit_unit_name);
+        EditText edtProgrammeName = view.findViewById(R.id.edit_programme_name);
         edtProgrammeName.setText(item.getProgrammeName());
-
-        spinnerCampus = view.findViewById(R.id.change_spinner_campus);
-        spinnerCampus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-//                campusName = parent.getItemAtPosition(position).toString();
-                campus = campuses.get(position);
-                presenter.getFacultyById(campus.getCampusId());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-//                campusName= parent.getSelectedItem().toString();
-                campus = campuses.get(parent.getSelectedItemPosition());
-                presenter.getFacultyById(campus.getCampusId());
-            }
-        });
 
         spinnerFaculty = view.findViewById(R.id.change_spinner_faculty);
         spinnerFaculty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
