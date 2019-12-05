@@ -1,5 +1,6 @@
 package com.example.timetablerapp.signup;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -59,13 +60,14 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
 
     private TextView txtLogin;
     private EditText edtUserId, edtFName, edtLName, edtMName, edtUsername, edtPassword;
+    private EditText edtYearOfStudy;
+    private EditText edtEmail;
     private Button btnRegister, btnDatePicker;
     private Spinner spnDepartments, spnProgrammes, spnCampuses, spnFaculties;
 
     private String role;
     private String depName = "", progName = "", campusName = "", facultyName = "";
     private Switch switchInSess;
-    private EditText edtYearOfStudy;
     private String date = "";
 
     @Override
@@ -99,6 +101,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         edtFName = view.findViewById(R.id.edit_first_name);
         edtLName = view.findViewById(R.id.edit_last_name);
         edtMName = view.findViewById(R.id.edit_middle_name);
+        edtEmail = view.findViewById(R.id.edit_email);
         edtUsername = view.findViewById(R.id.edit_username);
         edtPassword = view.findViewById(R.id.edit_password);
 
@@ -211,6 +214,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener, Si
         student.setLname(edtLName.getText().toString());
         student.setMname(edtMName.getText().toString());
         student.setUsername(edtUsername.getText().toString());
+        student.setEmail(edtEmail.getText().toString());
         student.setPassword(edtPassword.getText().toString());
         student.setYearOfStudy(edtYearOfStudy.getText().toString());
         student.setAdmissionDate(btnDatePicker.getText().toString());
