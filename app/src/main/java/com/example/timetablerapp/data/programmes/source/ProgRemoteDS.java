@@ -103,6 +103,25 @@ public class ProgRemoteDS implements ProgrammeDS {
         Call<MessageReport> call = RetrofitClient.getRetrofit()
                 .create(ProgrammeApi.class)
                 .update(Constants.APPLICATION_JSON, request);
+
+        call.enqueue(new Callback<MessageReport>() {
+            @Override
+            public void onResponse(Call<MessageReport> call, Response<MessageReport> response) {
+                if (response.isSuccessful() && response.body() != null)
+                    callback.successful(response.body().getMessage());
+                else
+                    callback.unsuccessful("Could not update programme: " + item.getProgrammeName());
+            }
+
+            @Override
+            public void onFailure(Call<MessageReport> call, Throwable t) {
+                if (t instanceof ConnectException)
+                    callback.unsuccessful("Check your connection and try again.");
+                else
+                    callback.unsuccessful("Please contact the administrator, an error occurred" +
+                            " while updating programme: " + item.getProgrammeName());
+            }
+        });
     }
 
     @Override
