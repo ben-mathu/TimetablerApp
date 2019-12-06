@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_background_three"
+        android:text="@string/cancel"/>
+
+    <LinearLayout
+        android:id="@+id/ll_department_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_cancel"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_department_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:text="@string/department_id"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/text_department_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:text="@string/department_name"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/text_campus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:text="@string/campuses"/>
+
+        <TextView
+            android:id="@+id/text_faculty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:text="@string/faculties"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_department_edit_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_department_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/edit_background"
+            android:hint="@string/department_id"
+            android:textSize="14sp"/>
+
+        <EditText
+            android:id="@+id/edit_department_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/edit_background"
+            android:hint="@string/department_name"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/text_campuses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:text="@string/campuses"/>
+
+        <Spinner
+            android:id="@+id/change_spinner_campus"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textAlignment="viewStart"/>
+
+        <TextView
+            android:id="@+id/text_faculties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="#fff"
+            android:text="@string/faculties"/>
+
+        <Spinner
+            android:id="@+id/change_spinner_faculty"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textAlignment="viewStart"/>
+    </LinearLayout>
+</RelativeLayout>

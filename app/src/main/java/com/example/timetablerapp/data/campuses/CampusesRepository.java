@@ -3,8 +3,7 @@ package com.example.timetablerapp.data.campuses;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.campuses.source.CampusLocalDS;
 import com.example.timetablerapp.data.campuses.source.CampusRemoteDS;
-import com.example.timetablerapp.data.faculties.FacultyDS;
-import com.example.timetablerapp.login.LoginPresenter;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -44,17 +43,77 @@ public class CampusesRepository implements CampusesDS {
     }
 
     @Override
-    public void update(Campus item) {
+    public void addCampus(Campus campus, SuccessfullySavedCallback callback) {
+        campusRemoteDS.addCampus(campus, new SuccessfullySavedCallback() {
+            @Override
+            public void successItem(Campus campus) {
+                callback.successItem(campus);
+            }
+
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
+    public void updateCampus(Campus campus, SuccessfullySavedCallback callback) {
+        campusRemoteDS.updateCampus(campus, new SuccessfullySavedCallback() {
+            @Override
+            public void successItem(Campus campus) {
+                callback.successItem(campus);
+            }
+
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
+    public void deleteRemote(Campus campus, SuccessfullySavedCallback callback) {
+        campusRemoteDS.deleteRemote(campus, new SuccessfullySavedCallback() {
+            @Override
+            public void successItem(Campus campus) {
+                callback.successItem(campus);
+            }
+
+            @Override
+            public void success(String message) {
+                callback.success(message);
+            }
+
+            @Override
+            public void unSuccess(String message) {
+                callback.unSuccess(message);
+            }
+        });
+    }
+
+    @Override
+    public void update(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void delete(Campus item) {
+    public void delete(Campus item, SuccessfulCallback callback) {
 
     }
 
     @Override
-    public void save(Campus item) {
-
+    public void save(Campus item, SuccessfulCallback callback) {
+        campusLocalDS.save(item, callback);
     }
 }

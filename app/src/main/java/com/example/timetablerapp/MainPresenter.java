@@ -1,5 +1,6 @@
 package com.example.timetablerapp;
 
+import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.student.StudentDataSource;
 import com.example.timetablerapp.data.user.student.StudentRepository;
 
@@ -18,7 +19,7 @@ public class MainPresenter implements BasePresenter {
 
     @Override
     public void sendUserRole(String role) {
-        userRepository.sendUserRole(new StudentDataSource.GetSaltCallBack() {
+        userRepository.sendUserRole(new UserDataSource.GetSaltCallBack() {
             @Override
             public void successful(String salt) {
                 view.setSalt(salt);

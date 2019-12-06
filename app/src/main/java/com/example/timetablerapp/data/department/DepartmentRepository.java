@@ -1,13 +1,9 @@
 package com.example.timetablerapp.data.department;
 
-import android.os.Bundle;
-
-import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.department.source.DepartmentLocalDataSrc;
 import com.example.timetablerapp.data.department.source.DepartmentRemoteDataSrc;
-import com.example.timetablerapp.data.faculties.FacultyDS;
-import com.example.timetablerapp.data.faculties.model.Faculty;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
 import java.util.List;
 
@@ -32,8 +28,8 @@ public class DepartmentRepository implements DepartmentDS {
     }
 
     @Override
-    public void getAllFromRemote(LoadDepartmentsCallBack callBack, String id) {
-        departmentRemoteDataSrc.getAllFromRemote(new LoadDepartmentsCallBack() {
+    public void getDepsByIdFromRemote(LoadDepartmentsCallBack callBack, String id) {
+        departmentRemoteDataSrc.getDepsByIdFromRemote(new LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
                 callBack.loadDepartmentsSuccessful(departments);
@@ -47,17 +43,144 @@ public class DepartmentRepository implements DepartmentDS {
     }
 
     @Override
-    public void update(Department item) {
+    public void getFromLocalDb(LoadDepartmentsCallBack callBack) {
+        departmentLocalDataSrc.getFromLocalDb(new LoadDepartmentsCallBack() {
+            @Override
+            public void loadDepartmentsSuccessful(List<Department> departments) {
+                callBack.loadDepartmentsSuccessful(departments);
+            }
 
+            @Override
+            public void dataNotAvailable(String message) {
+                callBack.dataNotAvailable(message);
+            }
+        });
     }
 
     @Override
-    public void delete(Department item) {
+    public void getAllFromRemote(LoadDepartmentsCallBack callBack) {
+        departmentRemoteDataSrc.getAllFromRemote(new LoadDepartmentsCallBack() {
+            @Override
+            public void loadDepartmentsSuccessful(List<Department> departments) {
+                callBack.loadDepartmentsSuccessful(departments);
+            }
 
+            @Override
+            public void dataNotAvailable(String message) {
+                callBack.dataNotAvailable(message);
+            }
+        });
     }
 
     @Override
-    public void save(Department item) {
+    public void addDepartment(Department department, SuccessfulCallback callback) {
+        departmentRemoteDataSrc.addDepartment(department, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
 
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void getDepartmentById(String departmentId, LoadDepartmentCallback callback) {
+        departmentRemoteDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
+            @Override
+            public void loadDepartment(Department department) {
+                callback.loadDepartment(department);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                // get from local DS
+                getDepartment(departmentId, callback);
+            }
+        });
+    }
+
+    private void getDepartment(String departmentId, LoadDepartmentCallback callback) {
+        departmentLocalDataSrc.getDepartmentById(departmentId, new LoadDepartmentCallback() {
+            @Override
+            public void loadDepartment(Department department) {
+                callback.loadDepartment(department);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    private void deleteLocalDS(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void update(Department item, SuccessfulCallback callback) {
+        departmentRemoteDataSrc.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                updateLocalDS(item, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                updateLocalDS(item, callback);
+            }
+        });
+    }
+
+    private void updateLocalDS(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.update(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+            }
+        });
+    }
+
+    @Override
+    public void delete(Department item, SuccessfulCallback callback) {
+        departmentRemoteDataSrc.delete(item, new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                callback.successful(message);
+                deleteLocalDS(item, callback);
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                callback.unsuccessful(message);
+                deleteLocalDS(item,  callback);
+            }
+        });
+    }
+
+    @Override
+    public void save(Department item, SuccessfulCallback callback) {
+        departmentLocalDataSrc.save(item, callback);
     }
 }

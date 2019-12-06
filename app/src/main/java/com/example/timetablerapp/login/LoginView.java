@@ -1,5 +1,7 @@
 package com.example.timetablerapp.login;
 
+import com.example.timetablerapp.data.settings.model.DeadlineSettings;
+
 /**
  * 07/05/19 -bernard
  */
@@ -18,4 +20,10 @@ public interface LoginView {
     void startMainActivity();
 
     String getUserRole();
+
+    void showMessage(String message);
+
+    void startTimetableActivity();
+
+//    void configureSettings(DeadlineSettings settings);
 }

@@ -1,18 +1,28 @@
 package com.example.timetablerapp.data.user.lecturer;
 
-import com.example.timetablerapp.data.DataSource;
+import com.example.timetablerapp.data.user.lecturer.model.LecResponse;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+
+import java.util.List;
 
 /**
  * 08/05/19 -bernard
  */
-public interface LecturerDS extends DataSource<LecturerDS.LecturerIsAuthCallBack, Lecturer> {
+public interface LecturerDS {
+    void deleteLecturer(Lecturer lecturer, SuccessCallback callback);
 
-    void userSignUp(LecturerIsAuthCallBack callBack, Lecturer lecturer);
-    void authUser(LecturerIsAuthCallBack callBack, Lecturer lecturer);
+    interface LecturersLoadedCallback {
+        void successfullyLoaded(List<Lecturer> list);
+        void unsuccessful(String message);
+    }
 
-    interface LecturerIsAuthCallBack {
-        void userIsAuthSuccessfull(String message);
-        void authNotSuccessful(String message);
+    interface CreatingLecturerCallback {
+        void successfullyCreated(LecResponse res);
+        void unSuccessful(String message);
+    }
+
+    interface SuccessCallback {
+        void success(String message);
+        void unsuccessful(String message);
     }
 }

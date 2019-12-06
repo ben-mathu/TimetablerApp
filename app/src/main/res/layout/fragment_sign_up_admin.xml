@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true">
+
+    <TextView
+        android:id="@+id/text_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_alignParentEnd="true"
+        android:text="Login"
+        android:textSize="21sp"
+        android:textColor="@color/colorAccent"/>
+
+    <EditText
+        android:id="@+id/edit_admin_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_below="@+id/text_login"
+        android:padding="10dp"
+        android:hint="@string/admin_id"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edit_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_below="@+id/edit_admin_id"
+        android:padding="10dp"
+        android:hint="@string/first_name"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edit_middle_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:padding="10dp"
+        android:hint="@string/middle_name"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:layout_below="@+id/edit_first_name"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edit_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_below="@+id/edit_middle_name"
+        android:padding="10dp"
+        android:hint="@string/last_name"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edit_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:padding="10dp"
+        android:layout_below="@+id/edit_last_name"
+        android:hint="Email"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/edit_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:padding="10dp"
+        android:hint="@string/username"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:layout_below="@+id/edit_email"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:padding="10dp"
+        android:layout_below="@+id/edit_username"
+        android:hint="@string/password"
+        android:textColorHint="@color/colorHint"
+        android:textColor="@color/white"
+        android:background="@drawable/edit_background"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_password"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/button_background_three"
+        android:text="@string/register"
+        android:textColor="@color/white"/>
+</RelativeLayout>

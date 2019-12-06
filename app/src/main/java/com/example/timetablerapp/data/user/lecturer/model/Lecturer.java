@@ -1,7 +1,5 @@
 package com.example.timetablerapp.data.user.lecturer.model;
 
-import android.support.annotation.NonNull;
-
 import com.example.timetablerapp.data.Constants;
 import com.google.gson.annotations.SerializedName;
 
@@ -19,6 +17,8 @@ public class Lecturer {
     private String middleName;
     @SerializedName("username")
     private String username;
+    @SerializedName(Constants.EMAIL)
+    private String email;
     @SerializedName("password")
     private String password;
     @SerializedName("faculty_id")
@@ -27,24 +27,32 @@ public class Lecturer {
     private String departmentId;
     @SerializedName("in_session")
     private boolean inSesson;
+    @SerializedName(Constants.CAMPUS_ID)
+    private String campusId;
+    @SerializedName(Constants.IS_REMOVED)
+    private boolean isRemoved;
 
     public Lecturer(String id, String firstName,
                     String lastName, String middleName,
-                    String username, String password,
+                    String username, String email, String password,
                     String departmentId, String facultyId,
-                    boolean inSesson) {
+                    boolean inSesson, String campusId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.username = username;
+        this.email = email;
         this.password = password;
         this.departmentId = departmentId;
         this.facultyId = facultyId;
         this.inSesson = inSesson;
+        this.campusId = campusId;
+        isRemoved = false;
     }
 
     public Lecturer() {
+        isRemoved = false;
     }
 
     public String getId() {
@@ -103,7 +111,7 @@ public class Lecturer {
         this.departmentId = departmentId;
     }
 
-    public boolean isInSesson() {
+    public boolean isInSession() {
         return inSesson;
     }
 
@@ -117,5 +125,29 @@ public class Lecturer {
 
     public void setFacultyId(String facultyId) {
         this.facultyId = facultyId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCampusid() {
+        return campusId;
+    }
+
+    public void setCampusId(String campusId) {
+        this.campusId = campusId;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
+    }
+
+    public void setRemoved(boolean removed) {
+        isRemoved = removed;
     }
 }

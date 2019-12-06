@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/dashboard"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/home"/>
+
+    <item android:id="@+id/lecturer"
+        android:icon="@drawable/ic_lecturer"
+        android:title="@string/lecturer"/>
+
+    <item android:id="@+id/room"
+        android:icon="@drawable/ic_room"
+        android:title="@string/room"/>
+
+    <item android:id="@+id/course"
+        android:icon="@drawable/ic_course"
+        android:title="@string/course"/>
+
+    <item android:id="@+id/more"
+        android:icon="@drawable/ic_more"
+        android:title="@string/more"/>
+</menu>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edit_unit_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/unit_id"
+        android:inputType="textPersonName"
+        android:textSize="21sp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/my_kind_of_grey"/>
+
+    <EditText
+        android:id="@+id/edit_unit_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="@string/unit_name"
+        android:textColor="@color/white"
+        android:inputType="textPersonName"
+        android:textSize="21sp"
+        android:textColorHint="@color/my_kind_of_grey"/>
+
+    <TextView
+        android:id="@+id/faculties"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="textEnd"
+        android:textColor="#fff"
+        android:text="@string/faculties"/>
+
+    <Spinner
+        android:id="@+id/spinner_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"/>
+
+    <TextView
+        android:id="@+id/departments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="textEnd"
+        android:textColor="#fff"
+        android:text="@string/departments"/>
+
+    <Spinner
+        android:id="@+id/spinner_departments"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"/>
+
+    <TextView
+        android:id="@+id/programme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="5dp"
+        android:textAlignment="textEnd"
+        android:textColor="#fff"
+        android:text="@string/programmes"/>
+
+    <Spinner
+        android:id="@+id/spinner_programme"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Switch
+            android:id="@+id/switch_practical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="10dp"
+            android:text="@string/is_practical"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+
+        <Switch
+            android:id="@+id/switch_common"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:padding="10dp"
+            android:text="@string/is_common"
+            android:textAlignment="center"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_pass_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="30dp"
+        android:hint="Enter db passcode"
+        android:inputType="textPassword"
+        android:textColorHint="@color/my_kind_of_grey"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+</LinearLayout>

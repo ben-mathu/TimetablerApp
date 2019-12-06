@@ -8,6 +8,8 @@ import com.google.gson.annotations.SerializedName;
 public class LecturerRequest {
     @SerializedName("lecturer")
     private Lecturer lecturer;
+    @SerializedName("password")
+    private String pass;
 
     public Lecturer getLecturer() {
         return lecturer;
@@ -15,5 +17,13 @@ public class LecturerRequest {
 
     public void setLecturer(Lecturer lecturer) {
         this.lecturer = lecturer;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getPass() {
+        return pass;
     }
 }

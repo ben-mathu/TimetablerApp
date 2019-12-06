@@ -1,10 +1,12 @@
 package com.example.timetablerapp.data;
 
+import com.example.timetablerapp.util.SuccessfulCallback;
+
 /**
  * 06/05/19 -bernard
  */
-public interface DataSource<T, T2> {
-    void update(T2 item);
-    void delete(T2 item);
-    void save(T2 item);
+public interface DataSource<T> {
+    void update(T item, SuccessfulCallback callback);
+    void delete(T item, SuccessfulCallback callback);
+    void save(T item, SuccessfulCallback callback);
 }

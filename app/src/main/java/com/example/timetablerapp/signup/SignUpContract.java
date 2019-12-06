@@ -1,10 +1,12 @@
 package com.example.timetablerapp.signup;
 
+import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.campuses.model.Campus;
 import com.example.timetablerapp.data.department.model.Department;
 import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
+import com.example.timetablerapp.data.user.student.model.Student;
 
 import java.util.List;
 
@@ -24,7 +26,7 @@ public interface SignUpContract {
 
         void showProgrammes(List<Programme> programmes);
 
-        void startTimeTableActivity();
+        void startLoginActivity();
     }
 
     interface Presenter {
@@ -33,7 +35,11 @@ public interface SignUpContract {
         void getCampuses();
         void getFaculties(String campusName);
 
-        void registerUser(Lecturer lec);
+        void registerUser(Lecturer lec, String passw, Faculty faculty, Department department);
+
+        void registerUser(Student student, Department department, Faculty faculty, Campus campus, Programme programme);
+
+        void registerUser(Admin admin, String password);
 
         void getFaculties();
     }

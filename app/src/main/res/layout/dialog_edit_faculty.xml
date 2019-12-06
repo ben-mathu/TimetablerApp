@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentEnd="true"
+        android:background="@drawable/button_background_three"
+        android:text="@string/cancel"/>
+
+    <LinearLayout
+        android:id="@+id/ll_faculty_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_cancel"
+        android:visibility="visible"
+        tools:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_faculty_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:text="@string/lecturer_id"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/text_campus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:textColor="#fff"
+            android:textSize="14sp"
+            android:text="@string/campus_name"/>
+
+        <TextView
+            android:id="@+id/text_faculty_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:text="@string/first_name"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_faculty_edit_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_cancel"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_faculties"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="5dp"
+            android:textAlignment="textEnd"
+            android:textColor="#fff"
+            android:text="@string/faculties"/>
+
+        <Spinner
+            android:id="@+id/change_spinner_campus"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:backgroundTint="@color/colorAccent"
+            android:textAlignment="viewStart"/>
+
+        <EditText
+            android:id="@+id/edit_faculty_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/edit_background"
+            android:enabled="false"
+            android:hint="@string/lecturer_id"
+            android:textSize="14sp"/>
+
+        <EditText
+            android:id="@+id/edit_faculty_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/edit_background"
+            android:hint="@string/first_name"
+            android:textSize="14sp"/>
+    </LinearLayout>
+</RelativeLayout>

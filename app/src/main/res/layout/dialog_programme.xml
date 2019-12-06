@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <Spinner
+        android:id="@+id/spinner_campus"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"/>
+
+    <Spinner
+        android:id="@+id/spinner_faculty"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/spinner_campus"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"/>
+
+    <Spinner
+        android:id="@+id/spinner_departments"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/spinner_faculty"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/colorAccent"
+        android:textAlignment="viewStart"/>
+
+    <EditText
+        android:id="@+id/edit_programme_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:layout_below="@+id/spinner_departments"
+        android:background="@drawable/edit_background"
+        android:hint="@string/programme_name"
+        android:padding="10dp"
+        android:textSize="14sp" />
+</RelativeLayout>

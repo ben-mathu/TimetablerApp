@@ -9,22 +9,35 @@
         android:id="@+id/image_timetable"
         android:layout_width="160dp"
         android:layout_height="160dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="30dp"
-        android:src="@drawable/download"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/logo"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_below="@id/image_timetable"
+        android:layout_centerHorizontal="true"
+        android:text="@string/app_name"
+        android:textSize="28sp"
+        android:textColor="#CCDBDC"/>
 
     <EditText
         android:id="@+id/edit_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image_timetable"
+        android:layout_below="@+id/text_title"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="Username"
+        android:hint="@string/username"
+        android:textColorHint="@color/text_hint_color"
+        android:textColor="@color/white"
         android:textSize="21sp"
-        android:padding="14dp"
-        android:background="@drawable/button_background"/>
+        android:inputType="textEmailAddress"
+        android:padding="14dp"/>
 
     <EditText
         android:id="@+id/edit_password"
@@ -34,10 +47,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="Username"
+        android:hint="@string/password"
+        android:textColorHint="@color/text_hint_color"
+        android:textColor="@color/white"
         android:textSize="21sp"
-        android:padding="14dp"
-        android:background="@drawable/button_background"/>
+        android:inputType="textPassword"
+        android:padding="14dp"/>
 
     <Button
         android:id="@+id/button_login"
@@ -51,4 +66,33 @@
         android:textColor="#FFF"
         android:textSize="18sp"
         android:background="@drawable/button_background_two"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/button_login"
+        android:layout_margin="30dp"
+        android:adjustViewBounds="true"
+        android:divider="@drawable/line_separator"
+        android:showDividers="middle"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/text_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="15dp"
+            android:text="Sign Up"
+            android:textSize="18sp"
+            android:textColor="@color/hyperlinks"/>
+
+        <TextView
+            android:id="@+id/text_clear_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Clear Role"
+            android:textSize="18sp"
+            android:textColor="@color/hyperlinks"/>
+    </LinearLayout>
 </RelativeLayout>

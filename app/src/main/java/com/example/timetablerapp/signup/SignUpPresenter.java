@@ -2,8 +2,8 @@ package com.example.timetablerapp.signup;
 
 import android.util.Log;
 
-import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.Constants;
+import com.example.timetablerapp.data.user.admin.AdminRepo;
+import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.campuses.CampusesDS;
 import com.example.timetablerapp.data.campuses.CampusesRepository;
 import com.example.timetablerapp.data.campuses.model.Campus;
@@ -16,14 +16,17 @@ import com.example.timetablerapp.data.faculties.model.Faculty;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.ProgrammesRepository;
 import com.example.timetablerapp.data.programmes.model.Programme;
-import com.example.timetablerapp.data.user.lecturer.LecturerDS;
+import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerRepo;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
 import com.example.timetablerapp.data.user.student.StudentRepository;
+import com.example.timetablerapp.data.user.student.model.Student;
+import com.example.timetablerapp.util.SuccessfulCallback;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import static com.example.timetablerapp.data.encryption.Hashing.createHash;
 
 /**
  * 08/05/19 -bernard
@@ -38,6 +41,8 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     private FacultiesRepository facultiesRepository;
     private StudentRepository studentRepo;
     private LecturerRepo lecturerRepo;
+    private AdminRepo adminRepo;
+    private SuccessfulCallback callback;
 
     public SignUpPresenter(SignUpContract.View view,
                            DepartmentRepository departmentRepository,
@@ -45,7 +50,8 @@ public class SignUpPresenter implements SignUpContract.Presenter {
                            CampusesRepository campusesRepository,
                            FacultiesRepository facultiesRepository,
                            StudentRepository studentRepo,
-                           LecturerRepo lecturerRepo) {
+                           LecturerRepo lecturerRepo,
+                           AdminRepo adminRepo) {
         this.departmentRepository = departmentRepository;
         this.programmesRepository = programmesRepository;
         this.campusesRepository = campusesRepository;
@@ -53,11 +59,12 @@ public class SignUpPresenter implements SignUpContract.Presenter {
         this.studentRepo = studentRepo;
         this.lecturerRepo = lecturerRepo;
         this.view = view;
+        this.adminRepo = adminRepo;
     }
 
     @Override
     public void getDepartments(String id) {
-        departmentRepository.getAllFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
+        departmentRepository.getDepsByIdFromRemote(new DepartmentDS.LoadDepartmentsCallBack() {
             @Override
             public void loadDepartmentsSuccessful(List<Department> departments) {
                 view.showDepartments(departments);
@@ -71,7 +78,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void getProgrammes(String departmentName) {
+    public void getProgrammes(String departmentId) {
         programmesRepository.getAllFromRemote(new ProgrammeDS.LoadProgrammesCallBack() {
             @Override
             public void loadProgrammesSuccessfully(List<Programme> programmes) {
@@ -82,7 +89,7 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void dataNotAvailable(String message) {
                 view.showMessages(message);
             }
-        }, departmentName);
+        }, departmentId);
     }
 
     @Override
@@ -101,10 +108,10 @@ public class SignUpPresenter implements SignUpContract.Presenter {
     }
 
     @Override
-    public void getFaculties(String campusName) {
+    public void getFaculties(String campusId) {
         facultiesRepository.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
-            public void gettinFacultiesSuccessful(List<Faculty> faculties) {
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
                 view.showFaculties(faculties);
             }
 
@@ -112,11 +119,20 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             public void dataNotAvailable(String message) {
                 view.showMessages(message);
             }
-        }, campusName);
+        }, campusId);
     }
 
     @Override
-    public void registerUser(Lecturer lec) {
+    public void registerUser(Lecturer lec, String passw, Faculty faculty, Department department) {
+        if (lec.getPassword().isEmpty() ||
+                lec.getFacultyId().isEmpty() ||
+                lec.getDepartmentId().isEmpty() ||
+                lec.getUsername().isEmpty()
+        ) {
+            view.showMessages("Please fill out the form all field are required");
+            return;
+        }
+
         try {
             String hash = createHash(lec.getPassword());
             lec.setPassword(hash);
@@ -124,50 +140,109 @@ public class SignUpPresenter implements SignUpContract.Presenter {
             Log.e(TAG, "registerUser: ", e);
             e.printStackTrace();
         }
-        lecturerRepo.userSignUp(new LecturerDS.LecturerIsAuthCallBack() {
+        lecturerRepo.userSignUp(new SuccessfulCallback() {
             @Override
-            public void userIsAuthSuccessfull(String message) {
+            public void successful(String message) {
                 view.showMessages(message);
-                view.startTimeTableActivity();
+                view.startLoginActivity();
             }
 
             @Override
-            public void authNotSuccessful(String message) {
+            public void unsuccessful(String message) {
                 view.showMessages(message);
             }
-        }, lec);
+        }, lec, passw);
+
+        departmentRepository.save(department, callback);
+        facultiesRepository.save(faculty, callback);
     }
 
-    private String createHash(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("MD5");
-        digest.reset();
-
-        byte[] salt = MainApplication.getSharedPreferences().getString(Constants.SALT, "").getBytes();
-
-        digest.update(salt);
-
-        byte[] hash = digest.digest(password.getBytes());
-        return byteToStringHex(hash);
-    }
-
-    private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    public String byteToStringHex(byte[] hash) {
-        char[] hexChar = new char[hash.length * 2];
-        for (int i = 0; i < hash.length; i++) {
-            int v = hash[i] & 0xFF;
-            hexChar[i * 2] = hexArray[v >>> 4];
-            hexChar[i * 2 + 1] = hexArray[v & 0x0F];
+    @Override
+    public void registerUser(Student student, Department department, Faculty faculty, Campus campus, Programme programme) {
+        if (student.getPassword().isEmpty() ||
+                student.getFacultyId().isEmpty() ||
+                student.getDepartmentId().isEmpty() ||
+                student.getFname().isEmpty() ||
+                student.getStudentId().isEmpty() ||
+                student.getLname().isEmpty() ||
+                student.getMname().isEmpty() ||
+                student.getUsername().isEmpty() ||
+                student.getAdmissionDate().isEmpty() ||
+                student.getProgrammeId().isEmpty() ||
+                student.getYearOfStudy().isEmpty()
+        ) {
+            view.showMessages("Please fill out the form all field are required");
+            return;
         }
 
-        return new String(hexChar);
+        try {
+            String hash = createHash(student.getPassword());
+            student.setPassword(hash);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "registerUser: ", e);
+            e.printStackTrace();
+        }
+        studentRepo.userSignUp(new SuccessfulCallback() {
+            @Override
+            public void successful(String message) {
+                view.showMessages(message);
+                view.startLoginActivity();
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessages(message);
+            }
+        }, student, "");
+
+        // save attributes for the students
+        departmentRepository.save(department, callback);
+        facultiesRepository.save(faculty, callback);
+        programmesRepository.save(programme, callback);
+        campusesRepository.save(campus, callback);
+    }
+
+    @Override
+    public void registerUser(Admin admin, String pass) {
+        if (admin.getPassword().isEmpty() ||
+                admin.getfName().isEmpty() ||
+                admin.getAdminId().isEmpty() ||
+                admin.getlName().isEmpty() ||
+                admin.getmName().isEmpty() ||
+                admin.getUsername().isEmpty() ||
+                pass.isEmpty()
+        ) {
+            view.showMessages("Please fill out the form all field are required");
+            return;
+        }
+
+        try {
+            String hash = createHash(admin.getPassword());
+            admin.setPassword(hash);
+        } catch (NoSuchAlgorithmException e) {
+            Log.e(TAG, "registerUser: ", e);
+            e.printStackTrace();
+        }
+        adminRepo.userSignUp(new SuccessfulCallback() {
+
+            @Override
+            public void successful(String message) {
+                view.showMessages(message);
+                view.startLoginActivity();
+            }
+
+            @Override
+            public void unsuccessful(String message) {
+                view.showMessages(message);
+            }
+        }, admin, pass);
     }
 
     @Override
     public void getFaculties() {
         facultiesRepository.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
             @Override
-            public void gettinFacultiesSuccessful(List<Faculty> faculties) {
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
                 view.showFaculties(faculties);
             }
 
