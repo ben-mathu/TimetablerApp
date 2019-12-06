@@ -256,7 +256,7 @@ public class ScheduleTimerIntentService extends IntentService {
                 .setContentText(notificationContent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .addAction(R.drawable.ic_snooze, "Remind me", snoozePendingIntent)
+//                .addAction(R.drawable.ic_snooze, "Remind me", snoozePendingIntent)
                 .setVisibility(VISIBILITY_PRIVATE)
                 .setAutoCancel(true);
 

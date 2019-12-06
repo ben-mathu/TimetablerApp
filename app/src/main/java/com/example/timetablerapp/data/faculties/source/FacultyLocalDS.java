@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.Constants;
 import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.faculties.FacultyDS;
 import com.example.timetablerapp.data.faculties.model.Faculty;

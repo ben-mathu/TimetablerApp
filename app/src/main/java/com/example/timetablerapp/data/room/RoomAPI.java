@@ -20,5 +20,6 @@ public interface RoomAPI {
                                    @Body RoomResponse response);
 
     @PUT("update-room")
-    Call<MessageReport> updateRoom(@Header(Constants.CONTENT_TYPE) String contentType, @Body RoomResponse response);
+    Call<MessageReport> updateRoom(@Header(Constants.CONTENT_TYPE) String contentType,
+                                   @Body RoomResponse response);
 }

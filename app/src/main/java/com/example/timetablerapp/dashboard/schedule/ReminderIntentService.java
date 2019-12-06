@@ -1,12 +1,16 @@
 package com.example.timetablerapp.dashboard.schedule;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +23,7 @@ import com.example.timetablerapp.data.Constants;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 
 /**
@@ -45,21 +50,20 @@ public class ReminderIntentService extends IntentService {
 //        activityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //
 //        startActivity(activityIntent);
+
+        showDialog(getApplicationContext(), "Set Reminder");
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-
-        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_reminder_dialog, null, false);
+    private void showDialog(Context applicationContext, String set_reminder) {
+        View view = LayoutInflater.from(applicationContext).inflate(R.layout.activity_reminder_dialog, null, false);
 
         btnDate = view.findViewById(R.id.text_date);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext(), R.style.Theme_Dialogs)
-                .setTitle("Set Reminder")
+        AlertDialog.Builder builder = new AlertDialog.Builder(applicationContext, R.style.Theme_Dialogs)
+                .setTitle(set_reminder)
                 .setView(view)
                 .setPositiveButton("Set Reminder", (dialogInterface, i) -> {
-                    onButtonClick();
+                    onButtonClick(applicationContext);
 
                     String reminderDateStr = calendar.getTime().toString();
                     MainApplication.getSharedPreferences().edit()
@@ -76,12 +80,20 @@ public class ReminderIntentService extends IntentService {
     /**
      * Define button click events.
      */
-    private void onButtonClick() {
+    private void onButtonClick(Context applicationContext) {
         btnDate.setOnClickListener(view1 -> {
             onTimeSetListener = (timePicker, hour, minute) -> {
                 calendar.set(Calendar.HOUR_OF_DAY, hour);
                 calendar.set(Calendar.MINUTE, minute);
                 calendar.set(Calendar.SECOND, 0);
+
+
+                MainApplication.getSharedPreferences().edit().putString(Constants.REMINDER, new SimpleDateFormat(Constants.DATE_FORMAT).format(calendar.getTime())).apply();
+
+                Intent intent = new Intent(applicationContext, NotificationIntentService.class);
+                AlarmManager manager = (AlarmManager) applicationContext.getSystemService(Context.ALARM_SERVICE);
+                PendingIntent pendingIntent = PendingIntent.getService(applicationContext, 0, intent, 0);
+                manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), TimeUnit.HOURS.toMillis(6), pendingIntent);
             };
 
             onDateSetListener = (datePicker, year, month, day) -> {
@@ -90,7 +102,7 @@ public class ReminderIntentService extends IntentService {
                 calendar.set(Calendar.DAY_OF_MONTH, day);
 
                 TimePickerDialog dialog = new TimePickerDialog(
-                        getApplicationContext(),
+                        applicationContext,
                         R.style.Theme_Dialogs,
                         onTimeSetListener,
                         Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
@@ -102,7 +114,7 @@ public class ReminderIntentService extends IntentService {
             };
 
             DatePickerDialog dialog = new DatePickerDialog(
-                    getApplicationContext(),
+                    applicationContext,
                     R.style.Theme_Dialogs,
                     onDateSetListener,
                     Calendar.getInstance().get(Calendar.YEAR),

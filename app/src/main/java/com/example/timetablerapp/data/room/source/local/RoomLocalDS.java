@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.room.model.Room;
 import com.example.timetablerapp.data.room.source.RoomDS;
 import com.example.timetablerapp.util.SuccessfulCallback;

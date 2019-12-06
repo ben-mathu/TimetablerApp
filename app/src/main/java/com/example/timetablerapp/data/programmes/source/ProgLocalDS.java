@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.programmes.ProgrammeDS;
 import com.example.timetablerapp.data.programmes.model.Programme;
 import com.example.timetablerapp.util.SuccessfulCallback;
@@ -57,7 +56,7 @@ public class ProgLocalDS implements ProgrammeDS {
         values.put(DEPARTMENT_ID, item.getDepartmentId());
         values.put(FACULTY_ID, item.getFacultyId());
 
-        long countRow = database.update(TABLE_NAME, values, PROGRAMME_ID, new String[]{item.getProgrammeId()});
+        long countRow = database.update(TABLE_NAME, values, PROGRAMME_ID + "=?", new String[]{item.getProgrammeId()});
 
         if (countRow > 0) {
             Log.d(TAG, "save: # of columns affected: " + countRow);

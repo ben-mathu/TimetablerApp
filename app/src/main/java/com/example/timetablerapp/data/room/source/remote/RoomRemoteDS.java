@@ -37,7 +37,7 @@ public class RoomRemoteDS implements RoomDS {
                 if (response.isSuccessful() && response.body() != null) {
                     callback.successful(response.body().getMessage());
                 } else {
-                    callback.unsuccessful(response.message());
+                    callback.unsuccessful("Could not update Course" + item.getId());
                 }
             }
 

@@ -341,7 +341,7 @@ public class AddClassFragment extends Fragment implements RoomView, OnItemSelect
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).setText(R.string.save);
             } else {
                 Room room = new Room();
-                room.setId(edtRoomId.getText().toString());
+                room.setId(item.getId() + " " + edtRoomId.getText().toString());
                 room.setVolume(edtVolume.getText().toString());
                 room.setFacultyId(faculties.get(spinnerFaculty.getSelectedItemPosition()).getFacultyId());
                 room.setHall_id(halls.get(spinnerHall.getSelectedItemPosition()).getHallId());

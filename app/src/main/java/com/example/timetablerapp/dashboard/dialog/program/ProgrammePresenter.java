@@ -134,4 +134,18 @@ public class ProgrammePresenter {
             }
         });
     }
+
+    public void getFaculties() {
+        facultyRepo.getAllFromRemote(new FacultyDS.LoadFacultiesCallBack() {
+            @Override
+            public void loadingFacultiesSuccessful(List<Faculty> faculties) {
+                view.setFaculties(faculties);
+            }
+
+            @Override
+            public void dataNotAvailable(String message) {
+                view.showMessage(message);
+            }
+        });
+    }
 }

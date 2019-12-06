@@ -266,7 +266,7 @@ public class ProgrammeFragment extends Fragment implements ProgrammeView, OnItem
     @Override
     public void onItemSelected(Programme item) {
         this.programme = item;
-        presenter.getCampusesForDepartment();
+        presenter.getFaculties();
 
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_edit_programme, null, false);
 

@@ -6,11 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.example.timetablerapp.MainApplication;
-import com.example.timetablerapp.data.user.admin.model.Admin;
 import com.example.timetablerapp.data.user.lecturer.model.LecturerResponse;
 import com.example.timetablerapp.util.SuccessfulCallback;
 import com.example.timetablerapp.data.Constants;
-import com.example.timetablerapp.data.db.TimetablerContract;
 import com.example.timetablerapp.data.user.UserDataSource;
 import com.example.timetablerapp.data.user.lecturer.LecturerDS;
 import com.example.timetablerapp.data.user.lecturer.model.Lecturer;
